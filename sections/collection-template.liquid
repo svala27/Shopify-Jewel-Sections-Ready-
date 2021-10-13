@@ -1,0 +1,174 @@
+{% case section.settings.column %}
+    {% when 2 %}
+        {%- assign column = '2' -%}
+    {% when 3 %}
+        {%- assign column = '3' -%}
+    {% when 4 %}
+        {%- assign column = '4' -%}
+    {% when 5 %}
+        {%- assign column = '5' -%}
+{% endcase %}
+
+{% if cart.attributes.pagination != blank and cart.attributes.pagination %}
+    {% assign limit = cart.attributes.pagination %}
+{% else %}
+    {% assign limit = section.settings.rows %}
+{% endif %}
+
+{% paginate collection.products by limit %}
+
+<div id="collection-page" class="{% if section.settings.layout == 'grid' %}productGrid--maxCol{{ column }} grid active{% else %}productGrid--maxCol1 list active{% endif %}" data-section-id="{{ section.id }}" data-section-type="collection-template">
+
+    {%- assign is_vendor_or_type_collection = false -%}
+    {%- if collection.current_type != blank or collection.current_vendor != blank -%}
+        {%- assign is_vendor_or_type_collection = true -%}
+    {%- endif -%}
+    {% if section.settings.sort_enable %}
+        {% render 'toolbar' %}
+    {% endif %}
+
+    <div id="Collection">
+        {% if section.settings.layout == 'grid' %}
+            <div class="halo-column halo-column-product">
+                {% for product in collection.products %}
+                    <div class="halo-item">
+                        {% render 'product-card-list', product: product, serial: forloop.index %}
+                    </div>
+                {% else %}
+                    {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+                        {% for i in (1..limit) %}
+                            <div class="halo-item">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <a class="product-link" href="#">
+                                            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                        </a>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="product-title">{{ 'homepage.onboarding.product_title' | t }}</h4>
+                                        <div class="product-reviews">{% render 'product-price', variant: nil %}</div>
+                                        <div class="product-price ">
+                                            <span class="price-item price-item--regular" >$19.99</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {%- assign is_empty_collection = true -%}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="halo-column halo-column-product">
+                {% for product in collection.products %}
+                    <div class="halo-item">
+                        {% render 'product-card-list', product: product, serial: forloop.index %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if is_empty_collection %}
+            
+            <div class="empty-collection-content text-center padding-top-60">
+                <h3 class="collection--empty-message">{{ 'collections.general.title_no_matches' | t }}</h3>
+                <p>
+                  {{ 'collections.general.no_matches' | t }}
+                </p>
+                <a {% if settings.redirect_button == 'go_back' %}
+                    href="javascript:void(0)" onclick="window.history.back();"
+                    {% else %} href="{{ settings.link_to_redirect }}"{% endif %} class="btn btn-one btn--has-icon-after cart__continue-btn">
+                    {{ 'collections.general.continue_shopping' | t }}
+                </a>
+            </div>
+        {% endif %}
+        {% if section.settings.enable_button_show_more %}
+            {% if paginate.next.is_link %}
+                <div class="infinite-scrolling text-center">
+                    <a class="btn btn--secondary-accent btn--big" href="{{ paginate.next.url }}">
+                        {{ 'collections.general.show_more' | t}}
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if paginate.pages > 1 %}
+                {% render 'pagination-2', paginate: paginate %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% endpaginate %}
+
+{% if settings.show_product_compare %}
+<div class="compare-link {% if settings.show_product_compare_mb %}compare-btn-mb{% endif %}">
+    <a class="btn btn-compare" href="javascript:void(0)" data-toggle="modal" data-target="#compare" data-compare-selected>
+        <span class="compare-text">{{ 'general.compare.title' | t }}</span>
+        {% if settings.show_product_compare_mb %}
+          <svg class="icon" height="512" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M815.415 818.951c-15.614 0-28.278-12.667-28.278-28.278v-489.739c0-43.452-35.349-78.8-78.8-78.8h-145.669c-15.614 0-28.278-12.667-28.278-28.278s12.667-28.278 28.278-28.278h145.669c74.676 0 135.36 60.684 135.36 135.36v489.739c0 15.614-12.667 28.278-28.278 28.278z"></path><path d="M595.808 309.182c-6.039 0-12.078-2.062-16.938-6.481l-86.606-76.884c-8.395-7.513-13.257-18.265-13.257-29.605s4.861-22.095 13.257-29.605l86.606-77.034c10.458-9.426 26.659-8.395 35.939 2.062s8.395 26.659-2.062 35.939l-77.034 68.49 77.034 68.49c10.458 9.426 11.489 25.481 2.062 35.939-5.008 5.891-11.93 8.69-18.999 8.69z"></path><path d="M447.194 822.045h-145.669c-74.676 0-135.36-60.684-135.36-135.36v-489.885c0-15.614 12.667-28.278 28.278-28.278s28.278 12.667 28.278 28.278v489.739c0 43.452 35.349 78.8 78.8 78.8h145.669c15.614 0 28.278 12.667 28.278 28.278 0 15.76-12.667 28.428-28.278 28.428z"></path><path d="M414.053 904.231c-7.069 0-13.994-2.946-18.999-8.543-9.28-10.458-8.395-26.659 2.062-35.939l77.034-68.49-77.034-68.49c-10.458-9.426-11.489-25.481-2.062-35.939 9.426-10.458 25.481-11.489 35.939-2.062l86.606 76.884c8.395 7.513 13.257 18.265 13.257 29.605s-4.861 22.095-13.257 29.605l-86.606 76.884c-4.861 4.419-11.046 6.481-16.938 6.481z"></path></svg>
+        {% endif %}
+        <span class="countPill countPill--positive countPill--alt" data-compare-count></span>
+    </a>
+</div>
+{% render 'popup_modal_compare' %}
+{% endif %}
+{% schema %}
+{
+    "name": "Collection Detail",
+    "class": "page-content",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Collection Layout"
+      },
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Layout",
+            "default": "grid",
+            "options": [
+                {
+                    "value": "grid",
+                    "label": "Grid"
+                },
+                {
+                    "value": "list",
+                    "label": "List"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Products per row (grid only)",
+            "default": 3,
+            "min": 2,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "rows",
+            "label": "Limits product per page",
+            "default": 12,
+            "min": 12,
+            "max": 42,
+            "step": 6
+        },
+        {
+            "type": "checkbox",
+            "id": "sort_enable",
+            "label": "Enable sorting",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_button_show_more",
+            "label": "Enable Button Show More",
+            "default": true
+        }
+    ]
+}
+{% endschema %}

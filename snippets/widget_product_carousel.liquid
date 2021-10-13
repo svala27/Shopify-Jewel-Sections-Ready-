@@ -1,0 +1,24 @@
+<div class="sidebarBlock">
+    <h5 class="sidebarBlock-heading"><span>{{ block.settings.title}}</span></h5>
+    <div class="sidebarBlock-content br-bt" data-product-carousel-sidebar>
+        {% if block.settings.collection != blank %}
+            <div class="productCarousel"
+                data-slick='{
+                    "arrows": true,
+                    "dots": true,
+                    "autoplay": false,
+                    "infinite": true,
+                    "slidesToShow": 1,
+                    "slidesToScroll": 1,
+                    "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                    "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>"
+                }'>
+                {% for product in collections[block.settings.collection].products limit : block.settings.number %}
+                <div class="productCarousel-slide">
+                    {% render 'widget_product', product: product, serial: forloop.index %}
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="modal fade halo_modal" id="compareColor-modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-compare modal-compare-color">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a data-dismiss="modal" class="close close-modal" href="javascript:void(0)"><svg class="icon icon-close"><use xlink:href="#icon-close" /></svg></a>
+                {% if section.settings.title_compare_color != blank %}
+                   <p class="title">{{section.settings.title_compare_color}}</p>
+                {% endif %}
+            </div>
+             <div class="modal-body">
+              {% for option in product.options_with_values %}
+                    {% assign option_name = option.name | downcase %}
+                    {% assign option_color_swatch = settings.qv_option_color_swatch | downcase %}
+                    {% if option_name == option_color_swatch %}
+                        <div class="selector-wrapper swatch js product-form__item compareColor-swatch">
+                            {% assign option_index0 = forloop.index0 %}
+                            {% assign option_index = forloop.index %}
+                            {% assign values = '' %}
+                            {% for variant in product.variants %}
+                                {% assign value = variant.options[option_index0] %}
+                                {% unless values contains value %}
+                                    {% assign values = values | join: ';' %}
+                                    {% assign values = values | append: ';' | append: value %}
+                                    {% assign values = values | split: ';' %}
+                                    <div class="swatch-element color {{ value | downcase }}">
+                                        <input class="compareColor-option-selector-{{ section.id }}" type="checkbox" name="CompareColorOptionSelector-{{ option_index0 }}-{{ product.id }}-{{ section.id }}" value="{{ value | escape }}" id="CompareColorOptionSelector{{ option_index0 }}-{{ value }}-{{ product.id }}-{{ section.id }}">
+                                        <label data-toggle="tooltip" data-placement="top" title="{{ value }}" for="CompareColorOptionSelector{{ option_index0 }}-{{ value }}-{{ product.id }}-{{ section.id }}" data-image="{{ variant.image.src | img_url: '250x250' }}" data-value="{{ value | escape }}" style="background-color: {{ value }};"></label>
+                                    </div>
+                                {% endunless %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="show-img"></div>
+          </div>
+        </div>
+    </div>
+</div>

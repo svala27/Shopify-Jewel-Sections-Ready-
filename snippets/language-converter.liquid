@@ -1,0 +1,94 @@
+<script>
+
+  function setupLanguageSwitcher() {
+    var languages = buildLanguageList();
+    var shopDomain = 'https://{{shop.domain}}';
+    var primaryLanguage = languages.find(function (x) { return x.primary; });
+    var logoLanguage = languages.find(function (x) { return x.logo; });
+    var defaultLocale = primaryLanguage ? primaryLanguage.iso_code : 'en';
+    var currentLocale = findCurrentLocale(languages, defaultLocale);
+    var containers = document.querySelectorAll('#lang-switcher');
+    if (containers && containers.length) {
+      containers.forEach(createDropdown(defaultLocale, currentLocale, shopDomain, languages, logoLanguage));
+    }
+    $('.header-top .navUser-language').addClass('padding-language');
+  }
+
+  function buildLanguageList() {
+    return [
+      {%- for locale in shop.published_locales %}
+      {
+        name: '{{locale.name}}',
+        endonym_name: '{{locale.endonym_name}}',
+        iso_code: '{{locale.iso_code}}',
+        primary: {{locale.primary}},
+        {% for i in (1..6) %}
+        {% capture lang_unit %}lange_{{ i }}{% endcapture %}
+        {% capture i-lang_unit %}i-lang-{{ i }}.png{% endcapture %}
+        {% assign currency_length = settings[i-lang_unit] | size %}
+        {% if settings[lang_unit] == locale.iso_code %}
+        logo: '{{i-lang_unit | asset_url}}',
+        {% endif %}
+        {% endfor %}
+      }
+      
+      
+      {% unless forloop.last %},{% endunless -%}
+      
+      {%- endfor %}
+    ];
+  }
+
+  function findCurrentLocale(languages, defaultLocale) {
+    var p = window.location.pathname.split('/').filter(function (x) { return x; });
+    if (p && p.length > 0 && languages.find(function (x) { return x.iso_code === p[0]; })) {
+      return p[0];
+    } else {
+      return defaultLocale;
+    }
+  }
+
+  function createDropdown(t, i, s, l, logo) {
+    return function (container) {
+
+      if (l && l.length > 1) {
+        var select = $('#lang-switcher');
+        l.forEach(function(lang) {
+          if (lang.logo == undefined) {
+            var option1 = '<a class="dropdown-item" href="javascript:void(0)" data-value="' + lang.iso_code + '" aria-label="link"><span class="text">' + lang.iso_code + '</span></a>';
+          } else {
+            var option1 = '<a class="dropdown-item" href="javascript:void(0)" data-value="' + lang.iso_code + '" aria-label="link"><div class="lange_left"><span class="img-icon"><img src="' + lang.logo + '"class="lazyloaded" data-src="' + lang.logo + '" alt="" data-image /></span>' + '<span class="text">' + lang.iso_code + '</span></div><div class="lange_right"><span class="text-change border_hover"> {{ 'cart.general.change' | t }} </span><span class="icon-arrow"><svg class="icon"><use xlink:href="#icon_right" /></span></div></a>';
+          }
+          $(option1).appendTo(select);
+          if (i === lang.iso_code) {
+            $('#lang-switcher [data-value="' + i + '"]').addClass('active');
+          }
+        });
+        if ($('#lang-switcher .dropdown-item').hasClass('active')) {
+          var html = $('#lang-switcher .dropdown-item.active').html();
+          $('[data-language-label]').html(html);
+        }
+        $('#lang-switcher [data-value]').on('click', function() {
+          var e = $(this).find('.text').text().replace(' ','');
+          var n = window.location.pathname;
+          if (e === t) {
+            var o = '' + s + n.replace('/' + i, '');
+            window.location.assign(o)
+          } else if (t === i) {
+            var r = s + '/' + e + n;
+            window.location.assign(r)
+          } else {
+            var a = s + '/' + n.replace('/' + i, e);
+            window.location.assign(a)
+          }
+        });    
+      }
+    };
+  }
+
+  if (window.attachEvent) {
+    window.attachEvent('onload', setupLanguageSwitcher);
+  } else {
+    window.addEventListener('load', setupLanguageSwitcher, false);
+  }
+</script>

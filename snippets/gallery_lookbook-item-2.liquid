@@ -1,0 +1,139 @@
+<div class="lookbook-image-wrapper">
+                <div class="row">
+                  <div class="lookbook-four-image">
+                    <div class="image-item img_01">
+                      {% if block.settings.lookbook_image_1 != blank %}
+                       <img class="product-card__img lazyload"
+                        src="{{ 'loading.svg' | asset_url }}"
+                        data-src="{{ img_url_1 }}"
+                        data-sizes="auto" alt="{{img_url_1.alt }}" data-image>
+                      {% else %}
+                      <div class="no-image" style="padding-top: 100%">
+                        <span>300x300</span>
+                      </div>
+                      {% endif %}
+                      {% capture cap_product %}product_1{% endcapture %}
+                      {% assign product_id = block.settings[cap_product] %}
+                      {% assign product = all_products[product_id] %}
+                      {% assign coordinates_y = block.settings.coordinates_y_1 %}                      
+                      {% assign coordinates_x = block.settings.coordinates_x_1 %}
+                      {% if product != blank %}
+                      <div class="points_popup lookbook__points-popup" style="top: {{ coordinates_y }}%; left: {{ coordinates_x }}%;">
+                          <div class="point"> + </div>
+                          <div class="custom-product-card">
+                              {% render 'product-card-grid-2', product: product %}
+                          </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="image-item img_02">
+                      {% if block.settings.lookbook_image_2 != blank %}
+                       <img class="product-card__img lazyload"
+                        src="{{ img_url_2}}"
+                        data-src="{{ img_url_2 }}"
+                        data-sizes="auto" alt="{{img_url_2.alt }}" data-image>
+                      {% else %}
+                      <div class="no-image" style="padding-top: 100%">
+                        <span>300x300</span>
+                      </div>
+                      {% endif %}
+                      {% capture cap_product %}product_2{% endcapture %}
+                      {% assign product_id = block.settings[cap_product] %}
+                      {% assign product = all_products[product_id] %}
+                      {% assign coordinates_y = block.settings.coordinates_y_2 %}                      
+                      {% assign coordinates_x = block.settings.coordinates_x_2 %}
+                      {% if product != blank %}
+                      <div class="points_popup lookbook__points-popup" style="top: {{ coordinates_y }}%; left: {{ coordinates_x }}%;">
+                          <div class="point"> + </div>
+                          <div class="custom-product-card">
+                              {% render 'product-card-grid-2', product: product %}
+                          </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="image-item img_03">
+                      {% if block.settings.lookbook_image_3 != blank %}
+                       <img class="product-card__img lazyload"
+                        src="{{ img_url_2 }}"
+                        data-src="{{ img_url_3 }}"
+                        data-sizes="auto" alt="{{img_url_3.alt }}" data-image>
+                      {% else %}
+                      <div class="no-image" style="padding-top: 100%">
+                        <span>300x300</span>
+                      </div>
+                      {% endif %}
+                      {% capture cap_product %}product_3{% endcapture %}
+                      {% assign product_id = block.settings[cap_product] %}
+                      {% assign product = all_products[product_id] %}
+                      {% assign coordinates_y = block.settings.coordinates_y_3 %}                      
+                      {% assign coordinates_x = block.settings.coordinates_x_3 %}
+                      {% if product != blank %}
+                      <div class="points_popup lookbook__points-popup" style="top: {{ coordinates_y }}%; left: {{ coordinates_x }}%;">
+                          <div class="point"> + </div>
+                          <div class="custom-product-card">
+                              {% render 'product-card-grid-2', product: product %}
+                          </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="image-item img_04">
+                      {% if block.settings.lookbook_image_4 != blank %}
+                       <img class="product-card__img lazyload"
+                        src="{{ 'loading.svg' | asset_url }}"
+                        data-src="{{ img_url_4 }}"
+                        data-sizes="auto" alt="{{img_url_4.alt }}" data-image>
+                      {% else %}
+                      <div class="no-image" style="padding-top: 100%">
+                        <span>300x300</span>
+                      </div>
+                      {% endif %}
+                      {% capture cap_product %}product_4{% endcapture %}
+                      {% assign product_id = block.settings[cap_product] %}
+                      {% assign product = all_products[product_id] %}
+                      {% assign coordinates_y = block.settings.coordinates_y_4 %}                      
+                      {% assign coordinates_x = block.settings.coordinates_x_4 %}
+                      {% if product != blank %}
+                      <div class="points_popup lookbook__points-popup" style="top: {{ coordinates_y }}%; left: {{ coordinates_x }}%;">
+                          <div class="point"> + </div>
+                          <div class="custom-product-card">
+                              {% render 'product-card-grid-2', product: product %}
+                          </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    
+                  </div>
+                  <div class="lookbook-image-five">
+                    <div class="image-item img_05">
+                      {% if block.settings.lookbook_image_5 != blank %}
+                       <img class="product-card__img lazyload"
+                        src="{{ 'loading.svg' | asset_url }}"
+                        data-src="{{ img_url_5 }}"
+                        data-sizes="auto" alt="{{img_url_5.alt }}" data-image>
+                      {% else %}
+                      <div class="no-image" style="padding-top: 100%">
+                        <span>570x565</span>
+                      </div>
+                      {% endif %}
+                      {% for i in (1..3) %}
+                        {% capture cap_product %}product_5_{{ i }}{% endcapture %}
+                        {% assign product_id = block.settings[cap_product] %}
+                        {% assign product = all_products[product_id] %}
+                        {% capture cap_coordinates_y %}coordinates_y_5_{{ i }}{% endcapture %}
+                        {% assign coordinates_y = block.settings[cap_coordinates_y] %}
+                        {% capture cap_coordinates_x %}coordinates_x_5_{{ i }}{% endcapture %}
+                        {% assign coordinates_x = block.settings[cap_coordinates_x] %}
+                        {% if product != blank %}
+                        <div class="points_popup lookbook__points-popup" style="top: {{ coordinates_y }}%; left: {{ coordinates_x }}%;">
+                            <div class="point"> + </div>
+                            <div class="custom-product-card">
+                                {% render 'product-card-grid-2', product: product %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                  </div>
+                      
+                </div>
+              </div>

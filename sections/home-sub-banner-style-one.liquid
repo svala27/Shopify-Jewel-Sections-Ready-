@@ -1,0 +1,188 @@
+{% if section.settings.display_sub_banner and section.blocks.size > 0 %}
+<div class="home-sub-banner home-sub-banner-style-one sub-banner-{{ section.blocks.size }}" id="sub-banner-{{section.id}}">
+    <div class="container">
+        <div class="row">
+            {% for block in section.blocks %}
+            
+            {% case section.blocks.size %}
+                {% when 1 %}
+                {%- assign column_size = 'col-12 one-block' -%}
+                {% when 2 %}
+                {%- assign column_size = 'col-12 col-sm-6 two-blocks' -%}
+                {% when 3 %}
+                    {%- assign column_size = 'col-6 col-sm-4 col-md-4 three-blocks' -%}
+                {% when 4 %}
+                    {%- assign column_size = 'col col-6 col-md-3 four-blocks' -%}
+            {% endcase %}
+                
+            <div class="item {{ column_size }}">
+                <div class="sub-banner banner-item animation-border animation-scale">
+                    <div class="img-box">
+                        <a href="{{ block.settings.link }}" >
+                            {% if block.settings.image != blank %}
+                            {%- assign img_url = block.settings.image | img_url: 'master' -%}
+                                 <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+                            {% else %}
+                            <div class="no-image" style="padding-top:52%">
+                              <span> 270 x 140px</span>
+                            </div>   
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    {% if block.settings.title != blank %}
+                    <div class="content-box">
+                        <h3 class="banner-title">
+                            {{block.settings.title}}
+                        </h3>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    {% if section.settings.custom_color %}
+        <style>
+            {% assign font_size_title =  section.settings.font_size_title %}
+            {% assign margin_bottom =  section.settings.margin_bottom %}
+            #sub-banner-{{section.id}} .banner-item .banner-title{
+                color: {{ section.settings.color_title }};
+            }
+
+            @media (max-width: 767px) {
+                #sub-banner-{{section.id}} {
+                    margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+                }
+            }
+
+            @media (min-width: 768px) and (max-width: 1199px) {
+                #sub-banner-{{section.id}} {
+                    margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+                }
+            }
+            
+            @media (min-width: 1200px) {
+                #sub-banner-{{section.id}} .banner-title {
+                    font-size: {{ font_size_title }};
+                }
+                
+                #sub-banner-{{section.id}} {
+                    margin-bottom: {{ margin_bottom }}px;
+                }
+            }   
+        </style>
+    {% endif %}
+{% endif %}
+
+
+{% schema %}
+    {
+        "name": "Sub Banner Style 1",
+        "class": "home-sub-banner-sections-style-one",
+        "max_blocks": 4,
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "display_sub_banner",
+                "label": "Enable",
+                "default": true
+            },
+            {
+                "type": "header",
+                "content": "Custom Color"
+            },
+            {
+                "type": "checkbox",
+                "id": "custom_color",
+                "label": "Turn on custom color",
+                "default": false
+            },
+            {
+                "type": "range",
+                "id": "margin_bottom_mb",
+                "label": "Mobile",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "default": 0
+            },
+            {
+                "type": "range",
+                "id": "margin_bottom_tab",
+                "label": "Tablet",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "default": 0
+            },
+            {
+                "type": "range",
+                "id": "margin_bottom",
+                "label": "Margin Bottom",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "default": 0
+            },              
+            {
+                "type" : "text",
+                "id" : "font_size_title",
+                "label" : "Title Font Size ",
+                "default" : "20px"
+            },
+            {
+                "type" : "color",
+                "id" : "color_title",
+                "label" : "Title Color",
+                "default" : "#fff"
+            }            
+        ],
+        "blocks": [
+            {
+                "type": "image",
+                "name": "Image",
+                "settings": [           
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type" : "text",
+                    "id" : "title",
+                    "label" : "Title",
+                    "default" : "Editor’s Pick"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link",
+                    "info": "Optional"
+                }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Sub Banner Style 1",
+                "category": "Block Images",
+                "blocks": [
+                    {
+                        "type": "image"
+                    },
+                    {
+                        "type": "image"
+                    },
+                    {
+                        "type": "image"
+                    },
+                    {
+                        "type": "image"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

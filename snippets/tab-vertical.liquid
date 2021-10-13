@@ -1,0 +1,88 @@
+<div class="productView-description">
+    <div class="tab-content tab-vertical">
+        {% if section.settings.display_product_detail_description %}
+                <div class="toggle-title">
+                        <a class="toggleLink" data-toggle="collapse" href="#collapse-tab1">
+                            <span class="page-heading">{{section.settings.product_description_title}}</span>
+                        </a>
+                </div>
+                <div class="tab-description">
+                    <div class="toggle-content collapse show" id="collapse-tab1">
+                        {% assign des = product.description %}
+                            <div>
+                                {{ des}}
+                            </div>
+                            {% if section.settings.enable_lookbook_gallery %}
+                                {% render 'product-detail-gallery_lookbook_default' %}
+                            {% endif %}
+                        
+                        <div class="description_showmore">
+                            <div class="showmore show">
+                                <span class="btn btn--secondary" >{{ 'general.filters.show_more' | t }}</span>
+                            </div>
+                            <div class="showless hide">
+                                <span class="btn btn--secondary" >{{ 'general.filters.show_less' | t }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if section.settings.display_product_review_tab %}
+                <div class="toggle-title">
+                    <a class="toggleLink collapsed" data-toggle="collapse" href="#collapse-tab2">
+                        <span class="page-heading">
+                        {{ section.settings.product_review_title }}
+                    </a>
+                </div>
+                <div class="tab-review">
+                    <div class="toggle-content collapse" id="collapse-tab2">
+                        <div id="shopify-product-reviews" data-id="{{product.id}}">
+                            {{ product.metafields.spr.reviews }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for block in section.blocks %}
+            {% if block.type == 'product_tab' %}
+                {% if block.settings.type_tab == 'custom' %}
+                    {% assign content = block.settings.product_tab_content_2 %}
+                    
+                    {% if product.metafields.c_f[content] != blank %}
+                        <div id="{{ block.id }}" class="tab-pane fade" role="tabpanel">
+                            <div class="toggle-title">
+                                <a class="toggleLink collapsed" data-toggle="collapse" href="#{{ block.id }}_mobile">
+                                    <span class="page-heading">
+                                        {{block.settings.product_tab_title}}
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="toggle-content collapse" id="{{ block.id }}_mobile">
+                                {% assign metafieldsTabContent = product.metafields.c_f[content] %}
+                                <div>
+                                    {{ metafieldsTabContent}}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div id="{{ block.id }}" class="tab-pane fade" role="tabpanel">
+                        <div class="toggle-title">
+                            <a class="toggleLink collapsed" data-toggle="collapse" href="#{{ block.id }}_mobile">
+                                <span class="page-heading">
+                                    {{block.settings.product_tab_title}}
+                                 </span>
+                            </a>
+                        </div>
+                        <div class="toggle-content collapse" id="{{ block.id }}_mobile">
+                            {% assign customTabContent = block.settings.product_tab_content %}
+                            <div>
+                                {{ customTabContent | split: '[lang2]' | first }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+    </div>
+</div>

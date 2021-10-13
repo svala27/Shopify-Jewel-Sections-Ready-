@@ -1,0 +1,67 @@
+<div class="lookbook lookbook_galry_product_des" data-section-type="lookbook-section">
+   {% if section.settings.title_lob_glr != blank %}
+    <div class="lookbook_galry_title">
+      <h4>{{section.settings.title_lob_glr}}</h4>
+    </div>
+  {% endif %}
+    <div class="lookbook-galry-image" data-slick='{
+                "rows": 0,
+                "dots": true,
+                "arrows": true,
+                "infinite": false,
+                "adaptiveHeight": true,
+                "autoplay": false,
+                "slidesToShow": 1,
+                "slidesToScroll": 1,
+                "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left-2&apos; /></svg></div>", 
+                "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right-2&apos; /></svg></div>",
+                "responsive": [
+                     {
+                       "breakpoint": 1200,
+                       "settings": {
+                         "arrows": false,
+                         "dots": true
+                       }
+                     }
+                ]
+        }'>
+        {% for block in section.blocks %}
+            {% if block.type == 'lookbook_galry_item' %}
+               {%- assign img_url_1 = block.settings.lookbook_image_1 | img_url: '300x300' -%}
+               {%- assign img_url_2 = block.settings.lookbook_image_2 | img_url: '300x300' -%}
+               {%- assign img_url_3 = block.settings.lookbook_image_3 | img_url: '300x300' -%}
+               {%- assign img_url_4 = block.settings.lookbook_image_4 | img_url: '300x300' -%}
+               {%- assign img_url_5 = block.settings.lookbook_image_5 | img_url: '570x565' -%}
+               {%- assign product_main = all_products[block.settings.main_pr_look] -%}
+      
+              {% if section.settings.style_lookbook_gallery == 'different_product' %}
+            {% if product.handle == product_main.handle %}
+                  {% render 'gallery_lookbook-item-2',block:block, product_main:product_main, img_url_1:img_url_1, img_url_2:img_url_2, img_url_3:img_url_3, img_url_4:img_url_4,img_url_5:img_url_5   %}
+                {% endif %}
+            {% else %}
+              {% render 'gallery_lookbook-item-2',block:block, product_main:product_main, img_url_1:img_url_1, img_url_2:img_url_2, img_url_3:img_url_3, img_url_4:img_url_4,img_url_5:img_url_5   %}
+            {% endif %}
+            {% endif %}
+            
+        {% endfor %}
+
+    </div>
+    <div class="lookbook__popup">
+        <a href="javascript:void(0)" title="Close" class="close">
+            <svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 413.348 413.348" height="512" viewBox="0 0 413.348 413.348" width="512"><path d="m413.348 24.354-24.354-24.354-182.32 182.32-182.32-182.32-24.354 24.354 182.32 182.32-182.32 182.32 24.354 24.354 182.32-182.32 182.32 182.32 24.354-24.354-182.32-182.32z"/></svg>
+        </a>
+    </div>
+    
+  <div class="lookbook_paragraph_text">
+    {% if section.settings.title_paragraph_text != blank %}
+    <div class="lookbook_paragraph_header">
+      <h4>{{section.settings.title_paragraph_text}}</h4>
+    </div>
+    {% endif %}
+    {% if section.settings.content_paragraph_text != blank %}
+    <div class="des_lookbook_paragraph rte">
+         {{section.settings.content_paragraph_text}}
+    </div>
+    {% endif%}
+  </div>
+</div>

@@ -1,0 +1,117 @@
+{% if section.settings.display_find_a_store %}
+<section id="find-a-store">
+    <div class="page-content find-a-store">
+        <div class="top-content-find">
+            <div class="left-content-find">
+                <h2 class="title">{{section.settings.title_find }}</h2>
+                <div class="rte des">
+                  {{section.settings.des_find}}
+                </div>
+            </div>
+            <div class="right-content-find">
+                <div class="search_map"></div>
+            </div>
+        </div>
+        <div class="bottom-content-find">
+            <div class="HL-ColLeft">
+                <div class="InfoFind">            
+                    <div class="InfoFindInner ENV_maps_list"></div>
+                </div>
+                <div class="padd"></div>
+            </div>
+            <div class="HL-ColRight">
+                <div class="mapContact ENV_maps__div" style="position: relative; overflow: hidden;"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endif %}
+
+<script src="{{ 'jquery.min.js' | asset_url }}"></script>
+<script type="text/javascript" src="{{ 'maps.js' | asset_url }}"></script>
+
+<script type="text/javascript">
+var ENVmap = new ENV_map();
+var option = {
+    "token": "Envora_free",
+    "get_list": ".InfoFindInner",
+    "get_map": ".HL-ColRight .mapContact",
+    "get_search": ".search_map",
+    "data": [
+      {% for block in section.blocks %}
+        {//Northwest
+          "lat": {{ block.settings.lat }},
+          "lng": {{ block.settings.lng }},
+          "name": "{{ block.settings.name }}",
+          "text": "{{ block.settings.content }}"
+        },
+      {% endfor %}
+    ],
+    "zoom": 4,
+};
+ENVmap.config = function() {
+    this.vars.icon_defaults = {
+        'url': 'https://image.flaticon.com/icons/png/512/565/565586.png',
+    };
+};
+ENVmap.view(option);
+</script>
+
+{% schema %}
+  {
+    "name": "Find A Store",
+    "class": "section-find-a-store",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Find A Store"
+      },
+      {
+          "type": "checkbox",
+          "id": "display_find_a_store",
+          "label": "Enable",
+          "default": true
+      },
+      {
+          "type" : "text",
+          "id" : "title_find",
+          "label" : "Title",
+          "default" : "Find Store Location Near You"
+      },
+      {
+          "type" : "textarea",
+          "id" : "des_find",
+          "label" : "Description"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Item Find A Store",
+        "settings": [
+          {
+            "type" : "textarea",
+            "id" : "content",
+            "label" : "Content"
+          },
+          {
+            "type" : "text",
+            "id" : "name",
+            "label" : "Name"
+          },
+          {
+            "type" : "text",
+            "id" : "lat",
+            "label" : "Lat"
+          }, 
+          {
+            "type" : "text",
+            "id" : "lng",
+            "label" : "Lng"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

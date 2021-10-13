@@ -1,0 +1,581 @@
+{% case section.settings.footer_results_per_row_rc %}
+  {% when '1' %}
+  {%- assign column_size = 'col-12' -%}
+  {% when '2' %}
+  {%- assign column_size = 'col-12 col-md-6' -%}
+  {% when '3' %}
+  {%- assign column_size = 'col-12 col-md-4' -%}
+  {% when '4' %}
+  {%- assign column_size = 'col-12 col-md-3 col-lg-3 col-xl-3' -%}
+  {% when '5' %}
+  {%- assign column_size = 'col-12 col-6 col-md-4 five-blocks' -%}
+  {% when '6' %}
+  {%- assign column_size = 'col-12 col-6 col-md-4 six-blocks' -%}
+{% endcase %}
+<footer class="halo-footer footer-default" role="contentinfo">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+        <div class="footer__linklist col-12 col-md-12{% if section.settings.enable_footer_left %} col-lg-8 col-xl-8 footer-col-left{% else %} col-lg-12 col-xl-12{% endif %}">
+        <div class="row ">
+          {% for block in section.blocks %}
+            {% if block.type == 'footer_link' %}
+            <div class="col-footer {{ column_size }}">
+              {% if block.settings.footer_title != blank %}
+              <h3 class="link-title dropdow-mb">
+                {{block.settings.footer_title}}
+                {% render 'icon-chevron-down' %}
+              </h3>
+              {% endif %}
+              {%- assign footer_linklist = block.settings.footer_linklist -%}
+              {% if linklists[footer_linklist].links.size > 0 %}
+              <ul>
+                {% for link in linklists[footer_linklist].links %}
+                <li>
+                  <a href="{{ link.url}}" title="{{ link.title }}" class="foot-link">
+                   {{link.title}}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% if section.settings.enable_footer_left %}
+        <div class="col-12 col-md-12 col-lg-4 col-xl-4 footer-col-right">
+          {% if section.settings.enable_footer_social %}
+            <div class="footer-social">
+              {% if section.settings.title_social_footer != blank %}
+              <h3 class="social-title-top ">
+                {{section.settings.title_social_footer}}
+              </h3>
+              {% endif %}
+              {% render 'social-media-footer' %}
+            </div>
+            {% endif %}
+            {% if section.settings.footer_newsletter_enable_df %}
+            <div class="footer-newsletter">
+              {% if section.settings.footer_newsletter_title_df != blank %}
+              <h3 class="newsletter-title">
+                {{section.settings.footer_newsletter_title_df}}
+              </h3>
+              {% endif %}
+              <div class="form-newsletter">
+                {% render 'newsletter' %}
+              </div>
+            </div>
+            {% endif %}
+        </div>
+      {% endif %}
+     </div>
+    </div>
+  </div>
+  <div class="halo-footer-bottom">
+    <div class="container">
+      {% render 'footer-bottom' %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+  {
+    "name":"Footer Default",
+    "settings":[
+     {
+        "type":"header",
+        "content":"Footer Links"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_link_enable",
+        "label": "Show Footer Links?",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "footer_results_per_row_rc",
+        "label": "Number Column Show?",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+      
+        ],
+        "default": "4"
+      },
+      {
+        "type":"header",
+        "content":"Footer Left"
+      },
+      {
+        "type":"checkbox",
+        "id":"enable_footer_left",
+        "label":"Enable?",
+        "default": true
+      },
+      {
+        "type":"header",
+        "content":"Footer Social Media"
+      },
+      {
+        "type":"checkbox",
+        "id":"enable_footer_social",
+        "label":"Enable?",
+        "default": true
+      },
+      {
+        "type":"text",
+        "id":"title_social_footer",
+        "label":"Title Social Media",
+        "default":"Stay Connected"
+      },
+      {
+        "type":"header",
+        "content":"Footer Newsletter"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_newsletter_enable_df",
+        "label": "Show newsletter signup?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "footer_newsletter_title_df",
+        "label": "Footer Newsletter Title",
+        "default":"Sign Up For our newsletter"
+      },
+      {
+        "type":"header",
+        "content":"Footer Buttom"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_bottom_enable",
+        "label": "Show Footer Buttom?",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "footer_address_code",
+        "label": "Footer Copyright",
+        "default":"Jewel All Rights Reserved. Powered by Shopify."
+      },
+      {
+        "type": "textarea",
+        "id": "footer_preview_demo",
+        "label": "Add Text Preview Link",
+        "default":"Shopify Themes by HaloThemes.com"
+      },
+      {
+        "type":"url",
+        "id":"link_preview",
+        "label":"Add Preview Link"
+      },
+      {
+        "type": "header",
+        "content": "Footer Payment"
+      },
+     {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      },
+   {
+        "type": "header",
+        "content": "Display payment icons for"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_visa",
+        "label": "Visa"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_visa_electron",
+        "label": "Visa Electron"
+      },
+    {
+        "type": "checkbox",
+        "id": "payment_display_american_express",
+        "label": "American Express"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_master",
+        "label": "Master"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_maestro",
+        "label": "Maestro"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_solo",
+        "label": "Solo"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_paypal",
+        "label": "Paypal"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_amazon_payments",
+        "label": "Amazon Payments"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_apple_pay",
+        "label": "Apple Pay"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_bitcoin",
+        "label": "Bitcoin"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_cirrus",
+        "label": "Cirrus"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_dankort",
+        "label": "Dankort"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_diners_club",
+        "label": "Diners Club"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_discover",
+        "label": "Discover"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_dogecoin",
+        "label": "Dogecoin"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_dwolla",
+        "label": "Dwolla"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_forbrugsforeningen",
+        "label": "Forbrugsforeningen"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_interac",
+        "label": "Interac"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_jcb",
+        "label": "JCB"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_litecoin",
+        "label": "Litecoin"
+      },
+      {
+        "type": "checkbox",
+        "id": "payment_display_stripe",
+        "label": "Stripe"
+      },
+    {
+        "type": "checkbox",
+        "id": "payment_display_sage",
+        "label": "Sage"
+      },
+    {
+        "type": "checkbox",
+        "id": "payment_display_wallet",
+        "label": "Google Wallet"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_visa",
+        "label": "Visa image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_visa_electron",
+        "label": "Visa Electron image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_master",
+        "label": "Master image"
+      },
+    {
+        "type": "image_picker",
+        "id": "icon_american_express",
+        "label": "American Express image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_maestro",
+        "label": "Maestro image"
+      },
+     
+      {
+        "type": "image_picker",
+        "id": "icon_solo",
+        "label": "Solo image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_paypal",
+        "label": "Paypal image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_amazon_payments",
+        "label": "Amazon Payments image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_apple_pay",
+        "label": "Apple Pay image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_bitcoin",
+        "label": "Bitcoin image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_cirrus",
+        "label": "Cirrus image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_dankort",
+        "label": "Dankort image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_diners_club",
+        "label": "Diners Club image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_discover",
+        "label": "Discover image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_dogecoin",
+        "label": "Dogecoin image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_dwolla",
+        "label": "Dwolla image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_forbrugsforeningen",
+        "label": "Forbrugsforeningen image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_interac",
+        "label": "Interac image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_jcb",
+        "label": "JCB image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_litecoin",
+        "label": "Litecoin image"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_stripe",
+        "label": "Stripe image"
+      },
+    {
+        "type": "image_picker",
+        "id": "icon_sage",
+        "label": "Sage image"
+      },
+    {
+        "type": "image_picker",
+        "id": "icon_wallet",
+        "label": "Google Wallet image"
+      }
+    ],
+    "blocks":[
+      {
+        "type": "footer_link",
+        "name": "Footer Link",
+        "limit": 6,
+        "settings": [
+          {
+            "type": "text",
+            "id": "footer_title",
+            "label": "Footer Title"
+          },
+          {
+            "type": "link_list",
+            "id": "footer_linklist",
+            "label": "Footer Link",
+            "default": "footer"
+          }     
+        ]
+      },
+      {
+        "type":"footer_social_media",
+        "name":"Footer Social media",
+        "limit":1,
+        "settings":[
+          {
+            "type": "text",
+            "id": "social_title_facebook",
+            "label": "Title",
+            "default":"Facebook"
+          },
+          {
+            "type": "text",
+            "id": "social_facebook_link",
+            "label": "Facebook",
+            "info": "https:\/\/facebook.com\/shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_twitter",
+            "label": "Title",
+            "default":"Twitter"
+          },
+          {
+            "type": "text",
+            "id": "social_twitter_link",
+            "label": "Twitter",
+            "info": "https:\/\/twitter.com\/shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_vimeo",
+            "label": "Title",
+            "default":"Vimeo"
+          },
+          {
+            "type": "text",
+            "id": "social_vimeo_link",
+            "label": "Vimeo",
+            "info": "https:\/\/vimeo.com\/shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_instagram",
+            "label": "Title",
+            "default":"Instagram"
+          },
+          {
+            "type": "text",
+            "id": "social_instagram_link",
+            "label": "Instagram",
+            "info": "http:\/\/instagram.com\/shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_google_plus",
+            "label": "Title",
+            "default":"Google Plus"
+          },
+          {
+            "type": "text",
+            "id": "social_google_plus_link",
+            "label": "Google Plus",
+            "info": "https:\/\/plus.google.com\/+shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_pinterest",
+            "label": "Title",
+            "default":"Pinterest"
+          },
+          {
+            "type": "text",
+            "id": "social_pinterest_link",
+            "label": "Pinterest",
+            "info": "https:\/\/pinterest.com\/shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_tumblr",
+            "label": "Title",
+            "default":"Tumblr"
+          },
+          {
+            "type": "text",
+            "id": "social_tumblr_link",
+            "label": "Tumblr",
+            "info": "http:\/\/shopify.tumblr.com"
+          },
+           {
+            "type": "text",
+            "id": "social_title_snapchat",
+            "label": "Title",
+            "default":"Snapchat"
+          },
+          {
+            "type": "text",
+            "id": "social_snapchat_link",
+            "label": "Snapchat",
+            "info": "https:\/\/www.snapchat.com\/add\/shopify"
+          },
+          {
+            "type": "text",
+            "id": "social_title_youTube",
+            "label": "Title",
+            "default":"YouTube"
+          },
+          {
+            "type": "text",
+            "id": "social_youtube_link",
+            "label": "YouTube",
+            "info": "https:\/\/www.youtube.com\/shopify"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

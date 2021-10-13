@@ -1,0 +1,105 @@
+{% if section.settings.collection_header_enable %}  
+    <header class="collection-header-custom">
+      {% render 'breadcrumb' %}
+      {% if section.settings.display_collection_image %}
+      <div class="top-header">
+          <div class="collection-image">
+            {% if section.settings.collection_image != blank or collection.image %}
+                {% if section.settings.collection_image != blank %}
+                    {%- assign img_url = section.settings.collection_image | img_url: 'master' -%}
+                     <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+                {% elsif collection.image %}
+                    {%- assign img_url = collection.image | img_url: 'master' -%}
+                     <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+                {% endif %}
+            {% else %}
+            <div class="no-image" style="padding-top: 100%">
+              <span>270x270</span>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+          <div class="collection-wrapper page-header">
+            <div class="wrapper-content">
+              <h2 class="title">
+                {{ page_title }}
+            </h2>
+            {% if section.settings.display_collection_des %}
+              <div class="collection-des">
+                <div class="rte">
+                  {% if section.settings.description_col != blank %}
+                    {{section.settings.description_col}}
+                  {% else %}
+                    {{ collection.description}}
+                  {% endif %}
+                </div>
+              </div>      
+            {% endif %}
+            {% if section.settings.display_sub_categories and linklists[collection.handle].links != blank%}
+              <div class="sub-categories">
+                {% if linklists[collection.handle].links != blank %}
+                <div class="sub-categories-list" data-slider-sub-categories>
+                  {% for link in linklists[collection.handle].links %}
+                    <div class="sub-cate-info">
+                      <a class="sub-cat-name" href="{{ link.url }}"><span>{{ link.title }}</span></a>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            {% endif %}
+            </div>
+          </div>
+      </div>
+      
+    </header>
+{% endif %}
+{% schema %}
+   {
+    "name": "Collection Header",
+    "class": "page-header",
+    "settings": [
+         {
+            "type": "checkbox",
+            "id": "collection_header_enable",
+            "label": "Enable Collections Header",
+            "default": true,
+            "info":"=========="
+         },
+      {
+        "type": "header",
+        "content": "Header content"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_collection_image",
+        "label": "Show collection image?",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "collection_image",
+        "label": "Image Category",
+        "info": "This image will show up when you don't add image in Collections Description"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_collection_des",
+        "label": "Display Collections Description?",
+        "default": true
+      },
+      {
+        "type":"textarea",
+        "id":"description_col",
+        "label":" Description",
+        "default":"Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque non nulla nulla, nec tincidunt risus morbi ultricies est ditae odio ultrices imperdiet. Cras accumsan dorci maces consequat blandi susto dusto an elementum libero non honcus purus sem sit amet enimos."
+      },
+      {
+        "type": "checkbox",
+        "id": "display_sub_categories",
+        "label": "Display Sub Categories?",
+        "default": true
+      }
+    ]
+}
+{% endschema %}

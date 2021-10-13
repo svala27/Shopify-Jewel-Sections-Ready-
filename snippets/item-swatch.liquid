@@ -1,0 +1,44 @@
+{% assign option_color = settings.product_options_one | downcase %}
+<div class="product-card__variant item-swatch">
+    {% comment %}<div class="product-form__error-message-wrapper product-form__error-message-wrapper--hidden" data-error-message-wrapper role="alert">
+        <span class="product-form__error-message" data-error-message>{{ 'products.product.quantity_minimum_message' | t }}</span>
+    </div>{% endcomment %}
+    {% for option in product.options_with_values %}
+        {% assign option_name = option.name | downcase %}
+        {% if option_name == option_color %}
+            {% assign option_index0 = forloop.index0 %}
+            {%- assign option_index = forloop.index -%}
+            {% for variant in product.variants %}
+                {% assign value = variant.options[option_index0] %}
+                {% unless values contains value %}
+                    {% assign values = values | join: ';' %}
+                    {% assign values = values | append: ';' | append: value %}
+                    {% assign values = values | split: ';' %}
+                    {% assign value_2 = value | remove: " " | downcase %}
+                    <label class="product-card__variant--item color {{ value | downcase }} {% unless variant.available %}soldout{% endunless %}">
+                        <div class="tooltip">{{value}}</div>
+                        <input {% unless variant.available %}disabled{% endunless %} class="single-option-selector single-option-selector-quick" type="radio" name="SingleOptionSelector-{{ option_index0 }}-{{ product.id }}" data-index="option{{ option_index }}" value="{{ value | escape }}" {% if option.selected_value == value %} checked="checked"{% endif %}>                   
+                        <span class="item-label {% if variant.image != blank %} item-variant-image{% endif %} {% if option.selected_value == value %} active{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ value }}" data-name="{{ value }}" data-index="option{{ option_index }}" 
+                        {% if variant.image != blank %} data-image="{{ variant.image.src | product_img_url: '350x350' }}" {% endif %}
+                        {% if variant.image != blank and settings.show_product_variant_img == 'variant' %}
+                        style="background-color: {{ value_2 }}; background-image: url({{ variant.image.src | product_img_url: 'compact' }})" 
+                        {% else %} 
+                        style="background-color: {{ value_2 }}; {% if settings.show_product_color_img %}background-image: url({{ value_2 | handle | append: '.png' | file_url }}){% endif %}" 
+                        {% endif %}></span>
+                    </label>
+                {% endunless %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</div>
+<select name="id" id="ProductSelect-{{ product.id }}" class="product-form__variants no-js">
+    {% for variant in product.variants %}
+        {% if variant.available %}
+            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                {{ variant.title }}
+            </option>
+        {% else %}
+            <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+        {% endif %}
+    {% endfor %}
+</select>

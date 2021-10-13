@@ -1,0 +1,136 @@
+{% case section.settings.column %}
+    {% when 2 %}
+        {%- assign column = '2' -%}
+    {% when 3 %}
+        {%- assign column = '3' -%}
+    {% when 4 %}
+        {%- assign column = '4' -%}
+    {% endcase %}
+
+{% if section.settings.custom_color %}
+<style>
+    [data-section-id='{{ section.id }}'] .customBlock_Carousel .customBlock_item .custom-content .title {
+        color: {{ section.settings.color_heading }};
+    }
+
+    [data-section-id='{{ section.id }}'] .customBlock_Carousel .customBlock_item .custom-content .description {
+        color: {{ section.settings.color_text }};
+    }
+
+    .customBlock_Carousel .slick-slide:first-child .customBlock_item, .customBlock_Carousel .customBlock_item:first-child {
+        border-left: 0 !important;
+    }
+
+    .customBlock_Carousel .slick-slide .customBlock_item, .customBlock_Carousel .customBlock_item{
+       border-left: 1px solid {{ section.settings.color_line }} !important;
+    }
+</style>
+{% endif %}
+
+<div class="halo-section" >
+    <div class="container">
+        {% if section.blocks.size > 0 %}
+            <div class="custom-block-content column-{{ column }}">
+                {% for block in section.blocks %}
+                    <div class="customBlock_item" {{ block.shopify_attributes }}>
+                        <div class="custom-content">
+                            {% if block.settings.title != blank %}
+                                <h5 class="title">{{ block.settings.title }}</h5>
+                            {% endif %}
+                            {% if block.settings.text != blank %}
+                                <p class="description">{{ block.settings.text }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Custom Block Carousel",
+    "class": "custom-block-sections",
+    "max_blocks": 4,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section Layout"
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Column",
+            "default": 4,
+            "min": 2,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "padding-top",
+            "label": "Spacing Top",
+            "default": 3,
+            "min": 0,
+            "max": 10,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "padding-bottom",
+            "label": "Spacing bottom",
+            "default": 3,
+            "min": 0,
+            "max": 10,
+            "step": 1
+        },
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "color_heading",
+            "label": "Title Block Color"
+        },
+        {
+            "type": "color",
+            "id": "color_text",
+            "label": "Description Block Color"
+        },
+        {
+            "type": "color",
+            "id": "color_line",
+            "label": "Line Block Color",
+            "default": "#26292d"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "custom_text",
+            "name": "Another Block",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "worldwide Delivery"
+                },
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Description",
+                    "default": "on all orders over $399"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

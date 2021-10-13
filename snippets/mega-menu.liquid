@@ -1,0 +1,366 @@
+<div class="row">
+    {% if block_style == "style_1" %}
+    <div class="col-12 {% if banner_first_style != blank or featured_product_1 != blank %}{% if banner_first_style == blank or featured_product == blank %}col-xl-7{% else %}col-xl-7{% endif %}{% else %}col-xl-12{% endif %}">
+        <div class="row" data-masonry='{ "itemSelector": "[data-gridItem]", "columnWidth": ".grid-sizer" }'>
+            <div class="grid-sizer"></div>
+
+            {% for l in linklists[link_child].links %}
+            <div data-gridItem class="menu-lv-2 inner{% if linklists[link.handle] != empty %} dropdown{% endif %} col-12 {% if banner_first_style != blank or featured_product_1 != blank %}col-xl-4{% else %}col5{% endif %} {% if enable_style_1_rows_4 %} four-items {% else %} no-item-four{% endif %}">
+                <!-- Menu level 2 -->
+              <div class="rlte">  
+              <a {%if linklists[link.handle] != empty %}class="menu__moblie {% unless linklists[l.handle] != empty %}no-dropdown{% endunless %}" {% endif %} href="{{ l.url }}" class="current">
+                    <span>{{l.title}}</span>
+
+                    {% if linklists[l.handle] != empty %}
+                    <span class="icon-dropdown" data-toggle-menu-mb>
+                         <svg class="icon"><use xlink:href="#icon_right" />
+                    </span>
+                    {% endif %}
+                </a>
+              </div>
+                {% if linklists[l.handle] != empty %}
+                <div class="sub-menu-mobile menu-mb-translate">
+                    <div class="menu-mb-title">
+                        <span class="icon-dropdown">
+                         <svg class="icon"><use xlink:href="#icon_left" />
+                        </span>
+                        <span>{{l.title}}</span>
+                    </div>
+
+                    <ul class="site-nav-dropdown">
+                       <li class="menu-lv-3 hide_pc">
+                         <a href="{{ l.url }}" class="nav-action nav-action--end" aria-label="link">
+                           <span >{{ 'layout.navigation.menu_all' | t }} {{ l.title }}</span>
+                         </a>
+                      </li>
+                        {% for child_l in linklists[l.handle].links %}
+                        <!-- Menu level 3 -->
+                        <li class="menu-lv-3">
+                            <a href="{{ child_l.url }}" {% if child_l.active %}class="current"{% endif %}>
+                               <span> {{child_l.title}}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if banner_first_style != blank or banner_second_style != blank or featured_product_1 != blank %}
+    <div class="col-12 {% if banner_first_style == blank or  banner_second_style == blank or featured_product == blank %}col-xl-5{% else%}col-xl-5{% endif %}">
+        <div class="mega-banner">
+            {% if featured_product_1 != blank %}
+            <div class="mega-col  mega-feature-product{% if banner_first_style != blank %} col-left{% endif %}">
+                {% if title_featured_product != blank %}
+                <h3 class="title">
+                    {{title_featured_product }}
+                </h3>
+                {% endif %}
+
+              <div class="featuredProductCarousel">
+                {%assign product = all_products[featured_product_1]%}
+                <div class="product-item" id="product-{{ product.id }}">
+                  {%render 'mega-menu-product-grid', product : product  %}
+                </div>
+                {%if featured_product_2 != blank %}
+                {%assign product = all_products[featured_product_2]%}
+                <div class="product-item" id="product-{{ product.id }}">
+                  {%render 'mega-menu-product-grid', product : product  %}
+                </div>
+                {%endif%}
+                {%if featured_product_3 != blank %}
+                {%assign product = all_products[featured_product_3]%}
+                <div class="product-item" id="product-{{ product.id }}">
+                  {%render 'mega-menu-product-grid', product : product  %}
+                </div>
+                {%endif%}
+              </div>
+            </div>
+            {% endif %}
+
+            {% if banner_first_style != blank or banner_second_style != blank %}
+            <div class="mega-col maga-banner-right{% if link_banner_first_style != blank %} col-left{% endif %}">
+                {% if banner_first_style != blank %}
+                <a class="animation-scale animation-border" href="{{ link_banner_first_style }}" title="">
+                    <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_first_style | img_url :'210x' }}" alt="" data-image>
+                </a>
+                {% endif %}
+
+                {% if banner_second_style != blank %}
+                <a class="animation-scale animation-border" href="{{ link_banner_second_style }}" title="">
+                     <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_second_style | img_url :'210x' }}" alt="" data-image>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% elsif block_style == "style_2" %}
+    <div class="static-mobile col-12 {% if banner_first_style != blank or banner_second_style != blank or banner_third_style != blank %}col-xl-7 col-left-st2 {% else %}col-xl-12{% endif %}">
+        <div class="row static-mobile">
+            {% for l in linklists[link_child].links %}
+            <div data-gridItem class="menu-lv-2 inner{% if linklists[link.handle] != empty %} dropdown{% endif %} col-12 {% if banner_first_style != blank or banner_second_style != blank or banner_third_style != blank %}col-xl-4{% else %}col5{% endif %} {% if enable_style_2_rows_4 %}four-items{% else %} no-active-row-4 {% endif %}">
+                <!-- Menu level 2 -->
+              <div class="rlte">  
+                <a {%if linklists[link.handle] != empty %}class="menu__moblie {% unless linklists[l.handle] != empty %}no-dropdown{% endunless %}"{% endif %} href="{{ l.url }}" class="current">
+                    <span>{{l.title}}</span>
+
+                    {% if linklists[l.handle] != empty %}
+                    <span class="icon-dropdown" data-toggle-menu-mb>
+                        <svg class="icon"><use xlink:href="#icon_right" />
+                    </span>
+                    {% endif %}
+                </a>
+              </div>
+                {% if linklists[l.handle] != empty %}
+                <div class="sub-menu-mobile menu-mb-translate">
+                    <div class="menu-mb-title">
+                        <span class="icon-dropdown">
+                         <svg class="icon"><use xlink:href="#icon_left" />
+                        </span>
+                        <span>{{l.title}}</span>
+                    </div>
+
+                    <ul class="site-nav-dropdown">
+                      <li class="menu-lv-3 hide_pc">
+                        <a href="{{ l.url }}" class="nav-action nav-action--end" aria-label="link">
+                          <span>{{ 'layout.navigation.menu_all' | t }} {{ l.title }}</span>
+                        </a>
+                      </li>
+                        {% for child_l in linklists[l.handle].links %}
+                        <!-- Menu level 3 -->
+                        <li class="menu-lv-3">
+                        <a href="{{ child_l.url }}" {% if child_l.active %}class="current"{% endif %}>
+                            <span>{{child_l.title}}</span>
+                        </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if banner_first_style != blank %}
+    <div class="col-12 col-xl-5 col-right-st2">
+        <div class="mega-banner featured_col">
+            {% if banner_first_style != blank or banner_second_style != blank %}
+            <div class="mega-col{% if banner_third_style != blank %} col-left{% endif %}">
+                {% if banner_first_style != blank %}
+                <div class="image-feature">
+                    <a href="{{link_button_col}}" class="animation-scale animation-border" href="{{ link_banner_first_style }}" title="">
+                        <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_first_style | img_url :'210x' }}" alt="" data-image>
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if title_feature_col != blank or content_feture_col != blank %}
+                <div class="content-feature-mega">
+                    <h4 class="title"> {{title_feature_col}}</h4>
+                    <div class="content"> {{content_feture_col}}</div>
+                    <a href="{{link_button_col}}" class="btn btn-one" style="color: {{text_color_bt_col}};background: {{back_color_bt_col}}; border-color: {{border_color_bt_col}}">
+                        {{title_button_col}}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% if text_mega != blank %}
+        <div class="mega-text" style="background:{{back_mega_text}}; color: {{color_mega_text}}">
+            {{text_mega}}
+        </div>
+    {% endif %}
+
+
+    {% elsif block_style == "style_3" %}
+    {% for l in linklists[link_child].links %}
+    <div class="menu-lv-2 col-12 inner {% if enable_banner_style_3_6 %}six-items {% else %} no-active-six-item col5{% endif %} {% if linklists[link.handle] != empty %} dropdown{% endif %}">
+      <div class="rlte">  
+        <!-- Menu level 2 -->
+        <a {%if linklists[link.handle] != empty %}class="menu__moblie {% unless linklists[l.handle] != empty %}no-dropdown{% endunless %} "{% endif %} href="{{ l.url }}" class="current">
+            <span>{{l.title}}</span>
+
+            {% if linklists[l.handle] != empty %}
+            <span class="icon-dropdown" data-toggle-menu-mb>
+                 <svg class="icon"><use xlink:href="#icon_right" />
+            </span>
+            {% endif %}
+        </a>
+        {% if forloop.index == 1 and banner_style_3_1 != blank %}
+            <a href="{{ l.url }}" class="col-image animation-scale animation-border" aria-label="link">
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_style_3_1 | img_url :'210x210' }}" alt="" data-image>
+            </a>
+        {% elsif forloop.index == 2 and banner_style_3_2 != blank %}
+            <a href="{{ l.url }}" class="col-image animation-scale animation-border" aria-label="link">
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_style_3_2 | img_url :'210x210' }}" alt="" data-image>
+            </a>
+        {% elsif forloop.index == 3 and banner_style_3_3 != blank %}
+            <a href="{{ l.url }}" class="col-image animation-scale animation-border" aria-label="link">
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_style_3_3 | img_url :'210x210' }}" alt="" data-image>
+            </a>
+        {% elsif forloop.index == 4 and banner_style_3_4 != blank %}
+            <a href="{{ l.url }}" class="col-image animation-scale animation-border" aria-label="link">
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_style_3_4 | img_url :'210x210' }}" alt="" data-image>
+            </a>
+        {% elsif forloop.index == 5 and banner_style_3_5 != blank %}
+            <a href="{{ l.url }}" class="col-image animation-scale animation-border" aria-label="link">
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_style_3_5 | img_url :'210x210' }}" alt="" data-image>
+            </a>
+        {% elsif forloop.index == 6 and banner_style_3_6 != blank %}
+            <a href="{{ l.url }}" class="col-image animation-scale animation-border" aria-label="link">
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ banner_style_3_6 | img_url :'210x210' }}" alt="" data-image>
+            </a>
+        {% endif %}
+      </div>
+        {% if linklists[l.handle] != empty %}
+        <div class="sub-menu-mobile menu-mb-translate">
+            <div class="menu-mb-title">
+                <span class="icon-dropdown">
+                     <svg class="icon"><use xlink:href="#icon_left" />
+                </span>
+                <span>{{l.title}}</span>
+            </div>
+            <ul class="site-nav-dropdown">
+              <li class="menu-lv-3 hide_pc">
+                <a href="{{ l.url }}" class="nav-action nav-action--end" aria-label="link">
+                  <span>{{ 'layout.navigation.menu_all' | t }} {{ l.title }}</span>
+                </a>
+              </li>
+                {% for child_l in linklists[l.handle].links %}
+                <!-- Menu level 3 -->
+                <li class="menu-lv-3">
+                    <a href="{{ child_l.url }}" {% if child_l.active %}class="current"{% endif %}>
+                        <span>{{ child_l.title}}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    {% elsif block_style == "style_4" %}
+    <div class="static-mobile col-12">
+        <div class="row static-mobile" data-masonry='{ "itemSelector": "[data-gridItem]", "columnWidth": ".grid-sizer" }'>
+            <div class="grid-sizer"></div>
+            {% for l in linklists[link.handle].links %}
+            <div data-gridItem class="menu-lv-2 inner{% if linklists[link.handle] != empty %} dropdown{% endif %} col-12 {% if banner_first_style != blank %}col-xl-4{% else %}col5{% endif %}">
+              <div class="rlte">    
+              <!-- Menu level 2 -->
+                <a {%if linklists[link.handle] != empty %}class="menu__moblie {% unless linklists[l.handle] != empty %}no-dropdown{% endunless %} "{% endif %} href="{{ l.url }}" class="current">
+                    <span>{{l.title}}</span>
+
+                    {% if linklists[l.handle] != empty %}
+                    <span class="icon-dropdown" data-toggle-menu-mb>
+                        <svg class="icon"><use xlink:href="#icon_right" />
+                    </span>
+                    {% endif %}
+                </a>
+              </div>
+                {% if linklists[l.handle] != empty %}
+                <div class="sub-menu-mobile menu-mb-translate">
+                    <div class="menu-mb-title">
+                        <span class="icon-dropdown">
+                        <svg class="icon"><use xlink:href="#icon_left" />
+                        </span>
+                        <span>{{l.title}}</span>
+                    </div>
+
+                    <ul class="site-nav-dropdown">
+                      <li class="menu-lv-3 hide_pc">
+                        <a href="{{ l.url }}" class="nav-action nav-action--end" aria-label="link">
+                          <span>{{ 'layout.navigation.menu_all' | t }} {{ l.title }}</span>
+                        </a>
+                      </li>
+                        {% for child_l in linklists[l.handle].links %}
+                        <!-- Menu level 3 -->
+                        <li class="menu-lv-3">
+                        <a href="{{ child_l.url }}" {% if child_l.active %}class="current"{% endif %}>
+                            <span>{{child_l.title}}</span>
+                        </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="banner-mega_st4 col-12">
+      <div class="group-banner">
+        {% if banner_style_4_1 != blank %}
+          <div class="banner-item banner-pr">
+            <a class="animate_hvrbr" href="{{ link_banner_style_4_1 }}" title="">
+              <img data-src="{{ banner_style_4_1 | img_url : "210x210" }}" alt="" {% include 'lazyload' %} />
+            </a>
+            
+            {% if lb_product_1 != blank %}
+            {%assign product = all_products[lb_product_1]%}
+            <div class="select-icon lb-icon-1" data-lookboob-mage-icon style="top:{{top_position_1 }}%; left:{{left_position_1 }}%;">
+              <span class="glyphicon"></span>
+            </div>
+            <div class="product-item look-book_pr" id="product-{{ product.id }}">
+               <div class="overlay"></div>
+              <a data-dismiss="modal" class="close close-modal" title="{{ 'cart.ajax_cart.close' | t }}" href="javascript:void(0)">
+                    {% include 'icon-close' %}
+                </a>
+              {%include 'mega-menu-product-grid' %}
+            </div>
+            <style>
+              .site-nav .mega-menu .banner-mega_st4 .lb-icon-1 .glyphicon {
+                background-color: {{dots_bg_color_1 }};
+              }
+
+              .site-nav .mega-menu .banner-mega_st4 .glyphicon:before,
+              .site-nav .mega-menu .banner-mega_st4 .glyphicon:after {
+                background-color: {{dots_color_1 }};
+              }
+
+              .site-nav .mega-menu .banner-mega_st4 .lb-icon-1:before{
+                color: {{dots_shadow_color_1 | color_modify: 'alpha', 0.3 }};
+              } 
+            </style>
+            {% endif %}
+            
+          </div>
+        {% endif %}
+        
+        {% if banner_style_4_2 != blank %}
+          <div class="banner-item">
+            <a class="animate_hvrbr" href="{{ link_banner_style_4_2 }}" title="">
+              <img data-src="{{ banner_style_4_2 | img_url : "210x210" }}" alt="" {% include 'lazyload' %} />
+            </a>
+          </div>
+        {% endif %}
+        
+        {% if banner_style_4_3 != blank %}
+          <div class="banner-item">
+            <a class="animate_hvrbr" href="{{ link_banner_style_4_3 }}" title="">
+              <img data-src="{{ banner_style_4_3 | img_url : "210x210" }}" alt="" {% include 'lazyload' %} />
+            </a>
+          </div>
+        {% endif %}
+        {% if banner_style_4_4 != blank %}
+          <div class="banner-item">
+            <a class="animate_hvrbr" href="{{ link_banner_style_4_4 }}" title="">
+              <img data-src="{{ banner_style_4_4 | img_url : "210x210" }}" alt="" {% include 'lazyload' %} />
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+</div>

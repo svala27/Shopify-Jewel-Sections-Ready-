@@ -1,0 +1,241 @@
+<div class="lookbook" data-section-type="lookbook-section">
+    <div class="lookbook-content" data-slick='{
+                "rows": 0,
+                "dots": false,
+                "arrows": true,
+                "infinite": false,
+                "adaptiveHeight": true,
+                "slidesToShow": 1,
+                "slidesToScroll": 1,
+                "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left-2&apos; /></svg></div>", 
+                "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right-2&apos; /></svg></div>",
+                "responsive": [
+                     {
+                       "breakpoint": 1200,
+                       "settings": {
+                         "arrows": false,
+                         "dots": true
+                       }
+                     }
+                ]
+        }'>
+        {% for block in section.blocks %}
+            <div class="lookbook-item">
+                <div class="lookbook-image-wrapper">
+                    {%- assign img_url = block.settings.lookbook_image | img_url:'1800x' -%}
+                    {% if block.settings.lookbook_image == blank %}
+                        <div class=" placeholder-background no-image" style="padding-top: 61%">
+                            <span class="recommended_size">1170x720</span>
+                        </div>
+                    {% else %}
+                        <img class="image-background lazyload"
+                            src="{{ block.settings.lookbook_image | img_url: '1800x' }}"
+                            data-src="{{ img_url }}"
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                            data-aspectratio="{{ block.settings.lookbook_image.aspect_ratio }}"
+                            data-sizes="auto"
+                            alt="">
+                    {% endif %}
+                    {% for i in (1..3) %}
+                        {% capture cap_product %}product_{{ i }}{% endcapture %}
+                        {% assign product_id = block.settings[cap_product] %}
+                        {% assign product = all_products[product_id] %}
+                        {% capture cap_coordinates_y %}coordinates_y_{{ i }}{% endcapture %}
+                        {% assign coordinates_y = block.settings[cap_coordinates_y] %}
+                        {% capture cap_coordinates_x %}coordinates_x_{{ i }}{% endcapture %}
+                        {% assign coordinates_x = block.settings[cap_coordinates_x] %}
+                        {% if product != blank %}
+                        <div class="points_popup lookbook__points-popup" style="top: {{ coordinates_y }}%; left: {{ coordinates_x }}%;">
+                            <div class="point"> + </div>
+                            <div class="custom-product-card">
+                                {% render 'product-card-grid-2', product: product %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            
+        {% endfor %}
+
+    </div>
+    <div class="lookbook__popup">
+        <a href="javascript:void(0)" title="Close" class="close">
+            <svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 413.348 413.348" height="512" viewBox="0 0 413.348 413.348" width="512"><path d="m413.348 24.354-24.354-24.354-182.32 182.32-182.32-182.32-24.354 24.354 182.32 182.32-182.32 182.32 24.354 24.354 182.32-182.32 182.32 182.32 24.354-24.354-182.32-182.32z"/></svg>
+        </a>
+    </div>
+    {% if section.settings.display_share %}
+        <div class="lookbook-social-share">
+            <div class="share_toolbox">
+                <p> <span>{{ 'general.social.share' | t }}</span>:</p>
+                <div class="addthis_inline_share_toolbox"></div>
+                {% if settings.embed_code_share != blank %}
+                  {{settings.embed_code_share}}
+                {% else %}
+                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-595b0ea2fb9c5869"></script>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if section.settings.display_btn %}
+    <div class="text-center button-lookbook">
+        <a class="btn btn--primary" href="{{ section.settings.btn_link }}">
+           {{section.settings.btn_text}}
+        </a>
+    </div>
+    {% endif %}
+</div>
+<style>
+   .lookbook-item .points_popup .point, .lookbook-item .points_popup .point:before{
+       background-color: {{section.settings.back_button_point}};
+       color: {{section.settings.color_button_point}};
+   }
+</style>
+{% schema %}
+{
+    "name": "Lookbook Content",
+    "settings": [
+        {
+            "type": "header",
+            "content": "social share"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_share",
+            "label": "Enable Social Share?",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Button Go To Shop"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_btn",
+            "label": "Enable Button?",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Button Points Popup"
+        },
+        {
+            "type": "color",
+            "id": "back_button_point",
+            "label": "Background",
+            "default": "#8b714a"
+        },
+        {
+            "type": "color",
+            "id": "color_button_point",
+            "label": "Color",
+            "default": "#fff"
+        },
+        {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Button text",
+            "default": "Shop LookBook"
+        },
+        {
+            "type": "url",
+            "id": "btn_link",
+            "label": "Button Link"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "lookbook_item",
+            "name": "Lookbook Item",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "lookbook_image",
+                    "label": "Image"
+                },
+                {
+                    "type": "header",
+                    "content": "Product Popup"
+                },
+                {
+                    "type": "product",
+                    "label": "Product 1",
+                    "id": "product_1"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_1",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_1",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48,
+                    "info"  : "=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 2",
+                    "id": "product_2"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_2",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 20
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_2",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 20,
+                    "info"  : "=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 3",
+                    "id": "product_3"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_3",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 30
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_3",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 30
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

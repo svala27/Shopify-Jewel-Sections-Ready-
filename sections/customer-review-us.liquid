@@ -1,0 +1,272 @@
+
+{% if section.settings.custom_color %}
+<style>
+    .about-us-page .customer-review-us .article .col-content .article-content .section-header h2 {
+        color: {{ section.settings.color_heading_section }};
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .section-header .dash:before{
+        background:{{ section.settings.color_heading_section }};
+    }
+    .about-us-page .customer-review-us{
+        background: {{section.settings.back_section}};
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .content-left .title a{
+        color: {{section.settings.color_article_title}};
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .content-left .sub_title_review{
+       color: {{section.settings.color_sub_title}};
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .content-left .sub_title_review a span{
+        border-color: {{section.settings.color_sub_title}};
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .content-left .des_review{
+        color: {{section.settings.color_des}};
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .btn{
+       background: {{section.settings.back_button}};
+       color:{{section.settings.color_btn}}
+    }
+    .about-us-page .customer-review-us .article .col-content .article-content .btn:hover{
+       background: {{section.settings.back_button_hover}};
+       color:{{section.settings.color_button_hover}}
+    }
+   
+</style>
+{% endif %}
+
+<div class="halo-section" data-section-id-customer-review" data-section-type="featured-blog-section">
+    <div class="{% if section.settings.layout == 'default' %}container{% else %}container-full {% endif %}">
+   
+        <div class="halo-row-custom">
+           <div class="halo-item"
+               data-slick='{
+                                "rows": 0,
+                                "dots": true,
+                                "fade":true,
+                                "arrows": false,
+                                "infinite": false,
+                                "adaptiveHeight": true,
+                                "slidesToShow": 1,
+                                "slidesToScroll": 1
+                            }'
+           >
+                {% for block in section.blocks %}
+                {% assign article = articles[block.settings.featured_article] %}
+                    {% if article %}
+                        <div class="article"
+                        >
+                            <div class="article-image">
+                                <div class="image-wrapper js">
+                                    <div class="image-container">
+                                        {% if  block.settings.image != blank %}
+                                            {%- assign img_url = block.settings.image | img_url: '950x' -%}
+                                            <img
+                                                class="article__grid-image lazyload"
+                                                src="{{ img_url }}"
+                                                data-src="{{ img_url }}"
+                                                data-aspectratio="{{ article.image.aspect_ratio }}"
+                                                data-sizes="auto"
+                                                alt="" data-image>
+                                        {% else %}
+                                            <div class="no-image" style="padding-top: 88%">
+                                              <span> 950 x 840px</span>
+                                            </div>   
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-content">
+                                <div class="article-content">
+                                 {% if block.settings.top_title_review != blank %}
+                                    <div class="section-header">
+                                        <span class="dash"></span>
+                                        <h2>{{ block.settings.top_title_review }}</h2>
+                                    </div>
+                                {% endif %}
+
+                                <div class="content-left">
+                                    <h3 class="title">
+                                        <a href="{{ block.settings.link_rv}}" aria-label="link">{{block.settings.title_review}}</a>
+                                    </h3>
+                                    <h4 class="sub_title_review">
+                                        <span class="left-sb">{{block.settings.has_purchased}}</span>
+                                        <a class="right-sb" href="{{ block.settings.link_rv}}"><span>{{block.settings.sub_title_review}}</span></a>
+                                    </h4>
+                                     <div class="star-reviews {{block.settings.rating}}">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="rte des_review">
+                                        {{block.settings.des_review}}
+                                    </div>
+                                </div>
+                                <a href="{{ block.settings.link_rv }}" class="btn btn-one" aria-label="link">
+                                    <span class="text">{{ block.settings.title_button }}</span>
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+</div>
+</div>
+
+{% schema %}
+{
+    "name": "Customer Reviews",
+    "class": "customer-review-us",
+    "settings": [
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Slideshow Layout:",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "full",
+                    "label": "Full Width"
+                }
+            ],
+            "default": "full"
+        },
+
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "back_section",
+            "label": "Background Color"
+        },
+        {
+            "type": "color",
+            "id": "color_heading_section",
+            "label": "Heading Section Color"
+        },
+        {
+            "type": "color",
+            "id": "color_article_title",
+            "label": "Title Color"
+        },
+        {
+            "type": "color",
+            "id": "color_sub_title",
+            "label": "Sub Title Color"
+        },
+        {
+            "type": "color",
+            "id": "color_des",
+            "label": "Descript Color",
+            "info":"=========="
+        },
+        {
+            "type": "color",
+            "id": "color_btn",
+            "label": "Button Color"
+        },
+        {
+            "type": "color",
+            "id": "back_button",
+            "label": "Background Button Color"
+        },
+        {
+            "type": "color",
+            "id": "color_button_hover",
+            "label": "Button Color Hover"
+        },
+        {
+            "type": "color",
+            "id": "back_button_hover",
+            "label": "Background Color Hover"
+        }
+    ],
+     "blocks": [
+            {
+                "type": "customer_review_us",
+                "name": "Customer Reviews",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image",
+                        "info" : "Recommended Image: Width x Height (225 x 100)px"
+                    },
+                    {
+                        "type":"text",
+                        "id":"top_title_review",
+                        "label":"Top Title",
+                        "default":"Customer Reviews"
+                    },
+                    {
+                        "type":"text",
+                        "id":"title_review",
+                        "label":"Title",
+                        "default":"Customer Review Title Goes Here"
+                    },
+                    {
+                        "type":"text",
+                        "id":"has_purchased",
+                        "label":"Has Purchased",
+                        "default":"has purchased:"
+                    },
+                    {
+                        "type":"text",
+                        "id":"sub_title_review",
+                        "label":"Sub Title",
+                        "default":"Class mapten tacitos sociosques a madis"
+                    },
+                     {
+                        "type": "select",
+                        "id": "rating",
+                        "label": "Rating",
+                        "options": [
+                          { "value": "star0", "label": "0 star" },
+                          { "value": "star1", "label": "1 star" },
+                          { "value": "star2", "label": "2 star" },
+                          { "value": "star3", "label": "3 star" },
+                          { "value": "star4", "label": "4 star" },
+                          { "value": "star5", "label": "5 star" }
+                        ],
+                        "default": "star5"
+                      },
+                    {
+                        "type":"textarea",
+                        "id":"des_review",
+                        "label":"Description",
+                        "default":"Nam tempus turpis at metus scelerisque placerat nulla deumantos sollicitudin felis. Pellentesque diam dolor, elementum et lobortis at, mollis duto an risus. Sedcuman des faucibus sullamcorper mattis fusce molestie elit a lorem tempus scelerisque blandit est cursus..."
+                    },
+                    {
+                        "type":"header",
+                        "content":"Button"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title_button",
+                        "label": "Title Button",
+                        "default": "Read All Reviews"
+                    },
+                    {
+                        "type":"url",
+                        "id":"link_rv",
+                        "label":"Add Link"
+                    }
+                ]
+            }
+        ]
+}
+{% endschema %}

@@ -1,0 +1,300 @@
+
+{% if section.settings.custom_color %}
+<style>
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .section-header h2 {
+        color: {{ section.settings.color_heading_section }};
+    }
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .section-header .dash:before{
+        background:{{ section.settings.color_heading_section }};
+    }
+    [data-section-id='{{ section.id }}']{
+        background: {{section.settings.back_section}};
+    }
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .content-left .title a{
+        color: {{section.settings.color_article_title}};
+    }
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .content-left .meta span{
+       color: {{section.settings.color_date_author}};
+    }
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .excerpt{
+        color: {{section.settings.color_excerpt}};
+    }
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .btn{
+       background: {{section.settings.back_button}};
+       color:{{section.settings.color_btn}}
+    }
+    [data-section-id='{{ section.id }}'] .article .col-content .article-content .btn:hover{
+       background: {{section.settings.back_button_hover}};
+       color:{{section.settings.color_button_hover}}
+    }
+    @media (max-width: 767px) {
+        #featured-collection-{{section.id}} {
+            margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        #featured-collection-{{section.id}} {
+            margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        #featured-collection-{{section.id}} {
+            margin-bottom: {{ margin_bottom }}px;
+        }
+    }   
+</style>
+{% endif %}
+
+<div class="halo-section" data-section-id="{{ section.id }}" data-section-type="featured-blog-section">
+    <div class="{% if section.settings.layout == 'default' %}container{% else %}container-full {% endif %}">
+   
+        <div class="halo-row-custom">
+           <div class="halo-item"
+               data-slick='{
+                                "rows": 0,
+                                "dots": true,
+                                "fade":true,
+                                "arrows": false,
+                                "infinite": false,
+                                "adaptiveHeight": true,
+                                "slidesToShow": 1,
+                                "slidesToScroll": 1
+                            }'
+           >
+                {% for block in section.blocks %}
+                {% assign article = articles[block.settings.featured_article] %}
+                    {% if article %}
+                        <div class="article"
+                        >
+                            <div class="article-image">
+                                <div class="image-wrapper js">
+                                    <div class="image-container">
+                                        {% if  block.settings.image != blank %}
+                                            {%- assign img_url = block.settings.image | img_url: '450x' -%}
+                                            <img
+                                                class="article__grid-image lazyload"
+                                                src="{{ 'loading.svg' | asset_url }}"
+                                                data-src="{{ img_url }}"
+                                                data-aspectratio="{{ article.image.aspect_ratio }}"
+                                                data-sizes="auto"
+                                                alt="" data-image>
+                                        {% else %}
+                                            <div class="no-image" style="padding-top: 88%">
+                                              <span> 950 x 840px</span>
+                                            </div>   
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-content">
+                                <div class="article-content">
+                                 {% if section.settings.title != blank %}
+                                    <div class="section-header">
+                                        <span class="dash"></span>
+                                        <h2>{{ section.settings.title }}</h2>
+                                    </div>
+                                {% endif %}
+                                <div class="content-left">
+                                    <h3 class="title">
+                                        <a href="{{ article.url }}" aria-label="link">{{ article.title }}</a>
+                                    </h3>
+                                    <div class="meta">
+                                        {% if section.settings.blog_show_date %}
+                                            <span class="article__date">
+                                                {{ article.published_at | time_tag: format: 'date' }}
+                                            </span>
+                                        {% endif %}
+                                        {% if section.settings.blog_show_author %}
+                                            <span class="article__author">
+                                             Post by {{ article.author }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="excerpt">
+                                    {% if article.excerpt.size > 0 %}
+                                        {{ article.excerpt }}
+                                    {% else %}
+                                        {{ article.content | strip_html | truncate: 160 }}
+                                    {% endif %}
+                                </div>
+                                <a href="{{ article.url }}" class="btn btn-one" aria-label="{{ 'blogs.article.read_more_title' | t: title: article.title }}" aria-label="link">
+                                    <span class="text">{{ section.settings.title_button }}</span>
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+</div>
+</div>
+
+{% schema %}
+{
+    "name": "Blog posts",
+    "class": "home-featured-blog-sections",
+    "settings": [
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Slideshow Layout:",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "full",
+                    "label": "Full Width"
+                }
+            ],
+            "default": "full"
+        },
+        {
+            "type": "header",
+            "content": "Heading Section"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "From Our Blog"
+        },
+        {
+            "type":"header",
+            "content":"Button"
+        },
+        {
+            "type": "text",
+            "id": "title_button",
+            "label": "Title Button",
+            "default": "View All Articles"
+        },
+        {
+            "type": "checkbox",
+            "id": "blog_show_date",
+            "label": "Show date",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "blog_show_author",
+            "label": "Show author",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "back_section",
+            "label": "Background Color"
+        },
+        {
+            "type": "color",
+            "id": "color_heading_section",
+            "label": "Heading Section Color"
+        },
+        {
+            "type": "color",
+            "id": "color_article_title",
+            "label": "Article Title Color"
+        },
+        {
+            "type": "color",
+            "id": "color_date_author",
+            "label": "Date And Author Color"
+        },
+        {
+            "type": "color",
+            "id": "color_excerpt",
+            "label": "Excerpt Color",
+            "info":"=========="
+        },
+        {
+            "type": "color",
+            "id": "color_btn",
+            "label": "Button Color"
+        },
+        {
+            "type": "color",
+            "id": "back_button",
+            "label": "Background Button Color"
+        },
+        {
+            "type": "color",
+            "id": "color_button_hover",
+            "label": "Button Color Hover"
+        },
+        {
+            "type": "color",
+            "id": "back_button_hover",
+            "label": "Background Color Hover"
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_mb",
+            "label": "Mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_tab",
+            "label": "Tablet",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom",
+            "label": "Margin Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        }
+        
+    ],
+     "blocks": [
+            {
+                "type": "featured_article_home",
+                "name": "featured article",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image",
+                        "info" : "Recommended Image: Width x Height (225 x 100)px"
+                    },
+                    {
+                       "type": "article",
+                       "id": "featured_article",
+                       "label": "Article to feature on the home page"
+                    }
+                ]
+            }
+        ],
+    "presets": [
+        {
+            "name": "Blog posts",
+            "category": "Blog"
+        }
+    ]
+}
+{% endschema %}

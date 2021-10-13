@@ -1,0 +1,13 @@
+{% if settings.qv_video_product  %}
+    <div class="modal fade halo_modal quickview-video" id="video_product_qv" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-video">
+            <div class="modal-content">
+                <a data-dismiss="modal" class="close close-modal" href="javascript:void(0)">
+                  <svg class="icon icon-close"><use xlink:href="#icon-close" /></svg>
+                </a>
+                <div class="popup-video" data-video-gallery>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

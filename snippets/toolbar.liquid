@@ -1,0 +1,90 @@
+{% case section.settings.column %}
+    {% when 2 %}
+        {%- assign column = '2' -%}
+    {% when 3 %}
+        {%- assign column = '3' -%}
+    {% when 4 %}
+        {%- assign column = '4' -%}
+    {% when 5 %}
+        {%- assign column = '5' -%}
+{% endcase %}
+{% if cart.attributes.pagination != blank and cart.attributes.pagination %}
+    {% assign limit = cart.attributes.pagination %}
+{% else %}
+    {% assign limit = section.settings.rows %}
+{% endif %}
+<div class="filters-toolbar-wrapper">
+            <div class="filters-toolbar">
+                <div class="filters-toolbar__item-wrapper one sidebar_mobile_wrapper">
+                    <div class="filters-toolbar__item-child item-iconSidebar">
+                        <div class="sidebar_mobile">
+                            <label class='filters-toolbar__label' >{{ 'collections.sidebar.title' | t }}</label>
+                            <span class="icon-filter">{% render 'icon-sidebar' %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters-toolbar__item-wrapper two">
+                    <div class="filters-toolbar__item-child">
+                        <div class="view-as-group">
+                            <label class="filters-toolbar__label" >{{ 'collections.view.title' | t }}</label>
+                            <div class="view-as-btn">
+                                <a href="javascript:void(0);" id="grid-view-{{ column }}" data-layout="productGrid--maxCol{{ column }}" title="Grid View {{ column }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 341.333 341.333" style="enable-background:new 0 0 341.333 341.333;" xml:space="preserve">
+                                    <g><g><g>
+                                    <rect x="128" y="128" width="85.333" height="85.333"/>
+                                    <rect x="0" y="0" width="85.333" height="85.333"/>
+                                    <rect x="128" y="256" width="85.333" height="85.333"/>
+                                    <rect x="0" y="128" width="85.333" height="85.333"/>
+                                    <rect x="0" y="256" width="85.333" height="85.333"/>
+                                    <rect x="256" y="0" width="85.333" height="85.333"/>
+                                    <rect x="128" y="0" width="85.333" height="85.333"/>
+                                    <rect x="256" y="128" width="85.333" height="85.333"/>
+                                    <rect x="256" y="256" width="85.333" height="85.333"/>
+                                    </g></g>
+                                    </svg>
+                                </a>
+                                <a href="javascript:void(0);" id="list-view" data-layout="productGrid--maxCol1" title="List View"></a>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters-toolbar__item-wrapper three">
+                    <div class="filters-toolbar__item-child items-per" data-limited-view>
+                        <label class="filters-toolbar__label select-label" for="showPagination">{{ 'general.filters.show' | t }}</label>
+                        <div class="filters-toolbar__input-wrapper select-group items-per-page">
+                            <select name="paginateBy" id="showPagination" class="filters-toolbar__input">
+                                {%- assign view_length_handles = '12|18|24|30|36|42' | split: '|' -%}
+                                {%- for i in view_length_handles -%}
+                                    {% assign v = i | plus: 0 %}
+                                    <option value="{{ v }}" 
+                                    {% if cart.attributes.pagination != blank %}
+                                        {% if cart.attributes.pagination == i %}selected{% endif %}
+                                    {% else %}
+                                        {% if limit == v %}selected{% endif %}
+                                    {% endif %}>{{i}}</option>
+                                {% endfor %} 
+                            </select>
+                            {% render 'icon-chevron-down' %}
+                        </div>
+                    </div>
+                    {% if section.settings.sort_enable %}
+                        <div class="filters-toolbar__item-child">
+                            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                            <label class="filters-toolbar__label select-label" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+                            <div class="filters-toolbar__input-wrapper select-group">
+                                <select name="sort_by" id="SortBy"
+                                    class="filters-toolbar__input hidden"
+                                    aria-describedby="a11y-refresh-page-message a11y-selection-message"
+                                    data-default-sortby="{{ collection.default_sort_by }}"
+                                >
+                                    {%- for option in collection.sort_options -%}
+                                        <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name }}</option>
+                                    {%- endfor -%}
+                                </select>
+                                {% render 'icon-chevron-down' %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+</div>

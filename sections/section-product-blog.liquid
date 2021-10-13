@@ -1,0 +1,233 @@
+
+{% case section.settings.column %}
+    {% when 1 %}
+        {%- assign column = '1' -%}
+    {% when 2 %}
+        {%- assign column = '2' -%}
+    {% when 3 %}
+        {%- assign column = '3' -%}
+    {% when 4 %}
+        {%- assign column = '4' -%}
+    {% when 5 %}
+        {%- assign column = '5' -%}
+{% endcase %}
+
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign product_limit = product_limit | default: section.settings.rows -%}
+{%- assign carousel = carousel | default: section.settings.collection_layout -%}
+{%- assign arrows = arrows | default: section.settings.carousel-arrows -%}
+{%- assign dots = dots | default: section.settings.carousel-dots -%}
+
+<div class="halo-section section-product-lookbook " data-section-type="collection">
+    <div class="{% if settings.body_layout == 'default' %} container{% else %}container-2 {% endif %}" data-carousel>
+        {% if section.settings.title != blank %}
+            <div class="section-header" {% if section.settings.custom-color %}style="color: {{ section.settings.color_heading_custom }}"{% endif %}>
+                <h2> {{section.settings.title}}</h2>
+                <p class="description-lookbook" {% if section.settings.custom-color %}style="color: {{ section.settings.color_description_custom }}"{% endif %}>
+                 {{section.settings.sub_title}}
+                </p>
+            </div>
+        {% endif %}
+        <div class="halo-row halo-row-custom column-{{ column }} {%if carousel == 'carousel' %}collection-carousel {% else %}collection-no-carousel{% endif %}"
+            {%if carousel == 'carousel' %}
+                data-slick='{
+                    "dots": {{ dots }},
+                    "arrows": {{ arrows }},
+                    "infinite": false,
+                    "adaptiveHeight": true,
+                    "slidesToShow": {{ column }},
+                    "slidesToScroll": {{ column }},
+                    "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                    "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>",
+                    "responsive": [
+                           {
+                               "breakpoint": 1199,
+                               "settings": {
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             },
+                            {
+                               "breakpoint": 992,
+                               "settings": {
+                                 "slidesToShow": 3,
+                                 "slidesToScroll": 1,
+                                 "arrows": false,
+                                 "dots": true
+                               }
+                             },
+                             {
+                               "breakpoint": 768,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             },
+                             {
+                               "breakpoint": 480,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             }
+                        ]
+                }'
+            {% endif %}>
+            {% for product in collection.products limit: product_limit %}
+                <div class="halo-item">
+                    {% render 'product-card-grid-home', product: product, serial: forloop.index %}
+                </div>
+            {% else %}
+                {% for i in (1..product_limit) %}
+                    <div class="halo-item">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <a class="product-link" href="#">
+                                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">{{ 'homepage.onboarding.product_title' | t }}</h4>
+                                <div class="product-reviews">{% render 'product-price', variant: nil %}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Product Carousel",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section Layout"
+        },
+        {
+            "type": "checkbox",
+            "id": "border-top",
+            "label": "Show border top",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "border-bottom",
+            "label": "Show border bottom",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "padding-top",
+            "label": "Spacing Top",
+            "default": 5,
+            "min": 0,
+            "max": 10,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "padding-bottom",
+            "label": "Spacing bottom",
+            "default": 3,
+            "min": 0,
+            "max": 10,
+            "step": 1
+        },
+        {
+            "type": "header",
+            "content": "Heading Section"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Shop The Look"
+        },
+        {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Description",
+            "default": "Phasellus malesuada ligula pulvinar commodo maecenas"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom-color",
+            "label": "Custom color heading",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "color_heading_custom",
+            "label": "Heading Color"
+        },
+        {
+            "type": "color",
+            "id": "color_description_custom",
+            "label": "Description Color"
+        },
+        {
+            "type": "header",
+            "content": "Collection layout"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+        },
+        {
+            "type": "select",
+            "id": "collection_layout",
+            "label": "Layout",
+            "default": "carousel",
+            "options": [
+                {
+                    "value": "grid",
+                    "label": "Grid"
+                },
+                {
+                    "value": "carousel",
+                    "label": "Carousel"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Column show",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "default": 4
+        },
+        {
+            "type": "range",
+            "id": "rows",
+            "label": "Limit product",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "default": 6
+        },
+        {
+            "type": "checkbox",
+            "id": "carousel-arrows",
+            "label": "show arrows (Layout carousel)",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "carousel-dots",
+            "label": "show dots (Layout carousel)",
+            "default": false
+        }
+    ]
+}
+{% endschema %}

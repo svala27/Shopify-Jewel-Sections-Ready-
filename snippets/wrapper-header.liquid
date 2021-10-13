@@ -1,0 +1,11 @@
+{% if settings.header_layout == 'header_default' %}
+	<div class="halo-header">
+		<div class="header-sticky">
+			{% section 'header-default' %}
+		</div>
+	     {% section 'navigation' %}
+	</div>
+{% else %}
+     {% section 'header' %}
+     {% section 'navigation' %}
+{% endif %}

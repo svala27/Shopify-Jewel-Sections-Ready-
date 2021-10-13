@@ -1,0 +1,13 @@
+{% if block.settings.enable_search%}
+    <div class="sidebarBlock custom-search">
+        <div class="sidebarBlock-content">
+            <form action="{{ routes.search_url }}" method="get" class="widget-form" role="search">
+                <input type="hidden" name="type" value="article">
+                <input type="text" name="q" value="{{ search.terms | escape }}"  placeholder="{{ 'general.search.placeholder_sidebar' | t }}" class="input-group-field" aria-label="Search Site" autocomplete="off">
+                <button type="submit" class="btn btn-search">
+                    <svg class="icon"><use xlink:href="#icon-search" /></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}

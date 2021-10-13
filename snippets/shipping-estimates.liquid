@@ -1,0 +1,123 @@
+{% if settings.show_shipping_calculator %}
+<div id="shipping-calculator" class="shipping-calculator">
+    <div class="box-title">
+        {{settings.shipping_calculator_heading}}
+    </div>
+        
+    <div id="shipping-calculator-form-wrapper">
+         <h3 class="title_estimate">
+            <span> {{ 'cart.general.estimate_country' | t }}</span>
+         </h3>
+        <div class="form-group" id="address_country_container">
+            <div class="back_form" style="position: relative;">
+                <select id="address_country" class="special-select form-control" name="address[country]" data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif settings.shipping_calculator_default_country != '' %}{{ settings.shipping_calculator_default_country }}{% endif %}">{{ all_country_option_tags }}</select>
+                <span class="icon-dropdown"><svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 551.13 551.13" height="512" viewBox="0 0 551.13 551.13" width="512"><path d="m275.565 361.679-223.897-223.896h-51.668l275.565 275.565 275.565-275.565h-51.668z"/></svg></span>
+            </div>
+        </div>
+        <div class="form-group-bottom">
+          <div class="form-group" id="address_province_container" style="display:none;">
+            <div class="back_form" style="position: relative;">
+                <select id="address_province" class="address_form special-select form-control" name="address[province]" data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"></select>
+                <span class="icon-dropdown"><svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 551.13 551.13" height="512" viewBox="0 0 551.13 551.13" width="512"><path d="m275.565 361.679-223.897-223.896h-51.668l275.565 275.565 275.565-275.565h-51.668z"/></svg></span>
+            </div>
+          </div> 
+
+          <div class="form-group" id="address_zip_container">
+            <div class="back_form ">
+              <input type="text" id="address_zip" class="styled-input form-control" name="address[zip]"{% if shop.customer_accounts_enabled and customer %} value="{{ customer.default_address.zip }}"{% endif %} />
+            </div>
+          </div>
+        </div>
+        <div id="get-rates-container">
+            <input type="submit" id="get-rates-submit" class="get-rates styled-submit btn btn--secondary-accent"  value="{{ 'cart.general.shipping_calculator_button' | t }}"/>      
+        </div>        
+    </div>
+
+    <div id="wrapper-response" class="mt-3"></div>  
+</div>
+
+
+<script id="shipping-calculator-response-template" type="text/x-jquery-tmpl">
+    {% raw %}
+    <p id="shipping-rates-feedback" class="{{if success}}success{{else}}error{{/if}} mb-2">
+        {{if ($('#lang-switcher .dropdown-item.active').data('value') == "2") }}
+            {{if success}}
+                {{if rates.length > 1}}
+                    ${window.lang2.cart.general.shipping_calculator_success_many_rates.there_are} ${rates.length} 
+                    ${window.lang2.cart.general.shipping_calculator_success_many_rates.shipping_rates_available_for}
+                    ${address} ${window.lang2.cart.general.shipping_calculator_success_many_rates.starting_at} 
+                    {{html Shopify.Cart.ShippingCalculator.formatRate(rates[0].price)}}.
+                {{else}}
+                    {{if rates.length == 1}}
+                        ${window.lang2.cart.general.shipping_calculator_success_one_rate} ${address}.
+                    {{else}}
+                        ${window.lang2.cart.general.shipping_calculator_success_no_rate}
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                ${window.lang2.cart.general.shipping_calculator_error_message}
+            {{/if}}
+        {{else}} 
+            {{if success}}
+                {{if rates.length > 1}}
+                    {% endraw %}{{'cart.general.shipping_calculator_success_many_rates.there_are' | t}}{% raw %} ${rates.length} 
+                    {% endraw %}{{'cart.general.shipping_calculator_success_many_rates.shipping_rates_available_for' |t}}{% raw %} ${address}
+                    {% endraw %}{{'cart.general.shipping_calculator_success_many_rates.starting_at' | t}}{%raw%} 
+                    {{html Shopify.Cart.ShippingCalculator.formatRate(rates[0].price)}}.
+                {{else}}
+                    {{if rates.length == 1}}
+                        {% endraw %}{{'cart.general.shipping_calculator_success_one_rate' | t}}{% raw %} ${address}.
+                    {{else}}
+                        {% endraw %}{{'cart.general.shipping_calculator_success_no_rate' | t}}{% raw %}
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                ${errorFeedback}
+            {{/if}}
+        {{/if}}
+    </p>
+    <ul id="shipping-rates">
+        {{each( index, rate ) rates}}
+        <li>
+            <span>${rate.name} </span>
+            <span>
+                {{if ($('#lang-switcher .dropdown-item.active').data('value') == "2") }}
+                    ${window.lang2.cart.general.shipping_calculator_success_at}
+                {{else}}
+                    {% endraw %}{{'cart.general.shipping_calculator_success_at' | t}}{% raw %}
+                {{/if}} </span>
+            <span>{{html Shopify.Cart.ShippingCalculator.formatRate(rate.price)}}</span>
+        </li>
+        {{/each}}
+    </ul>
+    {% endraw %} 
+</script>
+
+{{ '/services/javascripts/countries.js' | script_tag }}
+{{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+{{ 'jquery.cart.min.js' | asset_url | script_tag }} 
+
+<script>
+    setTimeout(function() {
+        if ($('#lang-switcher .dropdown-item.active').data('value') == "2") {
+            var submitButton =  window.lang2.cart.general.shipping_calculator_button;
+            var submitButtonDisabled =  window.lang2.cart.general.shipping_calculator_calculating;
+        } else {
+            var submitButton = "{{'cart.general.shipping_calculator_button' | t}}";
+            var submitButtonDisabled = "{{'cart.general.shipping_calculator_calculating' | t}}" ;
+        }
+        document.addEventListener('shipping_update', function(e){
+          console.log('e',e.detail.shipping_rate);
+        })
+        Shopify.Cart.ShippingCalculator.show({
+            submitButton: submitButton,
+            submitButtonDisabled: submitButtonDisabled,
+            {% if shop.customer_accounts_enabled and customer %}
+            customerIsLoggedIn: true,
+            {% endif %}
+            moneyFormat: {{ shop.money_format | json }}
+        });
+    }, 500);
+
+</script>
+{% endif %}

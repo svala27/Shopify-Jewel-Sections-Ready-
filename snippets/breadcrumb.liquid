@@ -1,0 +1,97 @@
+{% comment %}
+Documentation - http://docs.shopify.com/support/your-website/navigation/creating-a-breadcrumb-navigation
+{% endcomment %}
+
+{% if settings.display_breadcrumb %}
+
+{% unless template == 'index' %}
+<div class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-wrapper">
+      <div class="breadcrumb-content">
+      <a href="{{ routes.root_url }}" data-translate="general.breadcrumbs.home">{{ 'general.breadcrumbs.home' | t }}</a>  
+      {% if template contains 'product' %} 
+
+      {% if collection %}
+        <span class="arrow">
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </span>
+        {% if collection.handle %}
+          {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+          <span>{{ collection.title | link_to: url }}</span>
+        {% endif %}
+      {% endif %}
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+      <span>{{ product.title }}</span>
+      {% elsif template contains 'collection' and collection.handle %}
+      {% if current_tags %}
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+
+      {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+      <span class="bd-title">
+        <span >{{ collection.title  | link_to: url }}</span>
+        <span class="arrow">
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </span>
+
+        {% assign bd_tags = current_tags | join: " + " %}
+        <span>{{ bd_tags }}</span>
+      </span>
+
+      {% else %}
+
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+
+      <span class="bd-title">
+        <span>{{ collection.title | link_to: url }}</span>
+      </span>
+
+      {% endif %}
+
+      {% elsif template == 'cart' %}
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>   
+      <span>{{ 'general.breadcrumbs.cart' | t }}</span>
+
+      {% elsif template == 'article' %}
+
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span> 
+      <span>{{ blog.title | link_to: blog.url }}</span>
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+
+      <span>{{ article.title }}</span>
+
+      {% elsif template contains 'page' %}
+
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+
+       <span class="lang1">{{ page.title }}</span>
+
+      {% else %}
+      <span class="arrow">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+       <span >{{ page_title }}</span> 
+      {% endif %}
+    </div>
+    {% if template == "product" and collection %}
+    {% render 'next-prev-product' %}
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% endunless %}
+{% endif %}

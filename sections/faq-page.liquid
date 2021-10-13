@@ -1,0 +1,458 @@
+{% if section.settings.des_faqs != blank %}
+    <div class="des_faqs">
+      {{section.settings.des_faqs }}
+    </div>
+    {% endif %}
+<section id="faqs_page" class="wrapper-content">
+  {% if section.settings.enable_sidebar %}
+   <div class="sidebar_mobile_wrapper">
+      <div class="filters-toolbar__item-child item-iconSidebar">
+          <div class="sidebar_mobile">
+              <label class='filters-toolbar__label' >{{ 'collections.sidebar.title' | t }}</label>
+              <span class="icon-filter">{% render 'icon-sidebar' %}</span>
+          </div>
+      </div>
+  </div>
+
+  <div class="col-left sidebar-faqs">
+    <a href="javascript:void(0)" class="close-sidebar">
+      {% render 'icon-close' %}
+    </a>
+    <div class="need-help-sidebar" data-sticky-sidebar>
+      <h3 class="heading">{{section.settings.title_sidebar}}</h3>
+      <div class="need-help">
+          <a class="chat-link" href="" title="Message Us">
+              <i class="fab fa-facebook-messenger"></i>
+              <span class="link_text">{{section.settings.title_message}}</span>
+          </a>
+          <a class="contact-sidebar-link" href="" title="Contact Us">
+              <i class="far fa-envelope"></i>
+              <span class="link_text">{{section.settings.title_contact_us}}</span>
+          </a>
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="col-right panel-group">
+    <div class="col-pre-sales-questions">
+      {% if section.settings.title_pre_questions != blank %}
+        <div class="header-title">
+         <h2 class="title">{{section.settings.title_pre_questions}}</h2>
+       </div>
+       {% endif %}
+       {% for block in section.blocks %}
+          {% if block.type == 'pre_sale_questions'%}
+            <div class="panel">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                 <a class="{% unless forloop.first %}collapsed{% endunless %}" data-toggle="collapse" href="#faqs-{{block.id}}" >
+                    <span">
+                      {{ block.settings.question_faqs }}
+                    </span>
+                  </a>
+                </h4>    
+              </div>
+              <div id="faqs-{{block.id}}" class="panel-collapse collapse{% if forloop.first %} show{% endif %}">
+                <div class="panel-body">
+                  <div class="rte" data-title="{{section.settings.icon_answer}}">
+                    {{ block.settings.answer_faqs}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-theme-questions">
+      {% if section.settings.title_theme_questions != blank %}
+        <div class="header-title">
+         <h2 class="title">{{section.settings.title_theme_questions}}</h2>
+       </div>
+       {% endif %}
+       {% for block in section.blocks %}
+          {% if block.type == 'theme_questions'%}
+            <div class="panel">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                 <a class="{% unless forloop.first %}collapsed{% endunless %}" data-toggle="collapse" href="#faqs-{{block.id}}" >
+                    <span">
+                      {{ block.settings.question_faqs_theme }}
+                    </span>
+                  </a>
+                </h4>    
+              </div>
+              <div id="faqs-{{block.id}}" class="panel-collapse collapse{% if forloop.first %} show{% endif %}">
+                <div class="panel-body">
+                  <div class="rte" data-title="{{section.settings.icon_answer}}">
+                    {{ block.settings.answer_faqs_theme}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    {% if section.settings.contact_text != blank or section.settings.contact_link_text != blank %}
+    <div class="contact-link">
+      {% if section.settings.contact_text != blank %}
+      <span class="text">
+        {{section.settings.contact_text}}
+      </span>
+      {% endif %}
+      {% if section.settings.contact_link_text != blank %}
+      <a href="{{ section.settings.contact_link }}" class="btn">
+        {{section.settings.contact_link_text}}
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+    {% unless section.settings.enable_sidebar %}
+       .faqs-page .col-right{
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+       }
+       .faqs-page .des_faqs{
+          width: 46%;
+       }
+       @media (min-width: 1200px)
+       {
+        .faqs-page .des_faqs {
+            padding-left: 0px;
+        }
+      }
+    {% endunless %}
+  .faqs-page .panel-title {
+    font-size: {{ section.settings.font_size_qs }}px;
+  }
+  
+  .faqs-page .panel-title > a {
+    color: {{ section.settings.color_question }};
+  }
+  .faqs-page .panel-group .panel-body .rte{
+    font-size: {{ section.settings.font_size_answer }}px;
+    color: {{ section.settings.color_question_answer }};
+  }
+  
+  .faqs-page .panel-group .panel-body > div:before {
+    content: attr(data-title) "";
+    background-color: {{ section.settings.bg_icon_answer }};
+    color: {{ section.settings.color_icon_answer }};
+    border-color: {{ section.settings.color_icon_answer }};
+  }
+  
+  .faqs-page .des_faqs a,
+  .faqs-page .panel-group .panel-body a {
+    color: {{ section.settings.color_question_link }};
+  }
+  .faqs-page .des_faqs{
+    color: {{section.settings.color_des}};
+  }
+  .faqs-page .contact-link .btn{
+    border-color: transparent;
+    color: {{section.settings.color_button}};
+    background: {{section.settings.color_back_bt}};
+  }
+  .faqs-page .contact-link .btn:hover{
+    border-color: {{section.settings.color_back_bt}};
+    color: {{section.settings.color_back_bt}};
+    background: #fff;
+  }
+  .faqs-page .contact-link .text{
+    color: {{section.settings.color_contact_text}};
+  }
+  
+  .faqs-page .panel-group .col-theme-questions .header-title .title{
+    color: {{section.settings.color_title_theme}};
+    border-color: {{section.settings.color_border_theme}};
+  }
+  .faqs-page .panel-group .col-pre-sales-questions .header-title .title{
+    color: {{section.settings.color_title_pre}};
+    border-color: {{section.settings.color_border_pre}};
+  }
+  .faqs-page .sidebar-faqs .need-help-sidebar{
+    background: {{section.settings.back_sidebar}};
+  }
+  .faqs-page .sidebar-faqs h3{
+    color: {{section.settings.color_title_sidebar}};
+    border-color: {{section.settings.color_border_pre_sidebar}};
+  }
+  .faqs-page .sidebar-faqs .need-help a{
+    color: {{section.settings.color_message}};
+  }
+  .faqs-page .sidebar-faqs .need-help a i{
+    color: {{section.settings.color_icon}};
+  }
+  .faqs-page .sidebar-faqs .need-help a .link_text{
+    border-bottom: 1px solid {{section.settings.color_border_sr}};
+  }
+</style>
+
+
+{% schema %}
+  {
+    "name": "FAQS Page",
+    "settings": [
+      {
+        "type":"header",
+        "content":"Sidebar"
+      },
+      {
+        "type":"checkbox",
+        "id":"enable_sidebar",
+        "label":"Enable Sidebar?",
+        "default":true
+      },
+      {
+       "type" : "color",
+       "id" : "back_sidebar",
+       "label" : "background ",
+       "default" : "#fafafa"
+      },
+      {
+       "type" : "text",
+       "id" : "title_sidebar",
+       "label" : "Need Help?",
+       "default":"Need Help?"
+      },
+       {
+       "type" : "color",
+       "id" : "color_title_sidebar",
+       "label" : "Color Title",
+       "default" : "#8b714a"
+      },
+      {
+       "type" : "color",
+       "id" : "color_border_pre_sidebar",
+       "label" : "Color Border",
+       "default" : "#f2e3ca",
+       "info":"=============="
+      },
+      {
+       "type" : "text",
+       "id" : "title_message",
+       "label" : "Message Us",
+       "default":"Message Us"
+      },
+      {
+       "type" : "text",
+       "id" : "title_contact_us",
+       "label" : "Contact Us",
+       "default":"Contact Us"
+      },
+       {
+       "type" : "color",
+       "id" : "color_message",
+       "label" : "Text Color",
+       "default" : "#787878"
+      },
+      {
+       "type" : "color",
+       "id" : "color_icon",
+       "label" : "Icon Color",
+       "default" : "#5a5a5a"
+      },
+      {
+       "type" : "color",
+       "id" : "color_border_sr",
+       "label" : "Border Color",
+       "default" : "#cacaca"
+      },
+      
+      {
+        "type":"header",
+        "content":"Content"
+      },
+      {
+       "type": "textarea",
+       "id" : "des_faqs",
+       "label" : "Description"
+      },
+      {
+       "type" : "color",
+       "id" : "color_des",
+       "label" : "Color Description ",
+       "default" : "#787878"
+      },
+    {
+        "type" : "header",
+        "content" : "Contact"
+      },
+    {
+       "type" : "textarea",
+       "id" : "contact_text",
+       "label" : "Contact Text",
+       "default" : "Unable to find satisfactory answers ?"
+      },
+    {
+       "type" : "textarea",
+       "id" : "contact_link_text",
+       "label" : "Contact Link Text",
+       "default" : "Contact Support"
+      },
+      {
+       "type" : "color",
+       "id" : "color_contact_text",
+       "label" : "Color Text",
+       "default" : "#787878"
+      },
+    {
+        "type" : "url",
+        "id" : "contact_link",
+        "label" : "Contact link"
+      },
+      {
+       "type" : "color",
+       "id" : "color_button",
+       "label" : "Color Button ",
+       "default" : "#fff"
+      },
+      {
+       "type" : "color",
+       "id" : "color_back_bt",
+       "label" : "Background Button",
+       "default" : "#f4a884"
+      },
+      {
+        "type":"header",
+        "content":"Pre-Sales Questions"
+      },
+      {
+       "type" : "text",
+       "id" : "title_pre_questions",
+       "label" : "Title"
+      },
+       {
+       "type" : "color",
+       "id" : "color_title_pre",
+       "label" : "Color Title",
+       "default" : "#8b714a"
+      },
+      {
+       "type" : "color",
+       "id" : "color_border_pre",
+       "label" : "Color Border",
+       "default" : "#f2e3ca"
+      },
+      {
+        "type":"header",
+        "content":"Theme Questions"
+      },
+      {
+       "type" : "text",
+       "id" : "title_theme_questions",
+       "label" : "Title"
+      },
+      {
+       "type" : "color",
+       "id" : "color_title_theme",
+       "label" : "Color Title",
+       "default" : "#8b714a"
+      },
+      {
+       "type" : "color",
+       "id" : "color_border_theme",
+       "label" : "Color Border",
+       "default" : "#f2e3ca"
+      },
+      {
+        "type": "header",
+        "content": "Question"
+      },
+      {
+       "type" : "color",
+       "id" : "color_question",
+       "label" : "Color Question",
+       "default" : "#000"
+      },
+    {
+       "type" : "text",
+       "id" : "font_size_qs",
+       "label" : "Font size Question",
+       "default" : "12"
+      },
+     {
+        "type": "header",
+        "content": "Answer"
+      },
+      {
+       "type" : "text",
+       "id" : "icon_answer",
+       "label" : "Icon Answer",
+       "default" : "Answer"
+      },
+      {
+       "type" : "color",
+       "id" : "bg_icon_answer",
+       "label" : "Background Icon Answer",
+       "default" : "#26b216"
+      },
+      {
+       "type" : "color",
+       "id" : "color_icon_answer",
+       "label" : "Icon Color",
+       "default" : "#fff"
+      },      
+      {
+       "type" : "color",
+       "id" : "color_question_answer",
+       "label" : "Color Answer",
+       "default" : "#787878"
+      },
+    {
+       "type" : "text",
+       "id" : "font_size_answer",
+       "label" : "Font size Answer",
+       "default" : "12"
+      },
+      {
+       "type" : "color",
+       "id" : "color_question_link",
+       "label" : "Color Link",
+       "default" : "#2a5ee1"
+      }
+  
+  ],
+    "blocks": [
+      {
+        "type" : "pre_sale_questions",
+        "name" : "Pre-Sales Questions",
+        "settings":[
+          {
+            "type" : "textarea",
+            "id" : "question_faqs",
+            "label" : "Question"
+          },
+          {
+            "type" : "textarea",
+            "id" : "answer_faqs",
+            "label" : "Answer"
+          }
+        ]
+      },
+      {
+        "type" : "theme_questions",
+         "name" : "Theme Questions",
+        "settings":[
+          {
+            "type" : "textarea",
+            "id" : "question_faqs_theme",
+            "label" : "Question"
+          },
+          {
+            "type" : "textarea",
+            "id" : "answer_faqs_theme",
+            "label" : "Answer"
+          }
+        ]
+      }
+    ]
+    
+  }
+{% endschema %}

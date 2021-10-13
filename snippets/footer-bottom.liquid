@@ -1,0 +1,45 @@
+<div class="footer-bottom">
+	{% if settings.body_layout == 'full_width' %}  
+	<div class="box-left">
+	{% endif %}
+	{% if section.settings.footer_address_code != blank %}
+	<div class="footer-copyright">
+		<address>
+         <div>
+          <span>{{ section.settings.footer_address_code }}</span>
+        </div>
+      </address>
+	</div>
+	{% endif %}
+	{% if section.settings.footer_preview_demo != blank %}
+	<div class="footer-bottom-link">
+		<div>
+        	<a href="{{section.settings.link_preview}}" target="_blank">
+        		<span class="border_hover">{{ section.settings.footer_preview_demo}}</span>
+        	</a>
+        </div>
+	</div>
+	{% endif %}
+	{% if settings.body_layout == 'full_width' %}
+	</div>
+	{% endif %}
+	{% if section.settings.show_payment_icons %}
+		<div class="footer-payment-icons box-right">
+			{% assign payment_string = 'visa,visa_electron,master,maestro,american_express,solo,amazon_payments,apple_pay,bitcoin,cirrus,dankort,diners_club,discover,paypal,dogecoin,dwolla,forbrugsforeningen,interac,jcb,litecoin,stripe,sage,wallet' %}
+	      {% assign methods = payment_string | split: ',' %}
+	      <ul class="payment-methods">
+	        {% for method in methods %}
+	        {%- assign display_current_method = method | prepend: 'payment_display_' -%}
+	        {% if section.settings[display_current_method] %}
+	        {%- assign current_method_icon = method | prepend: 'icon_' -%}
+				<li>
+					<img class="payment-image lazyload"
+					    src="{{ 'loading.svg' | asset_url }}"
+					    data-src="{{ section.settings[current_method_icon] | img_url: 'x50' }}" alt="" data-image>
+				</li>
+	        {% endif %}
+	        {% endfor %}
+	      </ul>
+		</div>
+	{% endif %}
+</div>

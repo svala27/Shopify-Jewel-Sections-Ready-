@@ -1,0 +1,14 @@
+<div class="page page-cart">
+  <div class="wrapper-header-cs">
+    <div class = "container">
+      {% render 'breadcrumb' %}
+      <h2 class="title">
+          {{ 'cart.general.title' | t }}
+      </h2> 
+    </div>
+  </div>
+  <div class="container">
+  	{% section 'cart-template' %}
+  </div>
+  {% section 'section-product-cart-temlate' %}
+</div>

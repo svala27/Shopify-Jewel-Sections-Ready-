@@ -1,0 +1,83 @@
+{% assign variantCount = product.variants | size %}
+{% assign option_color_swatch = settings.product_options_one | downcase %}
+<div class="product-action">
+    {% if settings.show_product_variant %}
+        <form action="{{ routes.cart_url }}/add" method="post" class="variants" id="{{id}}-{{ product.id }}" data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+            {% if product.available %}
+                {% if variantCount > 1 %}
+
+                        {% for option in product.options_with_values %}
+                        {% assign option_name = option.name | downcase %}
+                        {% assign option_color = false %}
+                            {% if option_name == option_color_swatch %}
+                                  {% assign option_color = true %}
+                            {% endif %}
+                        {% endfor %}
+
+                            {% if option_color %}
+                                <a class="btn product-btn" data-add-cart-color href="{{ product.url }}" aria-label="button" >
+                                 {{ 'products.product.add_to_cart' | t }} 
+                                </a>
+                            {% else %}
+                            <a class="btn product-btn add-cart-options" data-add-cart-grid href="javascript:void(0)" id="{{ product.handle }}">
+                                {{ 'products.product.add_to_cart' | t }} 
+                            </a>
+                            {% endif %}
+                {% else %}
+                    <input type="hidden" name="id" value="{{ product.variants[0].id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    {% if variant.inventory_quantity > 0%}
+                        <button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}">
+                            {{ 'products.product.add_to_cart' | t }} 
+                        </button>
+                     {% elsif variant.inventory_management != null %}
+                        <button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}" >
+                          {{ 'products.product.pre_order' | t }} 
+                      </button>
+          			{% else %}
+          				<button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}">
+                            {{ 'products.product.add_to_cart' | t }} 
+                        </button>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <button class="btn product-btn product-btn-soldOut" type="submit" disabled="disabled">
+                    {{ 'products.product.unavailable' | t }}
+                </button>
+            {% endif %}
+        </form>
+    {% else %}
+        <form action="{{ routes.cart_url }}/add" method="post" class="variants" id="{{id}}-{{ product.id }}" data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+            {% if product.available %}
+                {% if variantCount > 1 %}
+                    <a class="btn product-btn product-btn-icon" href="{{ product.url }}" aria-label="button">
+                        <span>
+                            <svg class="icon"><use xlink:href="#icon-plus" /></svg>
+                            {{ 'products.product.select_options' | t }}
+                        </span>
+                    </a>
+                {% else %}
+                    <input type="hidden" name="id" value="{{ product.variants[0].id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    {% if variant.inventory_quantity > 0%}
+                        <button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}">
+                            {{ 'products.product.add_to_cart' | t }} 
+                        </button>
+                    {% elsif variant.inventory_management != null %}
+                        <button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}" >
+                          {{ 'products.product.pre_order' | t }} 
+                      </button>
+          			{% else %}
+          				<button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}">
+                            {{ 'products.product.add_to_cart' | t }} 
+                        </button>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <button class="btn product-btn product-btn-soldOut" type="submit" disabled="disabled">
+                    {{ 'products.product.unavailable' | t }}
+                </button>
+            {% endif %}
+        </form>
+    {% endif %}
+</div>

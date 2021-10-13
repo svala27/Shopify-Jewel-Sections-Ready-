@@ -1,0 +1,58 @@
+
+{%- assign img_url = product.featured_image.src | img_url: '200x200' -%}
+{%- assign show_product_vendor = show_product_vendor | default: settings.show_product_vendor -%}
+{%- assign show_product_title = show_product_title | default: settings.show_product_title -%}
+{%- assign show_product_reviews = show_product_reviews | default: settings.show_product_reviews -%}
+{%- assign show_product_price = show_product_price | default: settings.show_product_price -%}
+{%- assign show_product_button = show_product_button | default: settings.show_product_button -%}
+
+<div class="product-card layout-1{% unless product.available %} product-card--sold-out{% endunless %}" data-product-card data-product-id="product-{{ product.id }}" data-id="{{ product.id }}">
+    <div class="product-image">
+        <a class="product-link" href="{{ product.url | within: collection }}" aria-label="link">   
+          <img class="product-card__img lazyload"
+              src="{{ 'loading.svg' | asset_url }}"
+              data-src="{{ img_url }}"
+              data-sizes="auto" alt="{{ product.featured_image.alt }}" data-image>
+        </a>
+    </div>
+    <div class="product-content">
+        <div class="product-detail">
+            <div class="group_vdwl">
+                {% if show_product_vendor %}
+                    <div class="product-vendor">
+                        {{ product.vendor | link_to_vendor }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            {% if show_product_title %}
+                <h4 class="product-title">
+                   <a href="{{ product.url | within: collection }}" aria-label="title" class="product-card__link">
+                     {{product.title }}
+                   </a>
+                </h4>
+            {% endif %}
+            {% if show_product_price %}
+                {% render 'product-price', variant: product.selected_or_first_available_variant %}
+            {% endif %}
+            <div class="product-reviews">
+                {% if show_product_reviews %}
+                   {% if settings.embed_code_review != blank %}
+                        {{settings.embed_code_review}}
+                    {% else %}
+                        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+     <div class="group_button">
+            {% if show_product_button %}
+            <div class="product-action">
+              <a class="btn product-btn" data-add-cart-color href="{{ product.url }}" aria-label="button">
+              {{ 'products.product.buy_now' | t }}
+              </a>
+            </div>
+            {% endif %}
+     </div>
+</div>

@@ -1,0 +1,340 @@
+
+<section class="halo-section home-instagram" data-section-id="{{ section.id }}" data-section-type="instagram" id="new-instagram-{{section.id}}">
+    <div class=" container {% if settings.body_layout == 'full_width' and section.settings.instagram_layout == 'layout_1' %}no-padding {% endif %} {% if section.settings.instagram_layout == 'layout_1' %} instagram-layout-grid {% else %}instagram-carousel-layout{% endif %}">
+        <div class="wrapper-content" >
+         {% if section.settings.title != blank %}
+            <div class="instagram-title">
+                <h2> <i class="fab fa-instagram"></i>{{section.settings.title}}</h2>
+            </div>
+            {% endif %}
+            <div class="wrapper-bottom">
+                <div class="instafeed-items"
+                    data-slick='{
+                        "rows": 0,
+                        "dots": false,
+                        "arrows": true,
+                        "infinite": false,
+                        "adaptiveHeight": true,
+                        "slidesToShow": 4,
+                        "slidesToScroll": 1,
+                        "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left-2&apos; /></svg></div>", 
+                        "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right-2&apos; /></svg></div>",
+                        "responsive": [
+                             {
+                               "breakpoint": 1200,
+                               "settings": {
+                                 "arrows": false,
+                                 "dots": true
+                               }
+                             },
+                             {
+                               "breakpoint": 1199,
+                               "settings": {
+                                 "dots": false,
+                                 "arrows": true
+                               }
+                             },
+                            {
+                               "breakpoint": 992,
+                               "settings": {
+                                 "slidesToShow": 3,
+                                 "slidesToScroll": 1,
+                                 "arrows": true,
+                                 "dots": false
+                               }
+                             },
+                             {
+                               "breakpoint": 768,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": false,
+                                 "arrows": true
+                               }
+                             },
+                             {
+                               "breakpoint": 480,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": false,
+                                 "arrows": true
+                               }
+                             }
+                        ]
+                    }'>
+                    {% if section.settings.instagram_option == 'app' %}
+                        {{ section.settings.accessToken }}
+                    {% else %}
+                        {% for block in section.blocks %}
+                        {% assign img_url = block.settings.instagram_image | img_url: '380x' %}
+                        {% assign img_url_full = block.settings.instagram_image | img_url: 'master' %}
+
+                            <div class="item {% unless block.settings.instagram_image != blank  %} item-noimage {% endunless %}">
+                                {% if block.settings.instagram_image != blank %}
+                                 <a class="instagram__item animation-scale {% if block.settings.instagram_image != blank %} instagram__item--bg{% endif %}" href="{{ img_url_full }}" aria-label="link" data-fancybox="images-instagram">
+                                        <img class="lazyload"
+                                         src="{{ 'loading.svg' | asset_url }}"
+                                        data-src="{{ img_url }}"
+                                        data-srcset="{{img_url}}"
+                                        data-sizes="auto" alt="" data-image>
+                                </a>
+                                {% else %}
+                                     <div class="no-image" style="padding-top: 100%; border:1px solid #fff">
+                                        <span>336 x 336px</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% if section.settings.load_more and section.settings.instagram_layout == 'layout_1'%}
+                    {% if section.settings.text_all != blank %}
+                        <div class="instagram-load-more instagram-button">
+                            <a class="btn btn-one" href="{{section.settings.text_all_link}}" >
+                                {{section.settings.text_all}}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+{% if section.settings.custom_color %}
+    <style>
+        {% assign margin_bottom =  section.settings.margin_bottom %}
+        #new-instagram-{{section.id}} .wrapper-content{
+            background: {{section.settings.back_section}}
+        }
+        #new-instagram-{{section.id}} .instagram-title h2{
+             color: {{section.settings.color_title}};
+        }
+        #new-instagram-{{section.id}} .instagram-button .btn{
+            color: {{section.settings.color_button}};
+            border-color: {{section.settings.border_button}};
+            background: {{section.settings.background_button}};
+        }
+        #new-instagram-{{section.id}} .instafeed-items .slick-arrow svg{
+            color: {{section.settings.arrow_button}};
+            fill: {{section.settings.arrow_button}};
+            stroke: {{section.settings.arrow_button}};
+        }
+        #new-instagram-{{section.id}} .instagram-button .btn:hover{
+            color: {{section.settings.color_button_hover}};
+            border-color: {{section.settings.border_button_hover}};
+            background: {{section.settings.background_button_hover}};
+        }
+        @media (max-width: 767px) {
+            #new-instagram-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            #new-instagram-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            #new-instagram-{{section.id}} {
+                margin-bottom: {{ margin_bottom }}px;
+            }
+        }   
+    </style>
+{% endif %}
+<script type="text/javascript">
+     window.instagram_layout = "{{ section.settings.instagram_layout }}"
+</script>
+
+{% schema %}
+  {
+    "name": "Instagram",
+    "class": "instagram-sections",
+    "max_blocks": 10,
+    "settings": [
+        {
+          "type" : "header",
+          "content" : "Instagram Option"
+        },
+        {
+            "type": "select",
+            "id": "instagram_option",
+            "label": "Instagram Option",
+            "options": [
+                {
+                    "value": "app",
+                    "label": "Use app Snapppt"
+                },
+                {
+                    "value": "block",
+                    "label": "Use Block Gallery Image"
+                }
+            ],
+            "default": "block"
+        },
+        {
+            "type": "textarea",
+            "id": "accessToken",
+            "label": "Script Instagram App",
+            "info": "Insert Script Instagram from App Snapppt"
+        },
+        {
+            "type": "header",
+            "content": "Section Layout"
+        },
+        {
+            "type": "select",
+            "id": "instagram_layout",
+            "label": "Layout",
+            "default": "layout_1",
+            "options": [
+                {
+                    "value": "layout_1",
+                    "label": "Grid"
+                },
+                {
+                    "value": "layout_2",
+                    "label": "Carousel"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Heading Section"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "#Jewel On Instagram"
+        },
+        
+         {
+            "type": "checkbox",
+            "id": "load_more",
+            "label": "Enabled Button Show More",
+            "default": true,
+            "info":"Used for grid layout"
+        },
+        {
+            "type": "textarea",
+            "id": "text_all",
+            "label": "View Gallery",
+            "default": "View Gallery",
+            "info":"Used for grid layout"
+        },
+        {
+            "type": "url",
+            "id": "text_all_link",
+            "label": "Link View Gallery",
+            "info":"Used for grid layout"
+        },
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_mb",
+            "label": "Mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_tab",
+            "label": "Tablet",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom",
+            "label": "Margin Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type" : "color",
+            "id" : "back_section",
+            "label" : "Background Color"
+        },  
+        {
+            "type" : "color",
+            "id" : "color_title",
+            "label" : "Title Color"
+        },
+        {
+            "type" : "color",
+            "id" : "arrow_button",
+            "label" : "Slick Arrow Color"
+        },
+        {
+            "type" : "color",
+            "id" : "background_button",
+            "label" : "Background Button"
+        },
+        {
+            "type" : "color",
+            "id" : "border_button",
+            "label" : "Border Button"
+        },
+        {
+            "type" : "color",
+            "id" : "color_button",
+            "label" : "Color Button",
+            "info":"==============="
+        },
+        {
+            "type" : "color",
+            "id" : "background_button_hover",
+            "label" : "Background Button Hover"
+        },
+        {
+            "type" : "color",
+            "id" : "border_button_hover",
+            "label" : "Border Hover Button"
+        },
+        {
+            "type" : "color",
+            "id" : "color_button_hover",
+            "label" : "Color Button Hover"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "instagram_block",
+            "name": "Instagram Image",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "instagram_image",
+                    "label": "Image"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Instagram",
+            "category": "Instagram"
+            
+        }
+    ]
+  }
+{% endschema %}

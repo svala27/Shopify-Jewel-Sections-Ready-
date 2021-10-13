@@ -1,0 +1,78 @@
+<div class="modal fade halo_modal" id="product_add_cart_grid" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-add-cart">
+        <div class="modal-content">
+            <div class="modal-body">
+                <a data-dismiss="modal" class="close close-modal" href="javascript:void(0)">
+                    <svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 413.348 413.348" height="512" viewBox="0 0 413.348 413.348" width="512"><path d="m413.348 24.354-24.354-24.354-182.32 182.32-182.32-182.32-24.354 24.354 182.32 182.32-182.32 182.32 24.354 24.354 182.32-182.32 182.32 182.32 24.354-24.354-182.32-182.32z"/></svg>
+                </a>
+                <div class="product_template">
+                  <form method="post" action="/cart" accept-charset="UTF-8" enctype="multipart/form-data" novalidate="novalidate" data-product-edit-form>
+                    <div class="product-edit-wrapper">
+                        <div class="product-edit" data-product-edit>
+                            <div class="product-edit__image" data-product-image-edit>
+                                <img class="image" src="//cdn.shopify.com/s/files/1/0286/1239/5148/products/22-compressor_200x200.jpg?v=1581915257" alt="">
+                            </div>
+                            <div class="product-edit__content">
+                                <div class="product-edit__vendor" data-product-vendor-edit>
+                                    Donatello
+                                </div>
+                                <h4 class="product-edit__title" data-product-title-edit>
+                                    Cosmo naminos delementum bra
+                                </h4>
+                                <div class="product-price " data-price>
+                                    <span class="price-item price-item--regular" data-regular-price></span>
+                                    <span class="price-item price-item--sale" data-sale-price></span>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="product-edit-option">
+                            <div class="selector-wrapper swatch js product-form__item">
+                                   <label class="form-label">
+                                        color<em>*</em>
+                                  </label>
+                                  <div class="swatch-element color">
+                                      <label for="" style="background: #edd39a"></label>
+                                  </div>
+                                  <div class="swatch-element color">
+                                      <label for="" style="background: #e9ae8f"></label>
+                                  </div>
+                                  <div class="swatch-element color">
+                                      <label for="" style="background: #eaeaea"></label>
+                                  </div>
+                                  <div class="swatch-element color">
+                                      <label for="" style="background: #c1dbe3"></label>
+                                  </div>
+                               </div>
+                               <div class="selector-wrapper swatch js product-form__item">
+                                   <label class="form-label">
+                                        Size<em>*</em>
+                                  </label>
+                                  <div class="swatch-element size">
+                                      <label for="">Large</label>
+                                  </div>
+                                  <div class="swatch-element size">
+                                      <label for="">Small</label>
+                                  </div>
+                                  <div class="swatch-element size">
+                                      <label for="">Medium</label>
+                                  </div>
+                                  <div class="swatch-element size">
+                                      <label for="">Xsmall</label>
+                                  </div>
+                               </div>
+                          <select name="id" data-product-item-template class="product-form__variants no-js"></select>
+                          <div class="product-form__error-message-wrapper product-form__error-message-wrapper--hidden" data-error-message-wrapper role="alert">
+                              <span class="product-form__error-message" data-error-message>{{ 'products.product.quantity_minimum_message' | t }}</span>
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-edit-button">
+                        <button class="btn btn--primary" data-edit-cart-add-to-cart>{{ 'products.product.add_to_cart' | t }}</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

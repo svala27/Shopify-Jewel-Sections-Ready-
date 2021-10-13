@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="no-js" lang="{{ shop.locale }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta https-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="theme-color" content="{{ settings.color_button }}">
+    <link rel="canonical" href="{{ canonical_url }}"> {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png"> {%- endif -%} {%- capture seo_title -%} {%- if request.page_type == 'search' and search.performed == true -%} {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }} {%- else -%} {{ page_title }} {%- endif -%} {%- if current_tags -%} {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}} {%- endif -%} {%- if current_page != 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page }} {%- endif -%} {%- assign escaped_page_title = page_title | escape -%} {%- unless escaped_page_title contains shop.name -%} &ndash; {{ shop.name }} {%- endunless -%} {%- endcapture -%}
+    <title>{{ seo_title | strip }}</title>
+
+    {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}"> 
+    {%- endif -%} 
+    {% render 'fb-open-graph-tags' %} 
+    {% render 'social-meta-tags' %}
+     <!-- fonts -->
+    {% render 'google_fonts' %}
+    <!-- Styles -->
+    {% render 'head_styles' %}
+    <!-- Scripts -->
+    {% include 'head_scripts' %} 
+    
+    {%- if request.page_type contains 'customers/' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    {{ content_for_header }}
+</head>
+    {% if settings.body_layout == 'full_width' %}    
+        {%- assign layout_class = 'body-full' -%}   
+    {% elsif settings.body_layout == 'default' %} 
+        {%- assign layout_class = 'body-default' -%} 
+    {% endif %}
+
+<body class="template-{{ request.page_type | handle }} {{layout_class}} {% if customer %}customer-logged-in {% endif %}">
+  {% render 'scheme' %}
+    <svg data-src="{{ 'icon-flag.svg' | asset_url }}" class="icons-svg-sprite"></svg>
+    <svg data-src="{{ 'icon-theme.svg' | asset_url }}" class="icons-svg-sprite"></svg>
+    {% render 'wrapper-header' %}
+    <div class="page-container wrapper-container wrapper-body" id="PageContainer">
+        <main class="main-content js-focus-hidden" id="MainContent" role="main" tabindex="-1">
+            {{ content_for_layout }}
+        </main>
+        {% if settings.footer_layout == 'footer_1' %}
+          {% section 'footer' %}
+        {% else %}
+          {% section 'footer-2' %}
+        {% endif %}
+        <!----- end Footer ---->
+
+        <div id="slideshow-info" class="visually-hidden" aria-hidden="true">
+            {{- 'sections.slideshow.navigation_instructions' | t -}}
+        </div>
+    </div>
+   <!--- appen file---->
+     {% render 'footbar-fixed-modal' %}
+     {% render 'message-modal' %}
+     {% if settings.enable_backtotop %}
+        <div id="back-to-top">
+            <a href="javascript:void(0)" aria-label="link">{% render 'icon-chevron-up' %}</a>
+        </div>
+    {% endif %}
+     <!--- appen js---->
+    {% include 'footer_scripts' %}
+    <div class="wrapper-overlay"></div>
+</body>
+
+</html>
+

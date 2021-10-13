@@ -1,0 +1,785 @@
+{% case section.settings.brand_rows %}
+{% when '3' %}
+        {%- assign grid_item_width = 'col-6 col-sm-6 col-md-4' -%}
+    {% when '4' %}
+        {%- assign grid_item_width = 'col-6 col-sm-6 col-md-4 col-lg-3' -%}
+
+    {% when '5' %}
+        {%- assign grid_item_width = 'col-6 col-sm-6 col-md-4 col-lg-3 col5' -%}
+    
+{% endcase %}
+<div class="wrapper-container">
+	<div class="des-content container">
+		<div class="description_content">
+		{% for block in section.blocks %}
+			{% if block.type == 'description_content' %}
+			<div class="content">
+				<div class="col-left">
+					{% if block.settings.title_des_1 != blank %}
+			          <h2 class="title">{{block.settings.title_des_1}}</h2>
+			          {% endif %}
+			          {% if block.settings.des_des_1 != blank %}
+			          <div class="des rte">
+			          	 {{block.settings.des_des_1}}
+			          </div>
+			        {% endif %}
+				</div>
+				<div class="col-right">
+					{% if block.settings.title_des_2 != blank %}
+			          <h2 class="title">{{block.settings.title_des_2}}</h2>
+			          {% endif %}
+			          {% if block.settings.des_des_2 != blank %}
+			          <div class="des rte">
+			          	 {{block.settings.des_des_2}}
+			          </div>
+			        {% endif %}
+				</div>
+		    </div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	</div>
+  <div class="banner-content">
+    {% for block in section.blocks %}
+	    {% if block.type == 'top_content' %}
+	    <div class="content-item {% if block.settings.alignment == 'left' %}reserve {% else %}reserve-right{% endif %} ">
+	      {% if block.settings.display_banner %}
+	      <div class="col banner">
+	        <div class="image-container">
+				{% if block.settings.banner != blank %}
+				{%- assign img_url = block.settings.banner | img_url: '950x' -%}
+				<img
+				    class="article__grid-image lazyload"
+				    src="{{ img_url }}"
+				    data-src="{{ img_url }}"
+				    data-aspectratio="{{ article.image.aspect_ratio }}"
+				    data-sizes="auto"
+				    alt="" data-image>
+				{% else %}
+				<div class="no-image" style="padding-top: 88%">
+				  <span> 950 x 840px</span>
+				</div>   
+				{% endif %}
+			</div>
+	      </div>
+	      {% endif %}
+	      <div class="col text">
+	      	<div class="text-item">
+	          <div class="inner">
+	            <h3 class="title">
+	              {{ block.settings.title_banner }}
+	            </h3>
+	            <h4 class="sub-title">
+	            	{{block.settings.sub_title_banner}}
+	            </h4>
+	            <div class="content">
+	              {{ block.settings.content_banner }}
+	            </div>
+	            {% if block.settings.title_botton_banner != blank %}
+		            <div class="botton">
+			            <a class="btn" href="{{block.settings.link_button}}">
+			            	{{block.settings.title_botton_banner}}
+			            </a>
+		            </div>
+	            {% endif %}
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+    {% endfor %}
+  </div>
+  {% if section.settings.display_brand_img %}
+    <div class="brand_image">
+      <div class="container">
+        <div class="heading">
+        {% if section.settings.brand_heading != '' %}
+          <h2>{{ section.settings.brand_heading }}</h2>
+        {% endif %}
+      </div>
+      <div class="wrapper-content row">
+        {% for block in section.blocks %}
+            {% if block.type == 'brand_image' %}
+                <div class="item {{grid_item_width}}">
+                  {% if block.settings.br_image != blank %}
+                  {%- assign img_url = block.settings.br_image | img_url: '300x' -%}
+                  <a href="{{block.settings.link_br}}">
+                    <img
+                        class="article__grid-image lazyload"
+                        src="{{ 'loading.svg' | asset_url }}"
+                        data-src="{{ img_url }}"
+                        data-aspectratio="{{ article.image.aspect_ratio }}"
+                        data-sizes="auto"
+                        alt="" data-image>
+                    </a>
+                  {% else %}
+                  <div class="no-image" style="padding-top: 40%">
+                   <span>225 x 100px</span>
+                  </div>   
+                  {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if section.settings.display_bottom_content %}
+  <div class="bottom-content">
+    <div class="container">
+       {% if section.settings.bot_heading != '' and section.settings.bot_heading != '' %}
+    <div class="heading">
+      {% if section.settings.bot_heading != '' %}
+      <h2>{{ section.settings.bot_heading }}</h2>
+      {% endif %}
+      {% if section.settings.bot_subheading != '' %}
+      <div class="subheading">
+        {{section.settings.bot_subheading }}
+      </div>
+      {% endif %}
+    </div>
+  		<div class="block-content">
+  			<div class="slide-banner" data-rows="{{section.settings.collection_results_per}}">
+  				{% for block in section.blocks %}
+  					{% if block.type == 'bottom_content' %}
+  						<div class="item">
+  							{% if block.settings.image != blank %}
+  							<div class="image">
+  							  <img src="{{block.settings.image | img_url:'800x800'}}" alt="{{block.settings.title}}">
+  							  {% if block.settings.enable_sc %}
+  							  <ul class="social-icons">
+  								  {% if block.settings.social_facebook_link != blank %}
+  								  <li class="facebook">
+  								    <a href="{{ settings.social_facebook_link }}" title="Facebook" target="_blank">
+  								        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="m437 0h-362c-41.351562 0-75 33.648438-75 75v362c0 41.351562 33.648438 75 75 75h151v-181h-60v-90h60v-61c0-49.628906 40.371094-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.351562 0 75-33.648438 75-75v-362c0-41.351562-33.648438-75-75-75zm0 0"/></svg>
+  								    </a>
+  								  </li>
+  								  {% endif %}
+  								  {% if block.settings.social_messenger_link != blank %}
+  								  <li class="messenger">
+  								    <a href="{{ settings.social_messenger_link }}" title="Messenger" target="_blank">
+  								        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                          <g>
+                          <g>
+                            <path d="M256,0C114.624,0,0,106.112,0,237.024c0,74.592,37.216,141.12,95.392,184.576V512l87.168-47.84    c23.264,6.432,47.904,9.92,73.44,9.92c141.376,0,256-106.112,256-237.024S397.376,0,256,0z M281.44,319.2l-65.184-69.536    L89.056,319.2l139.936-148.544l66.784,69.536l125.6-69.536L281.44,319.2z"/>
+                          </g>
+                          </g>
+                          </svg>
+  								    </a>
+  								  </li>
+  								  {% endif %}
+  								  {% if block.settings.social_linkedin_link != blank %}
+  								  <li class="linkedin">
+  								    <a href="{{ settings.social_linkedin_link }}" title="Linkedin" target="_blank">
+  								        <svg xmlns="http://www.w3.org/2000/svg" height="512pt" viewBox="0 0 512 512" width="512pt"><path d="m475.074219 0h-438.148438c-20.394531 0-36.925781 16.53125-36.925781 36.925781v438.148438c0 20.394531 16.53125 36.925781 36.925781 36.925781h438.148438c20.394531 0 36.925781-16.53125 36.925781-36.925781v-438.148438c0-20.394531-16.53125-36.925781-36.925781-36.925781zm-293.464844 387h-62.347656v-187.574219h62.347656zm-31.171875-213.1875h-.40625c-20.921875 0-34.453125-14.402344-34.453125-32.402344 0-18.40625 13.945313-32.410156 35.273437-32.410156 21.328126 0 34.453126 14.003906 34.859376 32.410156 0 18-13.53125 32.402344-35.273438 32.402344zm255.984375 213.1875h-62.339844v-100.347656c0-25.21875-9.027343-42.417969-31.585937-42.417969-17.222656 0-27.480469 11.601563-31.988282 22.800781-1.648437 4.007813-2.050781 9.609375-2.050781 15.214844v104.75h-62.34375s.816407-169.976562 0-187.574219h62.34375v26.558594c8.285157-12.78125 23.109375-30.960937 56.1875-30.960937 41.019531 0 71.777344 26.808593 71.777344 84.421874zm0 0"/></svg>
+  								    </a>
+  								  </li>
+  								  {% endif %}
+  								  {% if block.settings.social_email_link != blank %}
+  								  <li class="email">
+  								    <a href="{{ settings.social_email_link }}" title="Gmail" target="_blank">
+  								        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512"><path d="m21.75 23h-19.5c-1.241 0-2.25-1.009-2.25-2.25v-12.1c0-.833.457-1.593 1.191-1.985l9.75-5.2c.663-.354 1.455-.354 2.118 0l9.75 5.2c.734.392 1.191 1.152 1.191 1.985v12.1c0 1.241-1.009 2.25-2.25 2.25zm-9.75-20.3c-.121 0-.243.03-.353.088l-9.75 5.2c-.245.131-.397.385-.397.662v12.1c0 .414.336.75.75.75h19.5c.414 0 .75-.336.75-.75v-12.1c0-.277-.152-.531-.397-.662l-9.75-5.2c-.11-.059-.232-.088-.353-.088z"/><path d="m11.999 16.996c-.438 0-.875-.103-1.273-.309l-10.323-5.393c-.367-.191-.509-.645-.317-1.012s.646-.508 1.012-.317l10.32 5.39c.358.185.808.185 1.169-.002l10.317-5.388c.367-.192.82-.05 1.012.317s.05.82-.317 1.012l-10.32 5.39c-.403.208-.841.312-1.28.312z"/></svg>
+  								    </a>
+  								  </li>
+  								  {% endif %}
+  							  </ul>
+  							  {% endif %}
+  							</div>
+  							{% else %}
+  							<div class="image no-image" style="padding-top: 100%">
+  							  <span>600x600 px</span>
+  							</div>
+  						{% endif %}
+  						<div class="text">
+  						  {% if block.settings.title != '' %}
+  						  <h3 class="title">
+  						    {{block.settings.title }}
+  						  </h3>
+  						  {% endif %}
+  						  {% if block.settings.subtitle != '' %}
+  						    <p class="subtitle">{{ block.settings.subtitle }}</p>
+  						  {% endif %}
+  						</div>
+  						</div>
+  					{% endif %}
+  				{% endfor %}
+  			</div>
+  			<div class="slider-comment-us">
+  				{% for block in section.blocks %}
+  			 		{% if block.type == 'bottom_content' %}
+  						<div class="comment-us">
+                <span>"</span> {{block.settings.des_comment}} <span>"</span>
+  						</div>
+  			 		{% endif %}
+  			 	{% endfor %}
+  			</div>
+  		</div>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+<style>
+   {% if section.settings.custom_color %}
+    .bottom-content .heading, .about-us-page .about-us-content .description_content .content .title, .about-us-page .banner-content .text-item .title,
+    .about-us-page .brand_image .heading h2, .about-us-page .bottom-content .heading h2, .about-us-page .bottom-content .block-content .slide-banner .item .title{
+      color: {{section.settings.title_color}};
+    }
+
+    .about-us-page .about-us-content .description_content .content .des, .about-us-page .banner-content .text-item .content,
+    .about-us-page .bottom-content .subheading, .about-us-page .bottom-content .block-content .slider-comment-us .comment-us{
+      color: {{section.settings.des_color}};
+    }
+    .about-us-page .block-content .slick-dots li button{
+      border-color: {{section.settings.dost_color}};
+     background-color: {{section.settings.dost_color}};
+    }
+    .about-us-page .about-us-content .description_content .content .col-left{
+      border-color: {{section.settings.line_color}};
+    }
+    .about-us-page .banner-content .content-item .text{
+      background: {{section.settings.back_color}};
+    }
+    .about-us-page .banner-content .text-item .botton .btn{
+      border-color:{{section.settings.btn_bor_color}};
+      background: {{section.settings.back_btn_color}};
+      color: {{section.settings.btn_text_color}};
+    }
+    .about-us-page .banner-content .text-item .sub-title{
+      color: {{section.settings.btn_text_color}};
+    }
+    .about-us-page .banner-content .text-item .botton .btn:hover{
+      border-color:{{section.settings.btn_text_color}};
+      background: {{section.settings.btn_text_color}};
+      color: {{section.settings.back_btn_color}};
+    }
+    .about-us-page .bottom-content .block-content .slide-banner .item .subtitle{
+        color: {{section.settings.sub_color}};
+    }
+    
+   {% endif %}
+   .about-us-page .slick-dotted.slick-slider{
+    margin-bottom: 0px;
+   }
+  .banner-content .heading{
+    text-align: center;
+    padding-top:47px;
+    padding-bottom:17px;
+    position:relative;
+    margin-bottom:55px;
+  }
+  .banner-content .heading:after{
+    content:'';
+    display:block;
+    height:1px;
+    width:30%;
+    max-width:315px;
+    position:absolute;
+    top:100%;
+    left:50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    background:{{section.settings.border_color}};
+  }
+  .banner-content .heading h2{
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 22px;
+  }
+  .content-item .text{
+    background-color: {{section.settings.top_content_bgc}};
+  }
+  .content-item.reserve{
+    -webkit-flex-direction: row-reverse;
+    -moz-flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+    -o-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+  }
+  
+  .content-item > div{
+    max-width:50%;
+  }
+  .content-item .banner .background{
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    height:100%;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+  }
+  .content-item .text .text-item{
+    display: none;
+  }
+  .content-item .text .text-item:first-child,.content-item .text .text-item.slick-slide{
+    display: block;
+  }
+ 
+  .content-item h3.title{
+    text-transform: uppercase;
+    color:{{section.settings.top_content_ttc}};
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    font-size: {{section.settings.top_content_tt_size}}px ;
+    margin-bottom: 20px;
+  }
+  .content-item .slick-dots{
+      position:absolute;
+      width:100%;
+      bottom:35px;
+      left:0;
+  }
+  .content-item .slick-dots li{
+      width: 10px;
+      height: 10px;
+      margin: 0px 5px;
+  }
+  .content-item .slick-dots li button{
+      width: 10px;
+      height: 10px;
+      border-color:{{section.settings.dots_color}};
+      background-color:{{section.settings.dots_color}};
+  }
+  .content-item .slick-dots li.slick-active button{
+    border-color:{{section.settings.dots_color}};
+    background-color:transparent;
+  }
+  .content-item .content{
+    line-height:22px;
+  }
+
+  /*bottom content*/
+  .bottom-content{
+    padding-top:45px;
+  }
+  .bottom-content .heading{
+    text-align:center;
+  }
+  .bottom-content .subheading{
+    line-height: {{settings.body_font_size | plus:12}}px;
+    max-width:900px;
+    width:100%;
+    margin:0 auto;
+  }
+
+  .bottom-content .block-content{
+    padding:50px 0px 50px;
+  }
+  .bottom-content .block-content .item{
+    padding-bottom:30px;
+  }
+  .bottom-content .block-content .image{
+    padding-top: 100%;
+    height:0;
+    border-radius: 50%;
+    position:relative;
+    margin-bottom:8px;
+    overflow: hidden;
+  }
+  .bottom-content .block-content .image > *{
+    position: absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+  }
+  .bottom-content .block-content .text{
+    text-align: center;
+  }
+  .bottom-content .block-content .text h3.title{
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .bottom-content .block-content .text h3.title a{
+    color:{{settings.body_color}};  
+    position:relative;
+    display: inline-block;
+  }
+  .bottom-content .block-content .text h3.title a:before{
+    content:'';
+    display:block;
+    position:absolute;
+    width:100%;
+    height:1px;
+    bottom:2px;
+    background-color:{{settings.body_color | color_modify: 'alpha', 0.7}};
+    display:none;
+  }
+  .bottom-content .block-content .text h3.title a:hover:before{
+    display:block;
+  }
+  .bottom-content .slick-dots{
+    -webkit-transform: translateY(30px);
+    -ms-transform: translateY(30px);
+    -o-transform: translateY(30px);
+    transform: translateY(30px);
+  }
+
+  @media (max-width: 992px){
+    .content-item .text .text-item .inner{
+      padding-top:70px;
+      padding-bottom:90px;
+    }
+    .content-item h3.title{
+      font-size: 22px;
+    }
+    .bottom-content .heading h2,.bottom-content .block-content .text h3.title{
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 767px){
+    .content-item{
+      -webkit-flex-direction: row!important;
+      -moz-flex-direction: row!important;
+      -ms-flex-direction: row!important;
+      -o-flex-direction: row!important;
+      flex-direction: row!important;
+      flex-wrap: wrap;
+    }
+     .content-item > div{
+      max-width:100%;
+      flex-basis: 100%;
+    }
+    .content-item .banner .background{
+      padding-top:100%;
+    }
+
+  } 
+</style>
+{% schema %}
+{
+  "name": "About Us Content",
+  "class": "about-us-content",
+  "settings": [
+    {
+      "type":"header",
+      "content":"Brand images"
+    },
+    {
+      "type":"checkbox",
+      "id":"display_brand_img",
+      "label":"Enable",
+      "default":true
+    },
+    {
+      "type":"text",
+      "id":"brand_heading",
+      "label":"Title",
+      "default":"As Seen In"
+    },
+    {
+        "type": "select",
+        "id": "brand_rows",
+        "label": "Brand per row",
+        "options": [
+            {
+                "value": "3",
+                "label": "3"
+            },
+            {
+                "value": "4",
+                "label": "4"
+            },
+            {
+                "value": "5",
+                "label": "5"
+            }
+        ],
+        "default": "5"
+    },
+    {
+      "type":"header",
+      "content":"Bottom Content"
+    },
+    {
+      "type":"checkbox",
+      "id":"display_bottom_content",
+      "label":"Enable",
+      "default":true
+    },
+    {
+      "type":"text",
+      "id":"bot_heading",
+      "label":"Heading",
+      "default":"Who We Are"
+    },
+    {
+      "type":"textarea",
+      "id":"bot_subheading",
+      "label":"Subheading",
+      "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum iaculis quis de amet eros."
+    },
+    {
+	  "type": "select",
+	    "id": "collection_results_per",
+	    "label": "Item per row",
+	    "options": [
+	      {
+	        "value": "2",
+	        "label": "2"
+	      },
+	      {
+	        "value": "3",
+	        "label": "3"
+	      },
+	      {
+	        "value": "4",
+	        "label": "4"
+	      },
+	      {
+	        "value": "5",
+	        "label": "5"
+	      },
+		  {
+	        "value": "6",
+	        "label": "6"
+	      }
+	    ],
+	    "default": "3",
+      "info":"==========="
+	  },
+     {
+          "type": "header",
+          "content": "Custom Color"
+      },
+      {
+          "type": "checkbox",
+          "id": "custom_color",
+          "label": "Turn on custom color",
+          "default": false
+      },
+      {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title Color"
+      },
+      {
+          "type": "color",
+          "id": "des_color",
+          "label": "descript Color"
+      },
+      {
+          "type": "color",
+          "id": "line_color",
+          "label": "Line Color"
+      },
+      {
+          "type": "color",
+          "id": "sub_color",
+          "label": "Sub Color"
+      },
+      {
+          "type": "color",
+          "id": "dost_color",
+          "label": "Dost Color"
+      },
+      {
+          "type": "color",
+          "id": "back_color",
+          "label": "background Color"
+      },
+      {
+          "type": "color",
+          "id": "back_btn_color",
+          "label": "Button Color"
+      },
+      {
+          "type": "color",
+          "id": "btn_text_color",
+          "label": "Text Color"
+      },
+      {
+          "type": "color",
+          "id": "btn_bor_color",
+          "label": "Border Color"
+      }
+  ],
+  "blocks":[
+    {
+		"name":"Description Content",
+		"type":"description_content",
+		"settings":[
+			{
+				"type":"text",
+				"id":"title_des_1",
+				"label":"Title",
+				"default":"Our Vision"
+			},
+			{
+				"type":"textarea",
+				"id":"des_des_1",
+				"label":"Content",
+				"default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum quis de amet eros pellentesque aliquet an durna."
+			},
+			{
+				"type":"text",
+				"id":"title_des_2",
+				"label":"Title",
+				"default":"Our Mission"
+			},
+			{
+				"type":"textarea",
+				"id":"des_des_2",
+				"label":"Content",
+				"default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum quis de amet eros pellentesque aliquet an durna."
+			}
+		]
+    },
+    {
+      "name":"Banner Content",
+      "type":"top_content",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"display_banner",
+          "label":"Display Banner",
+          "default":true
+        },
+        {
+          "type":"image_picker",
+          "id":"banner",
+          "label":"Banner"
+        },
+        {
+          "type":"select",
+          "id":"alignment",
+          "label":"Content Alignment",
+          "default":"right",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        },
+        {
+          "type":"header",
+          "content":"Content"
+        },
+        {
+          "type":"text",
+          "id":"title_banner",
+          "label":"Title ",
+          "default":"What We Do"
+        },
+        {
+          "type":"text",
+          "id":"sub_title_banner",
+          "label":"Sub Title ",
+          "default":"Phasellus lorem malesuada pulvinar de milance"
+        },
+        {
+          "type":"textarea",
+          "id":"content_banner",
+          "label":"Content ",
+          "default":"Nam tempus turpis at metus scelerisque placerat nulla deumantos sollicitudin felis. Pellentesque diam dolor, elementum et lobortis at, mollis duto an risus. Sedcuman des faucibus sullamcorper mattis fusce molestie elit a lorem tempus scelerisque blandit est cursus..."
+        },
+        {
+          "type":"text",
+          "id":"title_botton_banner",
+          "label":"Button Title ",
+          "default":"Shop Now"
+        },
+        {
+        	"type":"url",
+        	"id":"link_button",
+        	"label":" Add Link"
+        }
+      ]
+    },
+    {
+      "name":"Brand Images",
+      "type":"brand_image",
+      "limit": 5,
+      "settings":[
+        {
+          "type":"image_picker",
+          "id":"br_image",
+          "label":"Add Image"
+        },
+        {
+          "type":"url",
+          "id":"link_br",
+          "label":" Add Link"
+        }
+      ]
+    },
+    {
+      "name":"Bottom Content",
+      "type":"bottom_content",
+      "settings":[
+        {
+          "type":"image_picker",
+          "id":"image",
+          "label":"Image"
+        },
+        {
+          "type":"text",
+          "id":"title",
+          "label":"title",
+          "default":"Title"
+        },
+        {
+          "type":"textarea",
+          "id":"subtitle",
+          "label":"Subtitle",
+          "default":"Subtitle"
+        },
+        {
+	      "type":"textarea",
+	      "id":"des_comment",
+	      "label":"Comment Text",
+	      "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum iaculis quis de amet eros. Nam suscipito mollis tellus metropolis veil malesuada duis danos an molestie..."
+	    },
+	    {
+	    	"type":"header",
+	    	"content":"Links Social"
+	    },
+	    {
+	    	"type":"checkbox",
+	    	"id":"enable_sc",
+	    	"label":"Enable?",
+	    	"default":true
+	    },
+	    {
+	        "type": "url",
+	        "id": "social_facebook_link",
+	        "label": "Facebook"
+	    },
+	    {
+	        "type": "url",
+	        "id": "social_messenger_link",
+	        "label": "Messenger"
+	    },
+	    {
+	        "type": "url",
+	        "id": "social_linkedin_link",
+	        "label": "Linkedin"
+	    },
+	    {
+	        "type": "url",
+	        "id": "social_email_link",
+	        "label": "Email"
+	    }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+{% comment %}
+  The contents of the search.liquid template can be found in /sections/search-template.liquid
+{% endcomment %}
+<div class="container">
+    <div class="page page-search">
+    	{% render 'breadcrumb' %}
+    	<div class="header">
+			<h2 class="title"><span class="visually-hidden">{{ 'general.search.heading' | t: count: search.results_count }}:</span>
+	        {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h2>
+	        <div class="header-search__form ">
+	            <form action="{{ routes.search_url }}" method="get" class="search-bar" role="search">
+	                <input type="hidden" name="type" value="product">
+	                <input type="search" name="q"
+	                    placeholder="{{ 'general.search.placeholder' | t }}"
+	                    class="input-group-field header-search__input" aria-label="Search Site" autocomplete="off">
+	                <button type="submit" class="btn-search icon-search" title="search">
+	                    <svg class="icon"><use xlink:href="#icon-search" /></svg>
+	                </button>
+	            </form>
+	        </div>
+		</div>
+        {% section 'search-template' %}
+    </div>
+</div>

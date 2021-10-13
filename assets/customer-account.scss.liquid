@@ -1,0 +1,722 @@
+// this style
+/*=============================
+=            Mixin            =
+=============================*/
+  /* transform */
+    @mixin transform($transforms) {
+      -moz-transform: $transforms;
+      -o-transform: $transforms;
+      -ms-transform: $transforms;
+      -webkit-transform: $transforms;
+      transform: $transforms;
+    }
+    /* box-shadow */
+    @mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+      @if $inset {
+        -webkit-box-shadow:inset $top $left $blur $color;
+        -moz-box-shadow:inset $top $left $blur $color;
+        box-shadow:inset $top $left $blur $color;
+      } @else {
+        -webkit-box-shadow: $top $left $blur $color;
+        -moz-box-shadow: $top $left $blur $color;
+        box-shadow: $top $left $blur $color;
+      }
+    }
+    /* border-radius */
+    @mixin border-radius($radius) {
+      -moz-border-radius: $radius;
+      -webkit-border-radius: $radius;
+      -ms-border-radius: $radius;
+      -o-border-radius: $radius;
+      border-radius: $radius;
+    }
+    /* opacity */
+    @mixin opacity($value){
+      $IEValue: $value*100;
+      opacity: $value;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity="+$IEValue+")";
+      filter: alpha(opacity=$IEValue);
+    }
+    @mixin translate($x, $y) {
+      @include transform(translate($x, $y));
+    }
+
+    @mixin translateX($x) {
+      @include transform(translateX($x));
+    }
+
+    @mixin translateY($y) {
+      @include transform(translateY($y));
+    }
+    /* transition */
+    @mixin transition($transition) {
+      -webkit-transition: $transition;
+      -moz-transition: $transition;
+      -ms-transition: $transition;
+      -o-transition: $transition;
+      transition: $transition;
+    }
+
+    @mixin transition-delay($time) {
+      transition-delay: $time;
+      -moz-transition-delay: $time;
+      -webkit-transition-delay: $time;
+      -o-transition-delay: $time;
+      -ms-transition-delay: $time;
+    }
+    @mixin rotate($deg) {
+      @include transform(rotate(#{$deg}deg));
+    }
+
+    @mixin scale($scale) {
+      @include transform(scale($scale));
+    }
+
+    @mixin scaleX($scale) {
+      @include transform(scaleX($scale));
+    }
+    /* Flex */
+    @mixin flexbox() {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    @mixin inline-flex {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -moz-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+    }
+    @mixin justify-content($justify) {
+      -webkit-box-pack: $justify;
+      -moz-box-pack: $justify;
+      -ms-flex-pack: $justify;
+      -webkit-justify-content: $justify;
+      justify-content: $justify;
+    }
+
+    @mixin align-items($align) {
+      -webkit-align-items: $align;
+      -moz-align-items: $align;
+      -ms-align-items: $align;
+      align-items: $align;
+    }
+    @mixin flex-direction($direction) {
+      -webkit-flex-direction: $direction;
+      -moz-flex-direction: $direction;
+      -ms-flex-direction: $direction;
+      flex-direction: $direction;
+    }
+
+    @mixin flex-wrap($wrap) {
+      -webkit-flex-wrap: $wrap;
+      -moz-flex-wrap: $wrap;
+      -ms-flex-wrap: $wrap;
+      flex-wrap: $wrap;
+    }
+    /* calc */
+    @mixin calc($property, $expression) {
+      #{$property}: -moz-calc(#{$expression});
+    #{$property}: -webkit-calc(#{$expression});
+    #{$property}: -ms-calc(#{$expression});
+    #{$property}: calc(#{$expression});
+    }
+    @keyframes box-shadow{
+        0%, 100%{
+            @include box-shadow(0, 0, 0, 0);
+        }
+
+        50%{
+            @include box-shadow(0, 0, 0, 4px);
+        }
+    }
+    @keyframes loading {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    @mixin display-flexbox() {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%; // necessary for ie10
+    }
+
+    @mixin flex-wrap($value: nowrap) {
+        @include prefix(flex-wrap, $value, webkit moz ms spec);
+    }
+
+    @mixin flex-direction($value) {
+        @include prefix(flex-direction, $value, webkit moz ms spec);
+    }
+
+    @mixin align-items($value: stretch) {
+        $alt-value: $value;
+
+        @if $value == 'flex-start' {
+            $alt-value: start;
+        } @else if $value == 'flex-end' {
+            $alt-value: end;
+        }
+
+        // sass-lint:disable no-misspelled-properties
+        -ms-flex-align: $alt-value;
+        @include prefix(align-items, $value, webkit moz ms o spec);
+    }
+
+    @mixin flex($value: 0 1 auto) {
+        @include prefix(flex, $value, webkit moz ms spec);
+    }
+
+    @mixin flex-basis($width: auto) {
+        // sass-lint:disable no-misspelled-properties
+        -ms-flex-preferred-size: $width;
+        @include prefix(flex-basis, $width, webkit moz spec);
+    }
+
+    @mixin align-self($align: auto) {
+        // sass-lint:disable no-misspelled-properties
+        -ms-flex-item-align: $align;
+        @include prefix(align-self, $align, webkit spec);
+    }
+
+    @mixin align-content($align: center) {
+        @include prefix(align-content, $align, webkit ms spec);
+    }
+    $font_size: {{ settings.type_base_size }};
+    /* Button 1 */
+    $background_1: {{ settings.btn_1_bg_color }};
+    $color_1 : {{ settings.btn_1_text_color }};
+    $border_1 : {{ settings.btn_1_border_color }};
+
+    /* Button 2 */
+    $background_2: {{ settings.btn_2_bg_color }};
+    $color_2 : {{ settings.btn_2_text_color }};
+    $border_2 : {{ settings.btn_2_border_color }};
+
+    /* Button disabled */
+    $sold_out_text : {{ settings.sold_out_text }};
+    $bg_sold_out : {{ settings.bg_sold_out }};
+
+    @mixin button_1 {
+      background: $background_1;
+      color: $color_1;
+      border-color: $border_1;
+    }
+
+    @mixin button_2 {
+      background: $background_2;
+      color: $color_2;
+      border-color: $border_2;
+    }
+/*=====  End of mixin  ======*/
+
+.body-full {
+	.login-register-page, .account-page, .addresses-page{
+		.container {
+		    max-width: 1200px;
+		    padding-left: 15px;
+		    padding-right: 15px;
+		}
+	}
+} 
+/*============================================
+=            login and create acc            =
+============================================*/
+	.wrapper-header-login{
+  		background: #fafafa;
+  		.container{
+  			text-align: center;	
+  		}
+  		.breadcrumb{
+  			background: transparent;
+  			padding-top: 37px;
+  		}
+  		.title{
+  			font-size: $font-size + 28;
+  			line-height: 32px;
+  			letter-spacing: .04em;
+  			color: #282828;
+  			font-weight: 600;
+  			font-family: 'DM Serif Display', serif;
+  			text-transform: capitalize;
+  			padding: 15px 0px 52px;
+  		}
+  	}
+  .login-register-page{
+  	.grid{
+      @media(min-width: 768px){
+        padding: 68px 0px 125px;
+        @include flexbox();
+        @include justify-content(space-between);
+      }
+  	}
+  	.create-an-account{
+  		background: #fafafa;
+  		padding: 48px 50px 50px;
+  		.button-register{
+           .btn{
+  				background: #505050;
+  				color: #ffffff;
+  				width:100%;
+  				max-width: 271px;
+  				margin-top: 6px;
+  				margin-bottom: 0px;
+  				&:hover{
+  					color: #505050;
+  					background: #fff;
+  					border-color: #505050;
+  				}
+  			}
+  		}
+  	}
+  	.login-an-account{
+  		    padding-top: 48px;
+  		.button-login{
+  			.btn{
+  				background: #505050;
+  				color: #ffffff;
+  				width:100%;
+  				max-width: 170px;
+  				margin-top: 5px;
+  				&:hover{
+  					color: #505050;
+  					background: #fff;
+  					border-color: #505050;
+  				}
+  			}
+  			.forgot-password{
+  				margin-top: 6px;
+  				 a{
+  					letter-spacing: .04em;
+  					line-height: 30px;
+  					font-size: $font-size;
+  					color: #787878;
+  					&:hover{
+  						color: #ea3b02 ;
+  					}
+  					&.return-store{
+  						color: #947d5c;
+  						border-bottom: 1px solid;
+  						&:hover{
+  							color: #ea3b02;
+  						}
+  					}
+  				}
+  			}
+  		}
+  	}
+    .medium-up--push-one-quarter{
+      left: 0px!important;
+    }
+    .wrapper{
+    	.box-title{
+    		h3{
+                font-size: $font-size + 1;
+	    		font-weight: 600;
+	    		text-transform: uppercase;
+	    		letter-spacing: 0.15em;
+	    		color: #323232;
+	    		margin-bottom: 15px;
+    		}
+    	}
+    	.des{
+    		padding-bottom: 20px;
+    		color: #787878;
+			p{
+				letter-spacing: .02em;
+    			font-size: $font-size;
+    			line-height: 24px;
+    			color: #787878;
+    			padding-bottom: 4px;
+			}
+			
+		}
+    }
+  }
+   
+#RecoverPasswordForm{
+  .recover-box{
+    .box-title{
+      h3{
+              font-size: $font-size + 1;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: #323232;
+        margin-bottom: 15px;
+      }
+    }
+    p{
+        letter-spacing: .02em;
+          font-size: $font-size;
+          line-height: 24px;
+          color: #787878;
+          padding-bottom: 4px;
+          padding-bottom: 20px;
+    }
+  }
+  .form-vertical{
+    .btn-group{
+      margin-top: 30px;
+      @include flexbox();
+      align-items: center;
+      p{
+        margin: 0px;
+
+      }
+    }
+    .btn{
+      background: #505050;
+      color: #ffffff;
+      width: 100%;
+      max-width: 170px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-right: 30px;
+      &:hover{
+        color: #505050;
+        background: #fff;
+        border-color: #505050;
+      }
+    }
+  }
+}
+/*=====  End of login and create acc  ======*/
+
+/*====================================
+=            page account            =
+====================================*/
+	.account-page{
+		.wrapper-header-login .title{
+			padding: 53px 0px 52px;
+		}
+		.grid{
+			margin-top: 38px;
+			.grid__item{
+				h2{
+					font-size: $font-size + 6;
+					text-transform: capitalize;
+					letter-spacing: 0.04em;
+					font-weight: 600;
+					color: #282828;
+					border-bottom: 1px solid #ececec;
+					font-family: 'DM Serif Display', serif;
+					padding: 23px 0px;
+				}
+			}
+			.myaccount__order-history{
+				p{
+					text-align: center;
+				    background: #fbf6ee;
+				    padding: 10px 0px 8px;
+				    letter-spacing: 0.02em;
+				    color: #8b714a;
+				    margin: 25px 0px 38px;
+				}
+			}
+			.myaccount__account-details{
+				margin-bottom: 90px;
+				.account-content {
+				    max-width: 270px;
+				    margin: 35px 0px 35px;
+				    background: #fafafa;
+				    padding: 18px 30px 8px;
+				}
+				.acc-name, .addr p{
+					font-size: $font-size;
+					text-transform: capitalize;
+					letter-spacing: 0.04em;
+					line-height: 30px;
+				}
+				.acc-name{
+					color: #8b714a;
+					text-transform: uppercase;
+					margin-bottom: 10px;
+				}
+				.addr p{
+					color: #787878;
+					margin-bottom: 0px;
+				}
+				.btn{
+	  				background: #505050;
+	  				color: #ffffff;
+	  				width:100%;
+	  				max-width: 270px;
+	  				margin-bottom: 35px;
+	  				&:hover{
+	  					color: #505050;
+	  					background: #fff;
+	  					border-color: #505050;
+	  				}
+	  				span{
+					    width: 23px;
+					    height: 23px;
+					    display: inline-table;
+					    overflow: hidden;
+					    background: #8c8c8c;
+					    @include border-radius(50%);
+					    line-height: 23px;
+					    padding-left: 3px;
+                        margin-left: 3px;
+	  				}
+	  			}
+				
+			}
+		}
+	}
+
+
+/*=====  End of page account  ======*/
+
+/*======================================
+=            addresses-page            =
+======================================*/
+.form-vertical [type="radio"], .form-vertical [type="checkbox"]{
+	display: none;
+}
+   .addresses-page{
+   	    margin-bottom: 105px;
+	   	.wrapper-header-login .title{
+	   		padding: 54px 0px 52px
+	   	}
+   		.section-header{
+   			margin-top: 65px;
+   			.btn{
+  				background: #505050;
+  				color: #ffffff;
+  				width:100%;
+  				max-width: 270px;
+  				margin-bottom: 5px;
+  				&:hover{
+  					color: #505050;
+  					background: #fff;
+  					border-color: #505050;
+  				}
+  			}
+  			.return-detail{
+  				a{
+  					font-size: $font-size;
+	  				letter-spacing: .04em;
+	  				line-height: 30px;
+	  				font-weight: 500;
+	  				color: #8b714a;
+	  				border-bottom: 1px solid;
+	  				&:hover{
+	                   color:#ea3b02;
+	  				}
+  				}
+  			}
+   		}
+      .grid{
+        @media (min-width: 768px){
+          @include flexbox();
+          @include justify-content (space-between);
+          .grid__item {
+            &:first-child{
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+   		.grid__item{
+   			.form-vertical{
+   				.title-add{
+   					font-size: $font-size + 6;
+					text-transform: capitalize;
+					letter-spacing: 0.04em;
+					font-weight: 600;
+					color: #282828;
+					border-bottom: 1px solid #ececec;
+					font-family: 'DM Serif Display', serif;
+					padding: 23px 0px;
+					margin-bottom: 40px;
+   				}
+   				.action-btn{
+   					padding: 25px 0px;
+   					border-top: 1px solid #e0e0e0;
+   					.btn{
+	   					background: #505050;
+		  				color: #ffffff;
+		  				width:100%;
+		  				max-width: 170px;
+		  				&:hover{
+		  					color: #505050;
+		  					background: #fff;
+		  					border-color: #505050;
+		  				}
+	   				}
+	   				button{
+	   					display: inline-block;
+					    padding: 7px 0 5px 9px;
+					    margin-bottom: 0px;
+					    vertical-align: middle;
+					    margin-top: -19px;
+					    font-size: 12px;
+					    letter-spacing: .04em;
+					    line-height: 30px;
+					    font-weight: 500;
+					    color: #8b714a;
+					    &:hover{
+					    	color: #ea3b02;
+					    }
+	   				}
+   				}
+   			}
+   			.address{
+   				margin-bottom: 20px;
+   				.title-add{
+   					font-size: $font-size + 6;
+					text-transform: capitalize;
+					letter-spacing: 0.04em;
+					font-weight: 600;
+					color: #282828;
+					border-bottom: 1px solid #ececec;
+					font-family: 'DM Serif Display', serif;
+					padding: 25px 0px 23px;
+   				}
+   				.account-content {
+				    max-width: 270px;
+				    margin: 35px 0px 35px;
+				    background: #fafafa;
+				    padding: 18px 30px 27px;
+				}
+				.acc-name, .addr p{
+					font-size: $font-size;
+					text-transform: capitalize;
+					letter-spacing: 0.04em;
+					line-height: 30px;
+				}
+				.acc-name{
+					color: #8b714a;
+					text-transform: uppercase;
+					margin-bottom: 10px;
+				}
+				.addr p{
+					color: #787878;
+					margin-bottom: 0px;
+				}
+				.list--inline{
+					.btn {
+						width: 130px;
+						 &.address-edit-toggle{
+						 	margin-right: 7px;
+                            color: #282828;
+                            border:1px solid #b9babb;
+                            background: transparent;
+                            &:hover{
+                            	color: #f4a884;
+	                            border-color: #f4a884;
+                            }
+						 }
+						 &.address-delete{
+						 	border-color: #f4a884;
+						 	background: #f4a884;
+						 	color: #fff;
+						 	&:hover{
+						 		color: #b9babb;
+						 		border-color: #b9babb;
+						 		background: transparent;
+						 	}
+						 }
+					}
+				}
+   			}
+   		}
+   }
+
+
+/*=====  End of addresses-page  ======*/
+
+
+/*=================================
+=            Reponsive            =
+=================================*/
+@media(max-width: 1199px ){
+	.addresses-page .wrapper-header-login .title {
+	    padding: 30px 0px 30px;
+	}
+	.addresses-page .section-header {
+	    margin-top: 30px;
+	}
+	.addresses-page {
+	    margin-bottom: 60px;
+	}
+	.login-register-page .login-an-account{
+		padding-right: 35px!important;
+	}
+	.wrapper-header-login .title{
+		font-size: 30px;
+		padding: 10px 0px 30px;
+	}
+	.login-register-page .grid {
+	    padding: 50px 0px 90px;
+	}
+	.wrapper-header-login .breadcrumb {
+	    background: transparent;
+	    padding-top: 25px;
+	}
+}// end max 1199
+@media (max-width: 768px){
+	.login-register-page .create-an-account {
+	    padding: 25px;
+	}
+}// end max 768
+@media(max-width: 767px){
+	.addresses-page .grid__item .address .account-content {
+	    max-width: 100%;
+	}
+	.account-page .grid {
+	    margin-top: 15px;
+	}
+	.account-page .wrapper-header-login .title {
+	    padding: 30px 0px 30px;
+	}
+	.account-page .grid .myaccount__account-details .account-content{
+		max-width: 100%;
+	}
+	.wrapper-header-login{
+		.breadcrumb{
+			padding-top: 20px;
+		}
+		.title{
+			padding: 5px 0px 20px;
+			font-size: 26px;
+		}
+	}
+	.login-register-page{
+		.grid{
+			padding: 0px 0px 70px;
+		}
+		.create-an-account{
+			background: transparent;
+			padding: 0px;
+		}
+		.login-an-account{
+			margin-bottom: 30px;
+			padding-top: 15px;
+      padding-right: 0px!important;
+		}
+	}
+}// end max 767
+@media (min-width:750px ){
+	.login-register-page{
+       .create-an-account{
+       		width: 47.4%;
+       }
+       .login-an-account{
+       	width: 52.6%;
+       	padding-right: 130px;
+       }
+	}
+}
+
+
+
+/*=====  End of Reponsive  ======*/

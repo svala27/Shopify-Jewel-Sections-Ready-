@@ -1,0 +1,15 @@
+<div class="page page-product-detail page-product-detail-default">
+    <div class="wrapper-header-cs">
+        {% render 'breadcrumb' %}
+    </div>
+    <div class="container">
+        <div class="page-content">
+            {% section 'product-template' %}
+        </div>
+        {% section 'products_bundle_discount_default' %}
+    </div>
+    {% section 'product-recommendations' %}
+    {% section 'customer-review-product' %}
+    {% section 'custom-block-product' %}
+    {% section 'recently-viewed-products' %}
+</div>

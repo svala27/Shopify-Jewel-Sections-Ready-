@@ -1,0 +1,117 @@
+{% for block in section.blocks %}
+    {% if block.type == 'footer_social_media' %}
+        {%- assign social_icons = false -%}
+        {% if block.settings.social_twitter_link != blank
+            or block.settings.social_facebook_link != blank
+            or block.settings.social_pinterest_link != blank
+            or block.settings.social_instagram_link != blank
+            or block.settings.social_google_plus_link != blank
+            or block.settings.social_tumblr_link != blank
+            or block.settings.social_rss_link != blank
+            or  block.settings.social_snapchat_link != blank
+            or block.settings.social_youtube_link != blank
+            or  block.settings.social_vimeo_link != blank
+            or template contains 'article'
+            or template contains 'blog'
+        %}
+            {%- assign social_icons = true -%}
+        {% endif %}
+
+        {% if social_icons %}
+        <ul class="social-icons">
+            {% if block.settings.social_facebook_link != blank %}
+            <li>
+                <a class="social-icon facebook" href="{{ block.settings.social_facebook_link }}" title="Facebook" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-facebook" /></svg>
+                    <span class="social-title">
+                        {{block.settings.social_title_facebook}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+            {% if block.settings.social_twitter_link != blank %}
+            <li>
+                <a class="social-icon twitter" href="{{ block.settings.social_twitter_link }}" title="Twitter" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-twitter" /></svg>
+                    <span class="social-title">
+                        {{block.settings.social_title_twitter}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+            {% if block.settings.social_instagram_link != blank %}
+            <li>
+                <a class="social-icon instagram" href="{{ block.settings.social_instagram_link }}" title="Instagram" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-instagram" /></svg>
+                     <span class="social-title">
+                        {{block.settings.social_title_instagram}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if block.settings.social_pinterest_link != blank %}
+            <li>
+                <a class="social-icon pinterest" href="{{ block.settings.social_pinterest_link }}" title="Pinterest" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-pinterest" /></svg>
+                     <span class="social-title">
+                        {{block.settings.social_title_pinterest}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+                 
+            {% if block.settings.social_tumblr_link != blank %}
+            <li>
+                <a class="social-icon tumblr" href="{{ block.settings.social_tumblr_link }}" title="Tumblr" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-tumblr" /></svg>
+                    <span class="social-title">
+                        {{ block.settings.social_title_tumblr}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+            {% if block.settings.social_snapchat_link != blank %}
+            <li>
+                <a class="social-icon snapchat" href="{{ block.settings.social_snapchat_link }}" title="Snapchat" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-snapchat" /></svg>
+                     <span class="social-title">
+                        {{block.settings.social_title_snapchat}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+            {% if block.settings.social_youtube_link != blank %}
+            <li>
+                <a class="social-icon youtube" href="{{ block.settings.social_youtube_link }}" title="YouTube" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-youtube" /></svg>
+                    <span class="social-title">
+                        {{block.settings.social_title_youTube}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+          {% if block.settings.social_google_plus_link != blank %}
+            <li>
+                <a class="social-icon goofle-plus" href="{{ block.settings.social_google_plus_link }}" title="Google +" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-google-plus" /></svg>
+                    <span class="social-title">
+                        {{block.settings.social_title_google_plus}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+            {% if block.settings.social_vimeo_link != blank %}
+            <li>
+                <a class="social-icon vimeo" href="{{ block.settings.social_vimeo_link }}" title="Vimeo" target="_blank" aria-label="link">
+                    <svg class="icon"><use xlink:href="#icon-vimeo" /></svg>
+                    <span class="social-title">
+                        {{block.settings.social_title_vimeo}}
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    {% endif %}
+{% endfor %}

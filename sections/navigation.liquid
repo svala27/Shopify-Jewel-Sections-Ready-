@@ -1,0 +1,462 @@
+<div class="wrapper-navigation {% if settings.header_layout == 'header_2' %} nav-sticky {% endif %}{% if settings.header_layout == 'header_default' %} nav-default {% endif %}" {% if settings.header_layout == 'header_2' %} data-sticky-pc  {% endif %} data-nav>
+    
+    <div class="header-logo logo-fixed">
+      {% if section.settings.display_fixtop_menu and section.settings.logo_fix != blank %}
+        <a class="logo-img" href="{{ routes.root_url }}" title="Logo">
+            <img data-src="{{ section.settings.logo_fix | img_url: 'master' }}" 
+                src="{{ section.settings.logo_fix | img_url: 'master' }}"
+                alt="{{ section.settings.logo_fix.alt | default: shop.name }}" itemprop="logo" class="lazyautosizes lazyloaded" data-sizes="auto">
+        </a>
+      {% endif %}
+    </div>
+    
+    
+    <div class="main-menu jas-mb-style">
+        <a href="javascript:void(0)" title="{{ 'cart.general.close_cart' | t }}" class="close-menu-mb close">
+           {% render 'icon-close' %}
+        </a>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-area">
+                        <nav class="nav-bar" role="navigation">
+                            {% render 'site-nav' %}
+                        </nav>                
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+  
+    {% if section.settings.display_fixtop_menu %}
+   <div class="fixed-right-menu">
+        <div class="search-fixed">
+            <a href="#" title="Search Icon" class="icon-search" data-search-header>
+                <svg class="icon"><use xlink:href="#icon-search2" /></svg>
+            </a>
+        </div>
+        
+        <div class="cart-fixed cart-icon" {% unless template contains 'cart' %}data-icon-cart-fixed {% endunless %}>             
+            <a {% if template contains 'cart' %}href="#MainContent" {% else %}href="javascript:void(0)" data-cart-pc {% endif %} title="Cart Icon" >
+                 <svg class="icon"><use xlink:href="#shop2" /></svg>
+                <span class="cartCount" data-cart-count>
+                    {{ cart.item_count }}
+                </span>
+            </a>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+{% if settings.header_layout == 'header_default' %}
+  <div class="popup-sidebar popup-nav-pc sidebar-left">
+    <div class="wrapper-content">
+       <div class="main-menu jas-mb-style">
+          <a href="javascript:void(0)" title="{{ 'cart.general.close_cart' | t }}" class="close-menu-mb close">
+             {% render 'icon-close' %}
+          </a>
+          <div class="menu-content">
+            <div class="mb-area">
+                {% comment %}<nav class="nav-bar" role="navigation">{% endcomment %}
+                    {% comment %}{% render 'site-nav' %}{% endcomment %}
+                {% comment %}</nav>                {% endcomment %}
+            </div>
+          </div>
+          <div class="group-custom">
+           <div class="link-option">
+              {% if settings.show_wishlist %}
+              <div class="customer-wishlist">
+                  <a class="wishlist" href="{{ routes.cart_url | split: '/cart' | first }}/pages/wish-list">
+                      <svg class="icon"><use xlink:href="#icon-heart" /></svg>
+                      <span class="wishlist-text ">
+                      {{ 'wishlist.general.my_wishlist' | t }}
+                      </span>                  
+                  </a>                              
+              </div>
+              {% endif %}
+              {% if settings.show_store_locator %}
+               <div class="customer-locator">
+                  <a class="store-locator" href="{{ routes.cart_url | split: '/cart' | first }}/pages/store-locator">
+                      <svg class="icon"><use xlink:href="#icon-locator" /></svg>
+                      <span class="locator-text ">
+                      {{ 'store_locator.general.title' | t }}
+                      </span>                  
+                  </a>                              
+              </div>
+              {% endif %}
+              {% if settings.enable_multiple_currencies or settings.enable_auto_currency or settings.enable_shopify_payments_currencies %}
+                  <div class="custom-currency">
+                      {% render 'dropdown-currency' %}
+                  </div>
+              {% endif %}
+              {% if settings.enable_multilang %}
+              <div class="customer-language">
+                  {% render 'dropdown-language' %}
+              </div>
+              {% endif %}
+              {% if settings.show_store_locator %}
+               <div class="customer-locator">
+                  <a class="store-locator" href="tel:{{ 'store_locator.general.number_phone' | t }}">
+                      <svg class="icon"><use xlink:href="#icon-phone2" /></svg>
+                      <span class="locator-text ">
+                      {{ 'store_locator.general.phone' | t }}
+                      </span>                  
+                  </a>                              
+              </div>
+              {% endif %}
+          </div>
+          <div class="social_customer">
+            {% render 'social-media' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="wrapper-overlay-nav"></div>
+
+<script>
+    window.fixtop_menu = {{ section.settings.display_fixtop_menu }};
+</script>
+{% schema %}
+  {
+    "name": "Navigation",
+	"max_blocks": 15,
+    "settings": [  
+	  {
+      "type": "link_list",
+      "id": "horizontal_linklist",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+        "type": "header",
+        "content": "Fixed Top Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_fixtop_menu",
+        "label": "Display Fix Top Menu?",
+        "default": true
+      },
+	  {
+        "type": "image_picker",
+        "id": "logo_fix",
+        "label": "Logo image when enable Fixed Top Menu",
+		"info": "95px x 44px recommended"
+      },
+	  {
+		"type" : "header",
+		"content" : "Settings Label"
+	  },
+	  {
+		"type" : "checkbox",
+		"id" : "enable_sale",
+		"label" : "Display Label Sale",
+		"default" : true
+	  },
+	  {
+		"type" : "text",
+		"id" : "lb_sale",
+		"label" : "Label sale",
+		"default" : "Sale"
+	  },
+	  {
+		"type" : "textarea",
+		"id" : "sale_item",
+		"label" : "Label Sale Items"
+	  },
+	  {
+		"type" : "checkbox",
+		"id" : "enable_new",
+		"label" : "Display Label New",
+		"default" : true
+	  },
+	  {
+		"type" : "text",
+		"id" : "lb_new",
+		"label" : "Label New",
+		"default" : "New"
+	  },
+	  {
+		"type" : "textarea",
+		"id" : "new_item",
+		"label" : "Label New Items"
+	  },
+	  {
+		"type" : "checkbox",
+		"id" : "enable_hot",
+		"label" : "Display Label Hot",
+		"default" : true
+	  },
+	  {
+		"type" : "text",
+		"id" : "lb_hot",
+		"label" : "Label Hot",
+		"default" : "Hot"
+	  },
+	  {
+		"type" : "textarea",
+		"id" : "hot_item",
+		"label" : "Label Hot Items"
+	  },
+	  {
+        "type": "header",
+        "content": "Mega Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_megamenu",
+        "label": "Display Mega Menu?",
+        "default": true
+      }
+	],
+	"blocks": [
+	  {
+	  	"type": "style_1",
+      	"name": "Style 1",
+      	"settings": [
+		  {
+			"type" : "header",
+			"content" : "Column Menu"
+		  },
+		  {
+        "type": "text",
+        "id": "megamenu_items_1",
+        "label": "Mega Menu Items for Style 1",
+        "default": "Catalog"
+      },
+      {
+        "type":"checkbox",
+        "id":"enable_style_1_rows_4",
+        "label":"Enable Rows 4?",
+        "default":true
+      },	  		  
+		  {
+			"type" : "header",
+			"content" : "Product"
+		  },
+		  {
+            "type": "text",
+            "id": "title_featured_product",
+            "label": "Title Product",
+			      "default" : "Featured Products"
+          },
+		  {
+            "type": "product",
+            "id": "featured_product_1_1",
+            "label": "Feature Product 1"
+          },
+	      {
+            "type": "product",
+            "id": "featured_product_2_1",
+            "label": "Feature Product 2"
+          },
+	      {
+            "type": "product",
+            "id": "featured_product_3_1",
+            "label": "Feature Product 3"
+          },
+		  {
+			"type" : "header",
+			"content" : "Banner"
+		  },	  
+		  {
+            "type": "image_picker",
+            "id": "banner_first_style_1",
+            "label": "Upload a new image 1",
+            "info": "210px x 337px recommended"
+          },
+		  {
+			"type": "url",
+			"id": "link_banner_first_style_1",
+			"label": "Link image 1 "
+		  },
+          {
+            "type": "image_picker",
+            "id": "banner_second_style_1",
+            "label": "Upload a new image 2",
+            "info": "210px x 165px recommended"
+          },
+		  {
+			"type": "url",
+			"id": "link_banner_second_style_1",
+			"label": "Link image 2 "
+		  }
+		]
+      },	  
+	  {
+	  	"type": "style_2",
+      	"name": "Style 2",
+      	"settings": [
+		  {
+			"type" : "header",
+			"content" : "Column Menu"
+		  },
+		  {
+            "type": "text",
+            "id": "megamenu_items_2",
+            "label": "Mega Menu Items for Style 2",
+            "default": "Catalog"
+          },
+		  {
+			"type" : "header",
+			"content" : "Banner"
+		  },
+		  {
+            "type": "image_picker",
+            "id": "banner_first_style_2",
+            "label": "Upload a new image 1",
+            "info": "210px x 165px recommended"
+          },
+		  {
+			"type": "url",
+			"id": "link_banner_first_style_2",
+			"label": "Link image 1 ",
+			"info": "=============="
+		  },	  
+		  {
+        "type":"text",
+        "id":"title_feature_col",
+        "label":" Title",
+        "default":"Featured Collections"
+      },
+      {
+        "type":"color",
+        "id":"color_title_col",
+        "label":"Color Title",
+        "default":"#323232"
+      },
+      {
+        "type":"textarea",
+        "id":"content_feture_col",
+        "label":"Content",
+        "default":"Phasellus aliquet nulla justo demo cosmodo lorem varius deugiatos metus vehicula de donec duer ligula sollicitudin an milos mitos amet cosmo milancelos."
+      },
+      {
+        "type":"color",
+        "id":"color_content_col",
+        "label":"Color Content",
+        "default":"#646464"
+      },
+      {
+        "type":"text",
+        "id":"title_button_col",
+        "label":"Text Button",
+        "default":"Shop Now"
+      },
+      {
+        "type":"url",
+        "id":"link_button_col",
+        "label":"Add Link Button"
+      },
+      {
+        "type":"color",
+        "id":"text_color_bt_col",
+        "label":" Color Button",
+        "default":"#646464"
+      },
+      {
+        "type":"color",
+        "id":"border_color_bt_col",
+        "label":" Border Color Button",
+        "default":"#b9babb"
+      },
+      {
+        "type":"color",
+        "id":"back_color_bt_col",
+        "label":" Background Button",
+        "default":"#fff"
+      },
+		  {
+            "type":"header",
+            "content":"Title Bottom"
+          },
+          {
+            "type":"text",
+            "id":"text_mega_style_2",
+            "label":"Add text",
+            "default":"Promotion Information"
+          },
+          {
+            "type":"color",
+            "id":"color_text_mega_style_2",
+            "label":"Color",
+            "default":"#006464"
+          }, 
+          {
+            "type":"color",
+            "id":"back_text_mega_style_2",
+            "label":"Background",
+            "default":"#ddf5f5"
+          },
+          {
+            "type":"checkbox",
+            "id":"enable_style_2_rows_4",
+            "label":"Enable Rows 4?",
+            "default":true
+          } 
+		  
+		]
+      },	  
+	  {
+	  	"type": "style_3",
+      	"name": "Style 3",
+      	"settings": [		  
+            {
+              "type": "text",
+              "id": "megamenu_items_3",
+              "label": "Mega Menu Items for Style 3",
+              "default": "Catalog"
+            },
+            {
+              "type":"header",
+              "content":"Banner Images"
+            }, 
+            {
+              "type": "image_picker",
+              "id": "banner_style_3_1",
+              "label": "Image 1",
+              "info": "210px x 125px recommended"
+            },
+            {
+              "type": "image_picker",
+              "id": "banner_style_3_2",
+              "label": "Image 2",
+              "info": "210px x 125px recommended"
+            },
+            {
+              "type": "image_picker",
+              "id": "banner_style_3_3",
+              "label": "Image 3",
+              "info": "210px x 125px recommended"
+            },
+            {
+              "type": "image_picker",
+              "id": "banner_style_3_4",
+              "label": "Image 4",
+              "info": "210px x 125px recommended"
+            },
+            {
+              "type": "image_picker",
+              "id": "banner_style_3_5",
+              "label": "Image 5",
+              "info": "210px x 125px recommended"
+            },
+            {
+              "type":"checkbox",
+              "id":"enable_banner_style_3_6",
+              "label":"Enable Rows 6?",
+              "default":true
+            },
+            {
+              "type": "image_picker",
+              "id": "banner_style_3_6",
+              "label": "Image 6",
+              "info": "210px x 125px recommended"
+            }
+        ]
+      } 
+	 ]
+  }
+{% endschema %}

@@ -1,0 +1,289 @@
+{%- assign arrows = arrows | default: section.settings.show_arrows -%}
+{%- assign dots = dots | default: section.settings.show_dots -%}
+{%- assign fadein = fadein | default: section.settings.show_fadein -%}
+{%- assign autoplay = autoplay | default: section.settings.autoplay -%}
+{%- assign time = time | default: section.settings.autorotate_speed | times: 1000 -%}
+{% if section.settings.custom_color %}
+  {% render 'style-slideshow' %}
+{% endif %}
+
+<div class="halo-slideshow about-us-slideshow" id="slide-section{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="slideshow-section">
+    <div class="{% if section.settings.layout == 'default' %}container{% else %}container-full {% endif %}">
+        <div class="slideshow slideshow--{{ section.settings.slide_height }}"
+            {% if section.blocks.size > 1 %}
+                data-slick='{
+                    "rows": 0,
+                    "dots": true,
+                    "arrows": false,
+                    "fade": {{ fadein }},
+                    "autoplay": {{ autoplay }},
+                    "autoplaySpeed": {{ time }},
+                    "infinite": true,
+                    "adaptiveHeight": true,
+                    "slidesToScroll": 1,
+                    "mobileFirst": true,
+                    "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                    "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>",
+                    "responsive": [
+                        {
+                            "breakpoint": 1100,
+                            "settings": {
+                                "dots": {{ dots }},
+                                "arrows": {{ arrows }}
+                            }
+                        }
+                    ]
+                }'
+            {% endif %}>
+            {% for block in section.blocks %}
+                {%- assign img_url = block.settings.image_slide | img_url: 'master' -%}
+                <div class="item">
+                    {% if block.type == 'image'%}
+                        <div class="slide-image " {% if section.settings.show_image_parallax == true %} 
+                         data-bgset="{{image_url}}"
+                         style="background-image:url({{img_url}});
+                          background-attachment: fixed;
+                          background-repeat: no-repeat;
+                          background-position: center;
+                          background-size: cover;"
+                        {% endif %}>
+                            {% if section.settings.show_image_parallax == false %}
+                            {% if block.settings.image_slide == blank %}
+                                <div class=" placeholder-background no-image" style="padding-top: 40%">
+                                    <span class="recommended_size">1920x600</span>
+                                </div>
+                            {% else %}
+                                {% if forloop.index == 1 %}
+                                    <img class="image-background" src="{{ img_url }}" data-sizes="auto" alt="">
+                                {% else %}
+                                    <img class="image-background lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" data-sizes="auto" alt="" data-image>
+                                {% endif %}
+                            {% endif %}
+                            {% endif %}
+                            {% if block.settings.link != blank %}<a href="{{ block.settings.link }}"></a>{% endif %}
+                        </div>
+                    {% endif %}
+                    {% if block.settings.heading != blank or block.settings.slide-des != blank %}
+                        <div class="slide-content">
+                            {% if block.settings.sub_heading != blank%}
+                              <div class="sub-heading icon-heading">
+                                  {{ block.settings.sub_heading}}
+                              </div>
+                            {% endif %}
+                            {% if block.settings.heading != blank %}
+                                <h2 class="slide-heading animated mega-title--{{ section.settings.text_size }}">
+                                    {{block.settings.heading}}
+                                </h2>
+                            {% endif %}
+
+                            {% if block.settings.slide-des != blank %}
+                                <p class="rte slide-text animated">
+                                    {{block.settings.slide-des}}
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% schema %}
+    {
+        "name": "Slideshow",
+        "max_blocks": 9,
+        "settings": [
+            {
+                "type": "header",
+                "content": "General"
+            },
+            {
+                "type": "select",
+                "id": "layout",
+                "label": "Slideshow Layout:",
+                "options": [
+                    {
+                        "value": "default",
+                        "label": "Default"
+                    },
+                    {
+                        "value": "full",
+                        "label": "Full Width"
+                    }
+                ],
+                "default": "full"
+            },
+            {
+                "type": "select",
+                "id": "slide_height",
+                "label": "Slide Height",
+                "default": "medium",
+                "options": [
+                    {
+                        "label": "Adapt to image",
+                        "value": "adapt"
+                    },
+                    {
+                        "label": "Small",
+                        "value": "small"
+                    },
+                    {
+                        "label": "Medium",
+                        "value": "medium"
+                    },
+                    {
+                        "label": "Large",
+                        "value": "large"
+                    }
+                ],
+                "info":"If you choose to use Parallax image please do not choose option Adapt to image"
+            },
+            {
+                "type": "select",
+                "id": "text_size",
+                "label": "Text size",
+                "default": "large",
+                "options": [
+                    {
+                        "label": "Small",
+                        "value": "small"
+                    },
+                    {
+                        "label": "Medium",
+                        "value": "medium"
+                    },
+                    {
+                        "label": "Large",
+                        "value": "large"
+                    }
+                ]
+            },
+            {
+                "type": "checkbox",
+                "id": "show_arrows",
+                "label": "Show Arrows",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "show_dots",
+                "label": "Show dots",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "show_fadein",
+                "label": "Effect Fade In",
+                "default": false
+            },
+             {
+                "type": "checkbox",
+                "id": "show_image_parallax",
+                "label": "Image Parallax",
+                "default": false
+            },
+            {
+                "type": "checkbox",
+                "id": "autoplay",
+                "label": "Slideshow Auto Play",
+                "default": true
+            },
+            {
+                "type": "range",
+                "id": "autorotate_speed",
+                "label": "Change slides every",
+                "max": 9,
+                "min": 3,
+                "step": 1,
+                "unit": "s",
+                "default": 5
+            },
+            {
+                "type": "header",
+                "content": "Custom Color"
+            },
+            {
+                "type": "checkbox",
+                "id": "custom_color",
+                "label": "Turn on custom color",
+                "default": false
+            },
+            {
+                "type": "color",
+                "id": "color_sub_heading",
+                "label": "Icon Color"
+            },
+            {
+                "type": "color",
+                "id": "color_heading",
+                "label": "Heading Color"
+            },
+            {
+                "type": "color",
+                "id": "color_text",
+                "label": "Description Color"
+            },
+            {
+                "type": "color",
+                "id": "color_arrow",
+                "label": "Button Arrows Color"
+            },
+            {
+                "type": "color",
+                "id": "color_arrow_border",
+                "label": "Button Arrows Border Color"
+            },
+            {
+                "type": "color",
+                "id": "color_dot",
+                "label": "Button Dots Color"
+            },
+            {
+                "type": "color",
+                "id": "color_dot_border",
+                "label": "Button Dots Border Color"
+            }
+           
+        ],
+        "blocks" : [
+            {
+                "type": "image",
+                "name": "Image SlideShow",
+                "settings":[
+                    {
+                        "type": "header",
+                        "content": "Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image_slide",
+                        "label" : "Select Image",
+                        "info": "Recommended Image: Width x Height (1920 x 600)px"
+                    },
+                    {
+                        "type": "header",
+                        "content": "Content"
+                    },
+                    {
+                        "type" : "textarea",
+                        "id" : "sub_heading",
+                        "label" : "Icon Heading",
+                        "info":"Use svg image"
+                    },
+                    {
+                        "type" : "textarea",
+                        "id" : "heading",
+                        "label" : "Heading",
+                        "default" : "Slideshow Heading"
+                    },
+                    {
+                        "type" : "textarea",
+                        "id" : "slide-des",
+                        "label" : "Slide Description",
+                        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum iaculis quis de amet eros."
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

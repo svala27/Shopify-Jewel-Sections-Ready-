@@ -1,0 +1,21 @@
+{% if section.settings.des_blog != blank %}
+  <div class="rte des-blog">
+   <span>"</span> {{section.settings.des_blog}} <span>"</span>
+  </div>
+{% endif %}
+
+
+{% schema %}
+{
+    "name": "Description Blog",
+    "class": "blog-content-des",
+    "settings": [
+        {
+            "type": "textarea",
+            "id": "des_blog",
+            "label": "Descriptions",
+            "default":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum iaculis quis de amet eros. Nam suscipito mollis tellus metropolis veil malesuada duis danos an molestie... "
+        }
+    ]
+}
+{% endschema %}

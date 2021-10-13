@@ -1,0 +1,80 @@
+<script>
+var theme = {
+  breakpoints: {
+    medium: 750,
+    large: 990,
+    widescreen: 1400
+  },
+  strings: {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    select_options: {{ 'products.product.select_options' | t | json }},
+    soldOut: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }},
+    pre_order: {{ 'products.product.pre_order' | t | json }},
+    
+    regularPrice: {{ 'products.product.regular_price' | t | json }},
+    remove: {{ 'cart.general.remove' | t | json }},
+    previous: {{ 'general.pagination.previous' | t | json }},
+    next: {{ 'general.pagination.next' | t | json }},
+    salePrice: {{'products.product.sale_price' | t | json }},
+    sale: {{ 'products.product.on_sale' | t | json }},
+    showMore: {{ 'general.filters.show_more' | t | json }},
+    showLess: {{ 'general.filters.show_less' | t | json }},
+    addressError: {{ 'sections.map.address_error' | t | json }},
+    addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
+    addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
+    authError: {{ 'sections.map.auth_error_html' | t | json }},
+    newWindow: {{ 'general.accessibility.link_messages.new_window' | t | json }},
+    external: {{ 'general.accessibility.link_messages.external' | t | json }},
+    newWindowExternal: {{ 'general.accessibility.link_messages.new_window_and_external' | t | json }},
+    removeLabel: {{ 'cart.label.remove' | t: product: '[product]' | json }},
+    update: {{ 'cart.label.update' | t | json }},
+    quantity: {{ 'cart.label.quantity' | t | json }},
+    discountedTotal: {{ 'cart.label.discounted_total' | t | json }},
+    regularTotal: {{ 'cart.label.regular_total' | t | json }},
+    priceColumn: {{ 'cart.label.price_column' | t | json }},
+    quantityMinimumMessage: {{ 'products.product.quantity_minimum_message' | t | json }},
+    cartError: {{ 'cart.general.cart_error' | t | json }},
+    removedItemMessage: {{ 'cart.general.removed_item_html' | t: quantity: '[quantity]', link: '[link]' | json }},
+    unitPrice: {{ 'products.product.unit_price_label' | t | json }},
+    unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},
+    oneCartCount: {{ 'cart.popup.cart_count' | t: count: 1 | json }},
+    otherCartCount: {{ 'cart.popup.cart_count' | t: count: '[count]' | json }},
+    quantityLabel: {{ 'cart.popup.quantity_label' | t: quantity_count: '[count]' | json }},
+    in_stock: {{ 'products.product.in_stock' | t | json }},
+    out_of_stock: {{ 'products.product.out_of_stock' | t | json }},
+    cartErrorMaximum: {{ 'cart.general.cart_error_maximum' | t: quantity: '[quantity]' | json }},
+    shippingMessage: {{ 'cart.shipping.shipping_message' | t: price: '[price]' | json }},
+    {% if settings.shipping_price != blank %}
+    	priceFreeShipping: {{ settings.shipping_price }},
+    {% else %}
+    	priceFreeShipping: "0",
+    {% endif %}
+    freeShipping: {{ 'cart.shipping.free_shipping' | t | json }},
+    added_to_cart: {{ 'cart.popup.added_to_cart' | t | json }},
+
+  },
+  moneyFormat: {{ shop.money_format | json }},
+  moneyFormatWithCurrency: {{ shop.money_with_currency_format | json }}
+}
+window.shop_currency = "{{ shop.currency }}";
+window.multi_lang = {{ settings.enable_multilang }};
+window.show_multiple_currencies = {{ settings.enable_multiple_currencies }};
+window.show_auto_currency = {{ settings.enable_auto_currency }};
+window.enable_sidebar_multiple_choice = true;
+window.money_format = {{ shop.money_format | json }};
+window.label_sale = "{{ settings.type_label_sale }}";
+window.swatch_recently = "{{ settings.product_options_one | downcase }}";
+window.router = "{{ routes.cart_url | split: '/cart' | first}}";
+window.option_ptoduct1 = "{{ settings.product_options_one | downcase }}";
+window.option_ptoduct2 = "{{ settings.product_options_two | downcase }}";
+window.option_ptoduct3 = "{{ settings.product_options_three | downcase }}";
+
+var hl = {
+      url: '{{ shop.permanent_domain }}',
+      tid: '{{ settings.tid }}',
+      dom: '{{ shop.domain }}',
+      lic: '48d02feb{{ settings.license }}cab14796',
+    };
+document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+</script>

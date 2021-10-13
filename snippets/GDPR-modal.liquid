@@ -1,0 +1,15 @@
+{% if settings.display_gdpr %}
+<div id="accept-cookies" class="cookieMessage {% if settings.display_gdpr_mb %}cookieMessage-mb{% endif %} hide">
+    <a href="javascript:void(0)" title="Close" class="close close-gdpr">
+         <svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 413.348 413.348" height="512" viewBox="0 0 413.348 413.348" width="512"><path d="m413.348 24.354-24.354-24.354-182.32 182.32-182.32-182.32-24.354 24.354 182.32 182.32-182.32 182.32 24.354 24.354 182.32-182.32 182.32 182.32 24.354-24.354-182.32-182.32z"/></svg>
+      </a>
+    <div class="des rte">
+        {{ settings.gdpr_content }}
+    </div>
+    {% if settings.gdpr_accept_cookies_text != blank %}
+        <a href="#" class=" btn notification-cookies accept_cookies_link" aria-label="link" data-accept-cookie>
+            {{settings.gdpr_accept_cookies_text }}
+        </a>
+    {% endif %}
+</div>
+{% endif %}

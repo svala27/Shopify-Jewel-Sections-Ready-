@@ -1,0 +1,19 @@
+ <div class="footbar-fixed">
+      <div class="footbar-fixed-left">
+          {% if settings.show_someone-purchased == 'left' %}
+              {% render 'someone-purchased' %}
+          {% endif %}
+          {% if settings.show_gdpr == 'left' %}
+              {% render 'GDPR-modal' %}
+          {% endif %}
+      </div>
+      <div class="clearfix"></div>
+      <div class="footbar-fixed-right">
+          {% if settings.show_someone-purchased == 'right' %}
+              {% render 'someone-purchased' %}
+          {% endif %}
+          {% if settings.show_gdpr == 'right' %}
+              {% render 'GDPR-modal' %}
+          {% endif %}
+      </div>
+  </div>

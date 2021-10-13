@@ -1,0 +1,453 @@
+{% if section.settings.enable and section.blocks.size > 0 %}
+
+{%- assign column =  section.settings.collection_results_per_row -%}
+
+<div class="home-feature-collections-list featured-collection-{{ section.blocks.size }} {% if section.settings.style_layout == 'layout_2' %} layout-2 {% else %} layout-1{% endif %}" id="featured-collection-{{section.id}}" data-section-type="collection-list">
+    <div class="container">
+        <div class="wraper-content">
+            {% if section.settings.widget_title != blank %}
+            <div class="widget-title">   
+                <h3 class="box-title"> 
+                    {{section.settings.widget_title}}
+                </h3>
+            </div>
+            {% endif %}
+            <div class="row"
+                {% if section.settings.collection_layout == 'carousel' %}
+                    data-slick='{
+                        "dots": false,
+                        "arrows": true,
+                        "infinite": false,
+                        "adaptiveHeight": false,
+                        "slidesToShow": {{ column }},
+                        "slidesToScroll": 1,
+                        "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                        "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>",
+                        "responsive": [
+                           {
+                               "breakpoint": 1199,
+                               "settings": {
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             },
+                            {
+                               "breakpoint": 992,
+                               "settings": {
+                                 "slidesToShow": 3,
+                                 "slidesToScroll": 1,
+                                 "arrows": false,
+                                 "dots": true
+                               }
+                             },
+                             {
+                               "breakpoint": 768,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             },
+                             {
+                               "breakpoint": 480,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             }
+                        ]
+                    }'
+                {% endif %}>
+                {% for block in section.blocks %}
+                {% if section.settings.collection_results_per_row == '2' %}
+                  {%- assign column_size = 'col-12 col-sm-6 two-blocks ' -%}
+                {% elsif  section.settings.collection_results_per_row == '3' %}
+                   {%- assign column_size = 'col-12 col-sm-4 col-md-4 three-blocks' -%}
+                {% elsif  section.settings.collection_results_per_row == '4' %}
+                   {%- assign column_size = 'col-12 col-6 col-sm-3 col-lg-3 col-md-4 four-blocks' -%}
+                {% elsif  section.settings.collection_results_per_row == '5' %}
+                   {%- assign column_size = 'col-6 col-md-4 five-blocks' -%}
+                {% endif %}
+                <div class="item {% if section.settings.collection_layout == 'carousel' %} item-carousel{% endif %} {{ column_size }} {% if block.settings.sub_title == blank %}no-sub{% endif %}">
+                    <div class="sub-banner banner-item">
+                        <div class="img-box">
+                            <a href="{{ block.settings.link }}">
+                                {% if block.settings.image != blank %}
+                                {%- assign img_url = block.settings.image | img_url: 'master' -%}
+                                     <img class="product-card__img lazyload"
+                                        src="{{ 'loading.svg' | asset_url }}"
+                                        data-src="{{ img_url }}"
+                                        data-sizes="auto" alt="{{ block.settings.image.alt }}" data-image>
+                                {% else %}
+                                <div class="no-image">
+                                  <span> 100 x 90px</span>
+                                </div>   
+                                {% endif %}
+                            </a>
+                        </div>
+
+                        {% if block.settings.title != blank %}
+                        <div class="content-box">
+                            {% if block.settings.title != blank %}
+                            <h3 class="collection-title">
+                                {{block.settings.title}}
+                            </h3>
+                            {% endif %}
+                            {% if block.settings.sub_title != blank %}
+                                <p class="sub-title">
+                                    {{block.settings.sub_title}}
+                                </p>
+                            {% endif %}
+                            {% if block.settings.title_link != blank %}
+                                <a href="{{block.settings.link}}" class="link-view">
+                                    {{ block.settings.title_link }}
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% if section.settings.title_view_all_cl != blank %}
+            <div class="view-all-collections">
+                <a href="{{section.settings.link_view_all_col}}" class="btn btn-one">
+                    {{section.settings.title_view_all_cl}}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+    {% if section.settings.custom_color %}
+        <style>
+            {% assign margin_bottom =  section.settings.margin_bottom %}
+            #featured-collection-{{section.id}} .widget-title .box-title{
+                color: {{ section.settings.color_title }};
+            }
+            {% if settings.body_layout == 'full_width' %} 
+             #featured-collection-{{section.id}}{
+                background:{{ section.settings.back_section }}!important;
+            }
+            {% else %}
+            #featured-collection-{{section.id}} .container .wraper-content{
+                background:{{ section.settings.back_section }}!important;
+            }
+            {% endif %}
+
+            #featured-collection-{{section.id}} .container .item .banner-item{
+                background: {{ section.settings.background_section }};
+            }
+
+            #featured-collection-{{section.id}} .container .item .banner-item .content-box .collection-title{
+                 color: {{ section.settings.color_title_items }};
+            }
+
+            #featured-collection-{{section.id}} .container .item .banner-item .content-box .sub-title{
+                color: {{ section.settings.color_sub_title_items }};
+            }
+
+            #featured-collection-{{section.id}} .container .item .banner-item .content-box .link-view{
+                color: {{ section.settings.color_link_items }};
+            }
+            #featured-collection-{{section.id}} .container .item .banner-item .content-box .link-view .border_hover:before{
+                background: {{ section.settings.border_hover_link_items }};
+            }
+            #featured-collection-{{section.id}} .container .view-all-collections .btn{
+                    color: {{ section.settings.color_title_view_all }};
+                    border-color:{{section.settings.border_color_title_view_all}}
+            }
+            #featured-collection-{{section.id}} .container .view-all-collections .btn:hover{
+                    color: {{ section.settings.color_hover_view_all }};
+                    background:{{section.settings.background_hover_view_all}};
+                    border-color:{{section.settings.background_hover_view_all}};
+            }
+
+            @media (max-width: 767px) {
+                #featured-collection-{{section.id}} {
+                    margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+                }
+            }
+
+            @media (min-width: 768px) and (max-width: 1199px) {
+                #featured-collection-{{section.id}} {
+                    margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+                }
+            }
+            
+            @media (min-width: 1200px) {
+                #featured-collection-{{section.id}} {
+                    margin-bottom: {{ margin_bottom }}px;
+                }
+            }   
+        </style>
+    {% endif %}
+{% endif %}
+
+
+{% schema %}
+    {
+        "name": "Featured Collections",
+        "class": "home-feature-collections-list",
+        "max_blocks": 10,
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "enable",
+                "label": "Enable",
+                "default": true
+            },
+            {
+                "type": "select",
+                "id": "style_layout",
+                "label": "Style Layout",
+                "default": "layout_2",
+                "options": [
+                    {
+                        "value": "layout_1",
+                        "label": "Layout 1"
+                    },
+                    {
+                        "value": "layout_2",
+                        "label": "Layout 2"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "collection_layout",
+                "label": "Layout",
+                "default": "carousel",
+                "options": [
+                    {
+                        "value": "grid",
+                        "label": "Grid"
+                    },
+                    {
+                        "value": "carousel",
+                        "label": "Carousel"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "collection_results_per_row",
+                "label": "Collections per row",
+                "options": [
+                  
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                 {
+                    "value": "4",
+                    "label": "4"
+                  },
+                  {
+                    "value": "5",
+                    "label": "5"
+                  }
+                  
+                ],
+                "default": "4"
+              },
+            {
+                "type": "header",
+                "content": "Widget Title"
+            },
+            {
+                "type": "text",
+                "id": "widget_title",
+                "label": "Title",
+                "default": "Featured Collections"
+            },
+            {
+                "type": "header",
+                "content": "Custom Color"
+            },
+            {
+                "type": "checkbox",
+                "id": "custom_color",
+                "label": "Turn on custom color",
+                "default": false
+            },
+            {
+                "type": "range",
+                "id": "margin_bottom_mb",
+                "label": "Mobile",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "default": 0
+            },
+            {
+                "type": "range",
+                "id": "margin_bottom_tab",
+                "label": "Tablet",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "default": 0
+            },
+            {
+                "type": "range",
+                "id": "margin_bottom",
+                "label": "Margin Bottom",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "default": 0
+            },
+            {
+                "type" : "color",
+                "id" : "back_section",
+                "label" : "Background Color",
+                "default" : "#f8f8f8"
+            },  
+            {
+                "type" : "color",
+                "id" : "color_title",
+                "label" : "Title Color",
+                "default" : "#2e3031",
+                "info":"=================="
+            },
+            {
+                "type" : "color",
+                "id" : "background_section",
+                "label" : "Background Items",
+                "default" : "#fff"
+            },
+            {
+                "type" : "color",
+                "id" : "color_title_items",
+                "label" : "Title Color Items",
+                "default" : "#282828"
+            },
+            {
+                "type" : "color",
+                "id" : "color_sub_title_items",
+                "label" : "Sub Title Color Items",
+                "default" : "#969696"
+            },
+            {
+                "type" : "color",
+                "id" : "color_link_items",
+                "label" : "Link Color",
+                "default" : "#8b714a"
+            },
+            {
+                "type" : "color",
+                "id" : "border_hover_link_items",
+                "label" : "Border Color hover Link",
+                "default" : "#cabfb0",
+                "info":"=================="
+            },
+            {
+                "type" : "color",
+                "id" : "color_title_view_all",
+                "label" : "Color Link View All",
+                "default" : "#2e3031"
+            },
+            {
+                "type" : "color",
+                "id" : "border_color_title_view_all",
+                "label" : "Border Color Link View All",
+                "default" : "#c6c6c6"
+            },
+             {
+                "type" : "color",
+                "id" : "background_hover_view_all",
+                "label" : "Background Hover View All",
+                "default" : "#2e3031"
+            },
+            {
+                "type" : "color",
+                "id" : "color_hover_view_all",
+                "label" : "Color Hover View All",
+                "default" : "#fff"
+            },  
+             {
+                "type": "header",
+                "content": "View All Collections"
+            },
+            {
+                "type" :"text",
+                "id" : "title_view_all_cl",
+                "label" :"Title ",
+                "default" :"View All The Collections"
+            },
+            {
+                "type" :"url",
+                "id" : "link_view_all_col",
+                "label" :"Add Link"
+            }         
+        ],
+        "blocks": [
+            {
+                "type": "collection_item",
+                "name": "Image",
+                "settings": [           
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type" : "text",
+                    "id" : "title",
+                    "label" : "Title",
+                    "default" : "Bracelets"
+                },
+                {
+                    "type" : "text",
+                    "id" : "sub_title",
+                    "label" : "Sub Title",
+                    "default" : "Sale Up to 10% Off"
+                },
+                {
+                    "type" : "text",
+                    "id" : "title_link",
+                    "label" : "Title Link",
+                    "default" : "Diamond Rings"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link",
+                    "info": "Shop Earrings"
+                }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Featured Collections Lists",
+                "category": "Collection",
+                "blocks": [
+                    {
+                        "type": "collection_item"
+                    },
+                    {
+                        "type": "collection_item"
+                    },
+                    {
+                        "type": "collection_item"
+                    },
+                    {
+                        "type": "collection_item"
+                    },
+                    {
+                        "type": "collection_item"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

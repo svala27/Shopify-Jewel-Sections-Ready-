@@ -1,0 +1,17 @@
+{% if section.settings.footer_newsletter_enable %}
+	<div class="footer-newsletter">
+		<div class="row">
+			{% if section.settings.footer_newsletter_title != blank %}
+	          <h3 class="newsletter-title col-6 col-md-3">
+	            <span>{{section.settings.footer_newsletter_title}}</span>
+	          </h3>
+	          {% endif %}
+	          <div class="form-newsletter col-6 col-md-6">
+	          	{% render 'newsletter' %}
+	          </div>
+	          <div class="footer-social col-6 col-md-3">
+	          	{% render 'social-media' %}
+	          </div>
+	    </div>
+	</div>
+{% endif %}

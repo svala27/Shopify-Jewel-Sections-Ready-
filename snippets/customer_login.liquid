@@ -1,0 +1,124 @@
+<div id="dropdown-customer" class="custom_login {% if settings.header_layout == 'header_default' %} custom-login_default {% else %} custom-login-01{%endif%}">  
+  <div class="customer-title">
+    <a href="javascript:void(0)" title="{{ 'cart.general.close_cart' | t }}" class="close-customer close">
+      {% render 'icon-close' %}
+    </a>
+    {% if customer %}
+    <h5>
+      {{ customer.name }}
+    </h5>
+    {% else %}
+    <h5>
+      {{ 'customer.login.title' | t }}
+    </h5>
+    {% endif %}
+  </div>
+  <div class="customer-note">
+      <p>
+          {{ 'customer.login.note' | t }}
+      </p>
+  </div>
+  
+  <div class="customer-content">
+    {% if customer %}
+    <div class="customer-inner is-customer">
+      <a class="acc" href="/account" >
+        {{ 'customer.account.title' | t }}
+      </a>
+      
+      <a class="btn btn-one btn-logout" id="customer_logout_link" href="{{ routes.account_logout_url }}">
+        {{ 'layout.customer.log_out' | t }}
+      </a>      
+    </div>
+
+    {% else %}
+    <div class="customer-inner login-customer">
+      <form accept-charset="UTF-8" action="{{ routes.account_login_url }}" method="post">
+        <input name="form_type" type="hidden" value="customer_login" />
+        <input name="utf8" type="hidden" value="✓" />
+
+        <div class="ct-login">
+          <div class="form-group">
+            <label for="customer_email">
+              <span>
+                {{ 'customer.login.email' | t }}
+              </span>
+              <em>*</em>
+            </label>
+            <input class="form-control" type="email" value="" name="customer[email]" placeholder="" >
+          </div>
+          <div class="form-group">
+            <label for="customer_password">
+              <span>
+                {{ 'customer.login.password' | t }}
+              </span>
+              <em>*</em>
+            </label>
+            <input class="form-control" type="password" value="" placeholder="" name="customer[password]" >
+          </div>
+
+          <div class="action-btn">
+            <a class="text-hover forgot-password" href="{{ routes.account_login_url }}#recover">
+                <span>
+                     {{ 'customer.login.forgot_password' | t }}
+                </span>
+            </a>
+            <input type="submit" class="btn btn-login"  value="{{ 'customer.login.sign_in' | t }}">
+          </div>
+        </div>
+
+        <div class="ct-register">
+            <p class="note_register">
+                {{  'customer.register.note' | t }}
+            </p>
+          <p>
+            <a href="{{ routes.account_login_url }}" class="btn btn-two btn-register">
+              {{  'customer.register.title_2' | t }}
+            </a>
+          </p>
+        </div>
+        {% if settings.header_layout == 'header_2' %}
+        <div class="group-option">
+          <div class="link-option">
+            {% if settings.show_wishlist %}
+            <div class="customer-wishlist">
+                <a class="wishlist" href="{{ routes.cart_url | split: '/cart' | first }}/pages/wish-list">
+                    <svg class="icon"><use xlink:href="#icon-heart" /></svg>
+                    <span class="wishlist-text border_hover">
+                    {{ 'wishlist.general.my_wishlist' | t }}
+                    </span>                  
+                </a>                              
+            </div>
+            {% endif %}
+            {% if settings.show_store_locator %}
+             <div class="customer-locator">
+                <a class="store-locator" href="{{ routes.cart_url | split: '/cart' | first }}/pages/store-locator">
+                    <svg class="icon"><use xlink:href="#icon-locator" /></svg>
+                    <span class="locator-text border_hover">
+                    {{ 'store_locator.general.title' | t }}
+                    </span>                  
+                </a>                              
+            </div>
+            {% endif %}
+            {% if settings.show_store_locator %}
+             <div class="customer-locator">
+                <a class="store-locator" href="tel:{{ 'store_locator.general.number_phone' | t }}">
+                    <svg class="icon"><use xlink:href="#icon-phone2" /></svg>
+                    <span class="locator-text border_hover">
+                    {{ 'store_locator.general.phone' | t }}
+                    </span>                  
+                </a>                              
+            </div>
+            {% endif %}
+        </div>
+        <div class="social_customer">
+          {% render 'social-media' %}
+        </div>
+        </div>
+        
+        {% endif %}
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>

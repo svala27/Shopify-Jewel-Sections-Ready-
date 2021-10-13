@@ -1,0 +1,280 @@
+{% assign column = column | default: section.settings.column | plus: 0 %}
+{% assign showItemsFirst = section.settings.col_list_show_first | plus: 0 %}
+<div class="page-collections-list collections-list-custom" datta-collection-list>
+    <div class="container">
+      <div class="des-col-header text-center">
+            {% if section.settings.description != blank %}
+                {{section.settings.description }}
+            {% endif %}
+        </div>
+        <div class="halo-column column-{{ column }}">
+            {% if section.settings.display_type == 'all' %}
+                {% case section.settings.sort %}
+                    {% when 'products_high' or 'products_low' %}
+                        {%- assign collections = collections | sort: 'all_products_count' -%}
+                    {% when 'date' or 'date_reversed' %}
+                        {%- assign collections = collections | sort: 'published_at' -%}
+                {% endcase %}
+                {% if section.settings.sort == 'products_low' or section.settings.sort == 'date' or section.settings.sort == 'alphabetical' %}
+                    {% for collection in collections %}
+                        <div class="halo-item {% if forloop.index > showItemsFirst %}d-none{% endif %}">
+                            {% render 'collection-grid-item', collection: collection %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% for collection in collections reversed %}
+                        <div class="halo-item {% if forloop.index > showItemsFirst %}d-none{% endif %}">
+                            {% render 'collection-grid-item', collection: collection %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                {% for block in section.blocks %}
+                    <div class="halo-item {% if forloop.index > showItemsFirst %}d-none{% endif %}">
+                        {%- assign collection = collections[block.settings.collection] -%}
+                        {%- assign image_col = block.settings.image_col -%}
+                        {% render 'collection-grid-item', collection: collection, image_col: image_col, %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if section.settings.display_infinite_scrolling_col and section.settings.title_show_more != blank%}      
+            <div class="infinite-scrolling-col-list">
+                <a class="btn btn-show-more" href="javascript:void(0)">
+                    {{ section.settings.title_show_more }}
+                </a>
+            </div>
+            {% endif %}
+    </div>
+</div>
+{% if section.settings.custom_color_active %}
+  <style>
+  .page-collections-list .des-col-header p, .collection-grid-content .descriptions{
+     color: {{section.settings.color_des_col}};
+  }
+  .collection-grid-item .title-wrapper .title{
+    color: {{section.settings.color_title}};
+  }
+  .collection-grid-item .title-wrapper .count-products{
+    color: {{section.settings.color_count_products}};
+  }
+  .page-collections-list .infinite-scrolling-col-list .btn-show-more{
+    color: {{section.settings.color_show_more}};
+    border-color: {{section.settings.border_show_more}};
+    background: {{section.settings.back_show_more}};
+    }
+    .page-collections-list .infinite-scrolling-col-list .btn-show-more:hover{
+      color: {{section.settings.color_count_products}};
+      border-color: {{section.settings.color_title}};
+      background: {{section.settings.color_title}};
+    }
+    .collection-grid-item .product-btn{
+      color: {{section.settings.color_button}};
+      border-color: {{section.settings.back_button}};
+      background: {{section.settings.back_button}};
+    }
+    .collection-grid-item .product-btn:hover{
+      color: {{section.settings.back_button}};
+      border-color: {{section.settings.color_button}};
+      background: #fff;
+    }
+    .page-collection-list-items .collections_custom_grid .des-col-header,
+    .page-collection-list-items .collections_custom_grid .collections-list-custom .halo-column .halo-item:nth-child(1) .collection-grid-item{
+        background: {{section.settings.back_items}};
+    }
+  </style>
+{% endif %}
+
+  <script type="text/javascript">
+    theme.number_collection_item_show_one_times = {{section.settings.col_list_limit }};
+  </script>
+{% schema %}
+{
+    "name": "Page Content",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Collections Description"
+        },
+        {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+        },
+        {
+            "type": "header",
+            "content": "Collections List"
+        },
+        {
+            "type": "paragraph",
+            "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+        },
+        {
+            "type": "radio",
+            "id": "display_type",
+            "label": "Select collections to show",
+            "default": "all",
+            "options": [
+                {
+                    "value": "all",
+                    "label": "All"
+                },
+                {
+                    "value": "selected",
+                    "label": "Selected"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "sort",
+            "label": "Sort collections by:",
+            "info": "Sorting only applies when 'All' is selected",
+            "default": "alphabetical",
+            "options": [
+                {
+                    "value": "products_high",
+                    "label": "Product count, high to low"
+                },
+                {
+                    "value": "products_low",
+                    "label": "Product count, low to high"
+                },
+                {
+                    "value": "alphabetical",
+                    "label": "Alphabetically, A-Z"
+                },
+                {
+                    "value": "alphabetical_reversed",
+                    "label": "Alphabetically, Z-A"
+                },
+                {
+                    "value": "date",
+                    "label": "Date, old to new"
+                },
+                {
+                    "value": "date_reversed",
+                    "label": "Date, new to old"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Collections per row",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "default": 3
+        },
+        {
+            "type": "range",
+            "id": "col_list_show_first",
+            "label": "Number of Items show first",
+            "min": 3,
+            "max": 20,
+            "step": 1,
+            "default": 6
+        },
+        {
+            "type": "checkbox",
+            "id": "display_infinite_scrolling_col",
+            "label": "Display Show More Button?",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "col_list_limit",
+            "label": "Number of products to show at one time",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "default": 3
+        },
+        {
+          "type":"text",
+          "id":"title_show_more",
+          "label":"Title Button Show More",
+          "default":"Show More"
+        },
+        {
+          "type":"checkbox",
+          "id":"enable_des_col",
+          "label":"Enable Descriptions?",
+          "default":false
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color_active",
+            "label": "Custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "back_items",
+            "label": "Background Items"
+        },
+        {
+            "type": "color",
+            "id": "color_des_col",
+            "label": "Description Color",
+            "info":"==========="
+        },
+        {
+            "type": "color",
+            "id": "back_button",
+            "label": "Bacground Button Show Now"
+        },
+        {
+            "type": "color",
+            "id": "color_button",
+            "label": "Color Button Show Now",
+            "info":"==========="
+        },
+        {
+            "type": "color",
+            "id": "color_title",
+            "label": "Color Title"
+        },
+        {
+            "type": "color",
+            "id": "color_count_products",
+            "label": "Color Count Product",
+            "info":"==========="
+        },
+        {
+            "type":"color",
+            "id":"border_show_more",
+            "label":"Border Color Button Show More"
+        },
+        {
+            "type":"color",
+            "id":"color_show_more",
+            "label":"Color Button Show More"
+        },
+        {
+            "type":"color",
+            "id":"back_show_more",
+            "label":"Background Color Button Show More"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                  "type": "image_picker",
+                  "id": "image_col",
+                  "label": "Image"
+                },
+                {
+                    "label": "Collection",
+                    "id": "collection",
+                    "type": "collection"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+<ul class="site-nav-dropdown">
+   <li class="menu-lv-2 hide_pc">
+     <div class="rlte">
+        <a href="{{ link_for_dropdown.url }}" class=" nav-action nav-action--end" aria-label="link">
+            {{ 'layout.navigation.menu_all' | t }} {{ link_for_dropdown.title }}
+        </a>
+     </div>
+    </li>
+  
+    {% for link_child_item in linklists[link_child].links %}
+    <li class="menu-lv-2{% if linklists[link_child_item.handle] != empty %} dropdown{% endif %}">
+        <div class="rlte">
+      <a {% if linklists[link_child_item.handle] != empty %}class="menu__moblie"{% endif %} href="{{ link_child_item.url }}">
+            {{link_child_item.title}}
+            
+            {% if linklists[link_child_item.handle] != empty %}
+            <span class="icon-dropdown" data-toggle-menu-mb>
+               <svg class="icon"><use xlink:href="#icon_right" />
+            </span>
+            {% endif %}
+        </a>
+          </div>
+        
+        {% if linklists[link_child_item.handle] != empty %}
+        
+        <div class="sub-menu-mobile menu-mb-translate">
+            <div class="menu-mb-title">
+                <span class="icon-dropdown">
+                <svg class="icon"><use xlink:href="#icon_left" />
+                </span>
+                {{link_child_item.title}}
+            </div>
+            
+            <ul class="site-nav-dropdown">
+               <li class="menu-lv-3 hide_pc">
+                 <a href="{{ link_child_item.url }}" class="nav-action nav-action--end" aria-label="link">
+                   {{ 'layout.navigation.menu_all' | t }} {{ link_child_item.title }}
+                 </a>
+              </li>
+                {% for n in linklists[link_child_item.handle].links %}                
+                <li class="menu-lv-3">
+                    <a {% if linklists[n.handle] != empty %}class="menu__moblie"{% endif %} href="{{ n.url }}">
+                        {{n.title}}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

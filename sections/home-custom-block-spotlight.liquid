@@ -1,0 +1,334 @@
+{% if section.settings.collection_results_per_row == '2' %}
+        {%- assign column = '2' -%}
+        {%- assign column_size = 'col-12 col-sm-6 two-blocks ' -%}
+    {% elsif  section.settings.collection_results_per_row == '3' %}
+        {%- assign column = '3' -%}
+        {%- assign column_size = 'col-12 col-sm-4 col-md-4 three-blocks' -%}
+    {% elsif  section.settings.collection_results_per_row == '4' %}
+        {%- assign column = '4' -%}
+        {%- assign column_size = 'col-12 col-6 col-sm-3 col-lg-3 col-md-4 four-blocks' -%}
+{% endif %}
+
+<div class="halo-section custom_block_spotlight" data-section-id="{{ section.id }}" data-section-type="Custom Block Spotlight">
+    <div class="container">
+        {% if section.settings.widget_title != blank %}
+            <div class="widget-title">   
+                <h3 class="box-title">
+                    <span class="title"> 
+                        {{section.settings.widget_title}}
+                    </span>
+                </h3>
+            </div>
+        {% endif %}
+
+        {% if section.blocks.size > 0 %}
+            <div class=" row spotlight-blocks column-{{ column }}">
+                {% for block in section.blocks %}
+                    <div class="halo-item {{column_size}}">
+                        <div class="card-text-overlay">
+                            <div class="image ">
+                                {% if block.settings.image != blank %}
+                                    <a href="{{ block.settings.link }}" class="animation-scale">
+                                        <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ block.settings.image | img_url: 'master'  }}" alt="" data-image>
+                                    </a>
+                                {% else %}
+                                    <div class="no-image">
+                                      <span> 370x280px</span>
+                                    </div>  
+                                {% endif %}
+                                {% if block.settings.sub_title != blank %}
+                                    <p class="sub_title">
+                                        {{block.settings.sub_title}}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="content">
+                                {% if block.settings.title != blank %}
+                                    <h3 class="title">
+                                         <a href="{{ block.settings.link }}">
+                                            {{ block.settings.title }}
+                                         </a>
+                                    </h3>
+                                {% endif %}
+                                {% if block.settings.description != blank %}
+                                    <p class="description">
+                                       {{block.settings.description}}
+                                    </p>
+                                {% endif %}
+                                {% if block.settings.button != blank %}
+                                    <div class="button-wrapper">
+                                        {% if block.settings.link != blank %}
+                                            <a class="btn btn--primary" href="{{ block.settings.link }}" aria-label="link">
+                                        {% else %}
+                                            <span class="btn btn--primary">
+                                        {% endif %}
+                                            {{block.settings.button}}
+                                        {% if block.settings.link != blank %}
+                                            </a>
+                                        {% else %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if section.settings.custom_color %}
+<style>
+   {% assign margin_bottom =  section.settings.margin_bottom %}
+   [data-section-id='{{ section.id }}'] .widget-title .box-title{
+      color: {{ section.settings.color_section_heading }}
+   }
+    [data-section-id='{{ section.id }}'] .card-text-overlay .content .title a {
+        color: {{ section.settings.color_heading }}
+    }
+    [data-section-id='{{ section.id }}'] .card-text-overlay .content .title a span:before {
+        background: {{ section.settings.border_color_heading }}
+    }
+    [data-section-id='{{ section.id }}'] .card-text-overlay .image  .sub_title {
+        color: {{ section.settings.color_sub_heading }}
+    }
+
+    [data-section-id='{{ section.id }}'] .card-text-overlay .content .description {
+        color: {{ section.settings.color_text }}
+    }
+
+    [data-section-id='{{ section.id }}'] .card-text-overlay .content .button-wrapper .btn {
+        color: {{ section.settings.color_button }};
+        border-color: {{ section.settings.color_border_button }};
+        background-color: {{ section.settings.color_bg_button }};
+    }
+
+    [data-section-id='{{ section.id }}'] .card-text-overlay .content .button-wrapper .btn:hover {
+        color: {{ section.settings.color_button_hover }};
+        border-color: {{ section.settings.color_border_button_hover }};
+        background-color: {{ section.settings.color_bg_button_hover }};
+    }
+    @media (max-width: 767px) {
+        [data-section-id='{{ section.id }}']  {
+            margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        [data-section-id='{{ section.id }}']  {
+            margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        [data-section-id='{{ section.id }}']  {
+            margin-bottom: {{ margin_bottom }}px;
+        }
+    }   
+ 
+</style>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Custom Block Spotlight",
+    "class": "custom-block-spotlight-section",
+    "max_blocks": 6,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Widget Title"
+        },
+        {
+            "type": "text",
+            "id": "widget_title",
+            "label": "Title",
+            "default": "Trending Now"
+        },
+        {
+            "type": "header",
+            "content": "Section Layout"
+        },
+        {
+            "type": "select",
+            "id": "collection_results_per_row",
+            "label": "Layout Column",
+            "options": [
+              
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+             {
+                "value": "4",
+                "label": "4"
+              }
+              
+            ],
+            "default": "3"
+          },
+        {
+            "type": "header",
+            "content": "Block Style"
+        },
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+         {
+            "type": "color",
+            "id": "color_section_heading",
+            "label": "Title Section Color",
+            "info":"==================="
+        },
+        {
+            "type": "color",
+            "id": "color_sub_heading",
+            "label": "Sub Title Block Color"
+        },
+        {
+            "type": "color",
+            "id": "color_heading",
+            "label": "Title Block Color"
+        },
+        {
+            "type": "color",
+            "id": "border_color_heading",
+            "label": "Border Hover Title Block Color"
+        },
+        {
+            "type": "color",
+            "id": "color_text",
+            "label": "Description Block Color"
+        },
+        {
+            "type": "color",
+            "id": "color_button",
+            "label": "Button Color"
+        },
+        {
+            "type": "color",
+            "id": "color_border_button",
+            "label": "Button Border Color"
+        },
+        {
+            "type": "color",
+            "id": "color_bg_button",
+            "label": "Button Background Color"
+        },
+        {
+            "type": "color",
+            "id": "color_button_hover",
+            "label": "Button Color Hover"
+        },
+        {
+            "type": "color",
+            "id": "color_border_button_hover",
+            "label": "Button Border Color Hover"
+        },
+        {
+            "type": "color",
+            "id": "color_bg_button_hover",
+            "label": "Button Background Color Hover"
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_mb",
+            "label": "Mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_tab",
+            "label": "Tablet",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom",
+            "label": "Margin Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        }
+    ],
+    "blocks": [
+        {
+            "type": "banner_block",
+            "name": "Another Block",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "sub_title",
+                    "label": "Sub Title",
+                    "default": "Loremous"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Milancelos A Lanos"
+                },
+                {
+                    "type": "textarea",
+                    "id": "description",
+                    "label": "Description",
+                    "default": "Nullam aliquet vestibulum augue non varius. Cras de congue an elitos. Duis tristique delo sante delos maliquam praesent nurna tellus..."
+                },
+                {
+                    "type": "text",
+                    "id": "button",
+                    "label": "Button",
+                    "default": "Shop Now"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link (Optional)"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Custom Block Spotlight",
+            "category": "Custom Block",
+            "blocks": [
+                {
+                    "type": "banner_block"
+                },
+                {
+                    "type": "banner_block"
+                },
+                {
+                    "type": "banner_block"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

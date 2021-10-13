@@ -1,0 +1,90 @@
+{%- assign img_url = product.featured_image | img_url: '300x300' -%}
+{%- assign img_url_1 = product.images[0].src | img_url: '270x270' -%}
+{%- assign img_url_2 = product.images[1].src | img_url: '270x270' -%}
+{%- assign show_image_swap = show_image_swap | default: settings.image_swap -%}
+{%- assign show_product_compare = show_product_compare | default: settings.show_product_compare -%}
+{%- assign show_product_compare_mb = show_product_compare_mb | default: settings.show_product_compare_mb -%}
+{%- assign show_product_quickview = show_product_quickview | default: settings.show_product_quickview -%}
+{%- assign show_product_vendor = show_product_vendor | default: settings.show_product_vendor -%}
+{%- assign show_product_title = show_product_title | default: settings.show_product_title -%}
+{%- assign show_product_reviews = show_product_reviews | default: settings.show_product_reviews -%}
+{%- assign show_product_price = show_product_price | default: settings.show_product_price -%}
+{%- assign show_product_button = show_product_button | default: settings.show_product_button -%}
+{% assign show_product_variant = show_product_variant | default: settings.show_product_variant %}
+
+<div class="product-card layout-1{% unless product.available %} product-card--sold-out{% endunless %}" data-product-card data-product-id="product-{{ product.id }}" data-id="{{ product.id }}">
+    <div class="product-image">
+        <a class="product-link {% if show_image_swap %}image-swap{% endif %}" href="{{ product.url | within: collection }}" aria-label="link">
+            {% if product.images.size > 1 and show_image_swap %}
+                <img class="product-card__img image-one lazyload"
+                    src="{{ 'loading.svg' | asset_url }}"
+                    data-src="{{ img_url_1 }}"
+                    data-sizes="auto" alt="{{ product.images[0].alt }}" data-image>
+                <img class="product-card__img image-two lazyload"
+                    src="{{ 'loading.svg' | asset_url }}"
+                    data-src="{{ img_url_2 }}"
+                    data-sizes="auto" alt="{{ product.images[1].alt }}" data-image>
+            {% else %}
+                <img class="product-card__img lazyload"
+                    src="{{ 'loading.svg' | asset_url }}"
+                    data-src="{{ img_url }}"
+                    data-sizes="auto" alt="{{ product.featured_image.alt }}" data-image>
+            {% endif %}
+        </a>
+    </div>
+    <div class="product-content">
+        <div class="product-detail">
+            <div class="group_vdwl">
+                {% if show_product_vendor %}
+                    <div class="product-vendor">
+                        {{ product.vendor | link_to_vendor }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            {% if show_product_title %}
+                <h4 class="product-title">
+                   <a href="{{ product.url | within: collection }}" aria-label="title" class="product-card__link">
+                     {{product.title}}
+                   </a>
+                </h4>
+            {% endif %}
+            {% if show_product_price %}
+               <div class="product-price {% if product.compare_at_price_min > product.price_min %}price--on-sale{% endif %}" data-price>
+                {% if product.compare_at_price > product.price %}
+                    <span class="price-item price-item--regular" data-regular-price>
+                        {{ product.compare_at_price_min | money }}
+                    </span>
+                    <span class="price-item price-item--sale" data-sale-price>
+                        {% if product.price_varies %}
+                             <em class="form-pr">{{ 'products.product.from_text_html' | t }}</em>
+                        {% endif %}
+                        {{ product.price_min | money }}
+                    </span>
+                {% else %}
+                    <span class="price-item price-item--regular" data-regular-price>
+                        {% if product.price_varies %}
+                            <em class="form-pr">{{ 'products.product.from_text_html' | t }}</em>
+                        {% endif %}
+                        {{ product.price_min | money }}
+                    </span>
+                    <span class="price-item price-item--sale" data-sale-price></span>
+                {% endif %}
+            </div>  
+            {% endif %}
+        </div>
+        {% if show_product_variant %}
+            {% render 'item-swatch', product: product, show_product_variant: show_product_variant %}
+        {% endif %}
+        <div class="group_button">
+            <div class="more-detail">
+                <a href="{{ product.url | within: collection }}" aria-label="title" class="product-card__link">
+                   <span class="more-dt">{{ 'products.product.more' | t }}</span> <span>{{ 'products.product.detail' | t }}</span>
+                </a>
+            </div>
+            {% if show_product_button %}
+            {% render 'add-to-cart-btn' with product as product, id: 'list-product-form', variant: product.selected_or_first_available_variant %}
+            {% endif %}
+        </div>
+     </div>
+ </div>

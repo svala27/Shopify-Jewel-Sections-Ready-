@@ -1,0 +1,39 @@
+<div class="modal fade halo_modal" id="size_chart" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-size-chart">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a data-dismiss="modal" class="close close-modal" href="javascript:void(0)"><svg class="icon icon-close"><use xlink:href="#icon-close" /></svg></a>
+            </div>
+             <div class="modal-body">
+              <div class="size-chart-img text-center">
+                  {% if settings.size_chart == 'product_vendor' %}          
+                  {% capture img_vendor %}{{ product.vendor | handle | append: '-sizechart.jpg' | file_url }}{% endcapture %}
+                  <img src="{{ img_vendor }}" alt="sizechart"/>
+                  
+                  {% elsif settings.size_chart == 'product_type' %}          
+                  {% capture img_type %}{{ product.type | handle | append: '-sizechart.jpg' | file_url }}{% endcapture %}
+                  <img src="{{ img_type }}" alt="sizechart"/>
+                  
+                  {% elsif settings.size_chart == 'different' %} 
+                  {% if product.metafields.c_f['Size Chart'] %}
+                      {% capture img_product %}{{ product.metafields.c_f['Size Chart'] }}{% endcapture %}
+                      <img class="a" src="{{ img_product }}" alt="sizechart"/>
+                  {% endif %}
+
+                  {% elsif settings.size_chart == 'none' %} 
+                    {% if settings.custom_size_chart != blank %}
+                      <img class="product-card__img lazyload"
+                      src="{{ 'loading.svg' | asset_url }}"
+                      data-src="{{ settings.custom_size_chart | img_url: '1200x1200' }}"
+                      data-sizes="auto" alt="{{ product.featured_image.alt }}" data-image>
+                    {% else %}
+                      <div class="no-image" style="padding-top: 82%">
+                        <span>720x875px</span>
+                      </div>
+                    {% endif %}
+                  {% endif %}               
+              </div>
+          </div>
+        </div>
+    </div>
+</div>

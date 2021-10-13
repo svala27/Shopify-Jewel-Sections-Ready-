@@ -1,0 +1,24 @@
+
+{% if settings.category_layouts == 'layout_default' %}
+   <div class="page page-collections page-collections-default">
+		{% section 'collection-header' %}
+	    <div class="container">
+	        {% section 'sidebar-filter' %}
+	        {% section 'collection-template' %}
+	        <div class="clearfix"></div>
+	    </div>
+	    {% section 'customer-banner-text-col' %}
+	    {% section 'recently-viewed-products' %}
+	</div>
+{% else %}
+<div class="page page-collections page-collections-custom">
+	<div class="container">
+		{% section 'collection-header-02' %}
+        {% section 'sidebar-filter' %}
+        {% section 'collection-template' %}
+        <div class="clearfix"></div>
+    </div>
+    {% section 'customer-banner-text-col' %}
+    {% section 'recently-viewed-products' %}
+</div>
+{% endif %}

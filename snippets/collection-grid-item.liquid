@@ -1,0 +1,50 @@
+<div class="collection-grid-item">
+    <div class="collection-grid-image">
+        <a href="{% if collection.products == empty %}#{% else %}{{ collection.url }}{% endif %}" class="collection-grid-item__link" aria-label="link">
+            {% if collection == empty %}
+                <div class="no-image" style="padding-top: 100%">
+                    <span>540x540</span>
+                </div>
+            {% else %}
+              {% if image_col != blank %}
+              {%- assign img_url = image_col | img_url: '600x' -%}
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+              {% elsif collection.image %}
+              {%- assign img_url = collection.image.src | collection_img_url: '600x'  -%}
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+              {% else %}
+              {%- assign img_url = collection.products.first.featured_image | product_img_url: '600x'-%}
+                <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+              {% endif %}
+            {% endif %}
+        </a>
+        <div class="col-bottom">
+          <div class="title-wrapper">
+            <h4 class="title">
+                <a href="{{ collection.url }}" aria-label="title">
+                    {% if collection.title == blank %}
+                        <span>{{ 'homepage.onboarding.collection_title' | t }}</span>
+                    {% else %}
+                        <span>{{ collection.title }}</span>
+                    {% endif %}
+                </a>
+            </h4>
+            <span class="count-products">
+              {{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}
+           </span>
+          </div>
+          <div class="product-action">
+              <a href="{{ collection.url }}" aria-label="link" class="btn product-btn">
+                  {{ 'collections.general.shop_now' | t }}
+              </a>
+          </div>
+          {% if section.settings.enable_des_col %}
+          <div class="collection-grid-content">
+              <div class="descriptions">
+                  {{ collection.description}}
+              </div>
+          </div>
+          {% endif %}
+        </div>
+    </div>
+</div>

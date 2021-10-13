@@ -1,0 +1,36 @@
+<div class="sidebarBlock sidebarBlock_filter {{ block.settings.title}}" data-has-collapse>
+    <h5 class="sidebarBlock-heading">
+        <span class="arrow">{% render 'icon-chevron-up' %}</span>
+        <span> {{block.settings.title}}</span>
+        <a href="javascript:void(0)" class="clear text-hover" aria-label="link" {% if has_refined == false %}style="display:none"{% endif %} >
+            {{ 'collections.filters.clear' | t }}
+        </a>
+    </h5>
+    <div class="sidebarBlock-content br-bt filter-text {% if block.settings.enable_view_all %}show-view-all {% endif %}" id="{{ block.id }}">
+        <ul class="list-tags content {% if block.settings.title == 'Size' %} filter-size{% endif %}">
+            {% assign tags = block.settings.list_tags | split: ',' %}
+            {% for t in tags %}
+                {% assign tag = t | strip %}
+                {% assign tag_value = tag | handleize %} 
+                {% if current_tags contains tag %}
+                    <li>
+                        <input type="checkbox" value="{{ tag_value | split: '|' | first }}" checked/>
+                        <label>{{ tag | split: '|' | first }}</label>
+                    </li>
+                {% else %}
+                    {% if collection.tags contains tag %} 
+                        <li>
+                            <input type="checkbox" value="{{ tag_value | split: '|' | first }}"/>
+                            <label>{{ tag | split: '|' | first }}</label>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if block.settings.enable_view_all %}
+            <div class="view-all">
+                <a href="{{block.settings.link_view_all}}"><span>{{block.settings.view_title}}</span></a>
+            </div>
+        {% endif %}
+    </div>
+</div>

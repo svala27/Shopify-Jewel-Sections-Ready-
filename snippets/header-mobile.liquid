@@ -1,0 +1,60 @@
+<div class="container"> 
+    <div class=" header-mb">         
+        <div class="header-mb-left header-mb-items">
+            <div class="hamburger-icon svg-mb">
+                <a href="#" class="icon-nav" title="Menu Mobile Icon" data-menu-mb-toogle>
+                    <span class="icon-line"></span>
+                </a>
+            </div>
+            {% if settings.enable_header_search_mb %}
+                <div class="search-mb svg-mb">
+                    <a href="#" title="Search Icon" class="icon-search" data-search-header>
+                        <svg class="icon"><use xlink:href="#icon-search" /></svg>
+                    </a>
+                    {% render 'search-bar' %}
+                </div> 
+            {% endif %}                       
+        </div>
+
+      <div class="header-mb-middle header-mb-items">
+        <div class="logo-wrapper" itemscope >
+            {% if  section.settings.logo_type == 'image' and section.settings.logo != blank %}
+                {%- assign img_url = section.settings.logo | img_url: 'master' -%}
+                <a href="{{ routes.root_url }}" class="site-header__logo-image" aria-label="logo">
+                    {% capture logo_alt %}{{ section.settings.logo.alt | default: shop.name }}{% endcapture %}
+                    <img  style="max-height: {{ section.settings.max_height_logo_mb }}" itemprop="logo" src="{{ img_url }}" alt="{{ logo_alt | escape }}">
+                </a>
+            {% else %}
+                {% if section.settings.logo_text != blank %}
+                    <a class="site-header__logo-link" href="{{ routes.root_url }}" aria-label="logo" style="font-size: {{section.settings.logo_text_size_mb}}">{{ section.settings.logo_text }}</a>
+                    <style>
+                    .site-header__logo-link svg{width:{{section.settings.logo_text_size_mb}}; height:{{section.settings.logo_text_size_mb}};}
+                    </style>
+                {% else %}
+                    <a class="site-header__logo-link" href="{{ routes.root_url }}" aria-label="logo"  style="font-size: {{section.settings.logo_text_size_mb}}">{{ shop.name }}</a>
+                {% endif %}
+            {% endif %}
+        </div>
+      </div>
+
+      <div class="header-mb-right header-mb-items">
+        {% if shop.customer_accounts_enabled and settings.enable_header_account_mb %}
+        <div class="acc-mb svg-mb">
+          <a {% if template contains 'login' %}href="#MainContent" {% else %} href="javascript:void(0)" data-user-mobile-toggle {% endif %} title="User Icon" class="icon-user" >
+            <svg class="icon"><use xlink:href="#icon-user" /></svg>
+          </a>
+        </div>
+        {% endif %}
+        {% if settings.enable_header_cart_mb %}
+            <div class="cart-icon svg-mb">
+              <a {% if template contains 'cart' %} href="#MainContent"{% else %}href="#" data-cart-toggle data-mobile-cart {%endif%} title="Cart Icon" >       
+                <svg class="icon"><use xlink:href="#shop2" /></svg>
+                <span class="cartCount" data-cart-count>
+                  {{ cart.item_count }}
+                </span>
+              </a>
+            </div>
+        {% endif %}
+      </div>          
+    </div>
+</div>

@@ -1,0 +1,270 @@
+<div data-section-id="{{ section.id }}" data-section-type="header-section ">
+    {% if section.settings.message and section.settings.message_text!= blank %}
+        <div class="announcement-bar-wrapper ">
+          <div class="container">
+          <div class="announcement-bar">
+            <a href="{{ section.settings.message_link }}" class="announcement-bar announcement-bar--link" aria-label="link">
+              {{section.settings.message_text}}
+            </a>
+             <a class="announcement-bar-close" href="javascript:void(0)" aria-label="close">
+            	<svg aria-hidden="true" data-prefix="fal" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-times fa-w-10 fa-2x"><path fill="currentColor" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z" class=""></path></svg>
+            </a>
+          </div>
+          </div>
+        </div>
+    {% endif %}
+    <header class="site-header halo-header-01 header-custom header-sticky {{ settings.body_layout }}" data-sticky-mb>
+        <div class="halo-header-mobile">
+            {% render 'header-mobile' %}
+        </div>
+        <div class="halo-header-PC">
+            {% if section.settings.header_middle %}
+            <div class="header-middle">
+                <div class="container">
+                  <div class="row">
+                    {% if settings.enable_multiple_currencies or settings.enable_auto_currency or settings.enable_shopify_payments_currencies or section.settings.enable_free_shopping or settings.enable_multilang %}
+                    <div class="header-middle-left col-6 col-sm-4">
+                      {% if settings.enable_multiple_currencies or settings.enable_auto_currency or settings.enable_shopify_payments_currencies or settings.enable_multilang  %}
+                      <div class="col-header col-left">
+                        <div class="lang-currency-group">
+                            {% if settings.enable_multilang %}
+                            <div class="customer-language">
+                                {% render 'dropdown-language' %}
+                            </div>
+                            {% endif %}
+                            {% if settings.enable_multiple_currencies or settings.enable_auto_currency or settings.enable_shopify_payments_currencies %}
+                                <div class="custom-currency">
+                                    {% render 'dropdown-currency' %}
+                                </div>
+                            {% endif %}
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if section.settings.enable_free_shopping %}
+                      <div class="col-header col-right">
+                       {{ section.settings.free_shipping_text }}
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% endif %}
+                    <div class="header-middle-logo col-6 col-sm-4">
+                        <div class="hamburger-wrapper">
+                            <a class="mobileMenu-toggle" href="javascript:void(0)" data-mobile-menu-toggle="menu" aria-label="menu">
+                                <span class="mobileMenu-toggleIcon"></span>
+                            </a>
+                        </div>
+                        <div class="logo-wrapper" itemscope itemtype="http://schema.org/Organization">
+                            <meta itemprop="url" content="{{ shop.url }}">
+                            {% if  section.settings.logo_type == 'image' and section.settings.logo_pc != blank %}
+                                {%- assign img_url = section.settings.logo_pc | img_url: 'master' -%}
+                                <a href="{{ routes.root_url }}" class="site-header__logo-image" aria-label="logo">
+                                    {% capture logo_alt %}{{ section.settings.logo_pc.alt | default: shop.name }}{% endcapture %}
+                                    <img  style="max-height: {{ section.settings.max_height_logo_pc }}" itemprop="logo" src="{{ img_url }}" alt="{{ logo_alt | escape }}">
+                                </a>
+                            {% else %}
+                                {% if section.settings.logo_text != blank %}
+                                    <a class="site-header__logo-link" href="{{ routes.root_url }}" aria-label="logo" style="font-size: {{section.settings.logo_text_size}}">{{ section.settings.logo_text }}</a>
+                                    <style>
+                                    .site-header__logo-link svg{width:{{section.settings.logo_text_size}}; height:{{section.settings.logo_text_size}}}
+                                    </style>
+                                {% else %}
+                                    <a class="site-header__logo-link" href="{{ routes.root_url }}" aria-label="logo"  style="font-size: {{section.settings.logo_text_size}}">{{ shop.name }}</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="header-middle-right col-6 col-sm-4">
+                        {% if section.settings.enable_header_search %}
+                            <div class="item item--quickSearch">
+                              <a href="javascript:void(0)" data-search-header>
+                                <p class="search-icon">
+                                	<svg class="icon"><use xlink:href="#icon-search2" /></svg>
+                                </p>
+                                <p class="search-text">
+                                  <span class="border_hover"> {{ 'general.search.content' | t }}</span>
+                                </p>
+                              </a>
+                                {% render 'search-bar' %}
+                            </div>
+                        {% endif %}
+                        {% if section.settings.enable_header_account and shop.customer_accounts_enabled %}
+                            <div class="item item--account">
+                                {% if customer %}
+                                    <div class="navUser-text-wrapper">
+                                        <a class="navUser-action navUser-text-account border_hover" href="{{ routes.account_logout_url }}" aria-label="link">
+                                            <span> {{ 'layout.customer.log_out' | t }}</span>
+                                        </a>
+                                    </div>
+                                {% else %} 
+                                    <div class="navUser-action">
+                                        <div class="navUser-text-wrapper">
+                                            <a {% if template contains 'login' %} href="#MainContent" {% else %}data-login-dropdown href="{{ routes.account_login_url }}" {% endif %} class="navUser-action navUser-text-account border_hover"  aria-label="link">
+                                                <span> {{ 'customer.login.sign_in' | t }}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        {% if section.settings.enable_header_cart %}
+                            <div class="item item--cart">
+                                <a class="navUser-action custom " {% if template contains 'cart' %}href="#MainContent" {% else %} data-cart-preview-pc data-cart-pc  href="javascript:void(0)" {% endif %} aria-label="link">
+                                        <span class="navUser-text-wrapper border_hover">
+                                        {{ 'layout.cart.title' | t }}
+                                    </span>
+                                    <span class="cart-wrapper">
+                                        <svg class="icon"><use xlink:href="#shop2" /></svg>
+                                        <span class="countPill cart-quantity" data-cart-count>{{ cart.item_count }}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+</div>
+
+{% schema %}
+{
+    "name": "Header",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Heder Top"
+        },
+        {
+            "type": "checkbox",
+            "id": "message",
+            "label": "Show announcement",
+            "default": false
+        },
+        {
+            "type": "html",
+            "id": "message_text",
+            "label": "Announcement Text",
+            "default": "Limited-Time Offers: Mid-Season Sale Up To 70% Off "
+        },
+        {
+            "type": "url",
+            "id": "message_link",
+            "label": "Link",
+            "info": "Optional"
+        },
+        {
+            "type": "header",
+            "content": "Header Bottom"
+        },
+        {
+            "type": "checkbox",
+            "id": "header_middle",
+            "label": "Enable Header Top?",
+            "default": true,
+             "info":"================="
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_free_shopping",
+          "label": "Enable Free Shipping?",
+          "default": true
+        },
+        {
+        "type":"html",
+        "id":"free_shipping_text",
+        "label":"Sale content",
+        "default":"FREE SHIPPING* <br>No Minimum purchase "
+        },
+        
+        
+        {
+            "type": "checkbox",
+            "id": "enable_header_search",
+            "label": "Enable Search Form",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_header_account",
+            "label": "Enable My Account",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_header_wishlist",
+            "label": "Enable Wishlist",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_header_cart",
+            "label": "Enable Cart",
+            "default": true
+        },
+        {
+                "type": "header",
+                "content": "Logo"
+            },
+            {
+                "type": "radio",
+                "id": "logo_type",
+                "label": "Use image or text for logo?",
+                "options": [
+                    {
+                        "value": "text",
+                        "label": "Text Or Svg"
+                    },
+                    {
+                        "value": "image",
+                        "label": "Image"
+                    }
+                ],
+                "default": "text"
+            },
+            {
+                "type": "textarea",
+                "id": "logo_text",
+                "label": "Add Logo Text Or Logo Svg"
+            },
+            {
+              "type": "text",
+              "id": "logo_text_size",
+              "label": "Logo Text Size",
+              "default": "25px"
+            },
+            {
+              "type": "text",
+              "id": "logo_text_size_mb",
+              "label": "Logo Text Size Mobile",
+              "default": "20px",
+             "info":"==================="
+            },
+            {
+                "type": "image_picker",
+                "id": "logo_pc",
+                "label": "Logo image for PC",
+                "info": "95px x 44px recommended"
+            },
+            {
+                "type": "text",
+                "id": "max_height_logo_pc",
+                "label": "Max Height of Logo PC",
+                "default": "100px" 
+            },    
+            {
+                "type": "image_picker",
+                "id": "logo",
+                "label": "Logo image for Mobile",
+                "info": "95px x 44px recommended"
+            },
+            {
+                "type": "text",
+                "id": "max_height_logo_mb",
+                "label": "Max Height of Logo Mobile",
+                "default": "50px" 
+            }
+    ]
+}
+{% endschema %}

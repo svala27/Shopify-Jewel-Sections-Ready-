@@ -1,0 +1,119 @@
+<div class="page-width rich-text" id="section-{{section.id}}">
+  <div class="wrapper-content">
+    {% if section.settings.section_title != blank %}
+        <div class="widget-title">   
+            <h3 class="box-title"> 
+                {{section.settings.section_title}}
+            </h3>
+        </div>
+    {% endif %}
+    {% if section.settings.text != blank %}
+        <div class="content">
+             {{section.settings.text}}
+        </div>
+    {% endif %}
+  </div>
+</div>
+{% if section.settings.custom_color %}
+    <style>
+        #section-{{section.id}} .wrapper-content .widget-title .box-title{
+            color: {{section.settings.color_title}};
+        }
+        #section-{{section.id}} .wrapper-content .content{
+             color: {{section.settings.color_text}};
+        }
+        @media (max-width: 767px) {
+            #section-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            #section-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            #section-{{section.id}} {
+                margin-bottom: {{ margin_bottom }}px;
+            }
+        }   
+    </style>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Rich text",
+  "class": "home-rich-text",
+  "settings": [
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_mb",
+            "label": "Mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_tab",
+            "label": "Tablet",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom",
+            "label": "Margin Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 0
+        },  
+        {
+            "type" : "color",
+            "id" : "color_title",
+            "label" : "Title Color"
+        },
+        {
+            "type" : "color",
+            "id" : "color_text",
+            "label" : "Text Color",
+            "info":"==============="
+        },
+        {
+          "type":"text",
+          "id": "section_title",
+          "label":"Heading",
+          "default":"About Store"
+        },
+        {
+          "type":"richtext",
+          "id": "text",
+          "label":"Text",
+          "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus leo elementum in malesuada an darius ut augue. Cras sit amet lectus et justo feugiat euismod sed non erat. Nulla non felis id metus bibendum iaculis quis de amet eros. Nam suscipito mollis tellus vel malesuada duis danos an molestie.</p>"
+        }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,527 @@
+{% if section.settings.show %} 
+{% case section.settings.column %}
+    {% when 1 %}
+        {%- assign column = '1' -%}
+    {% when 2 %}
+        {%- assign column = '2' -%}
+    {% when 3 %}
+        {%- assign column = '3' -%}
+    {% when 4 %}
+        {%- assign column = '4' -%}
+    {% when 5 %}
+        {%- assign column = '5' -%}
+{% endcase %}
+
+{%- assign carousel = carousel | default: section.settings.products_layout -%}
+{%- assign arrows = arrows | default: section.settings.carousel-arrows -%}
+{%- assign dots = dots | default: section.settings.carousel-dots -%}
+
+<div class="recently-viewed-products halo-section {% unless section.settings.border_top %} no-border-top{% endunless %}" style="display: none;">
+    <div class="container">
+         {% if section.settings.title != blank %}
+            <div class="section-header">
+                <h2>{{ section.settings.title }}</h2>
+                {% if section.settings.clear_all != blank  %}
+                    <a class="view-all" href="javascript:void(0)">
+                        <span>{{section.settings.clear_all}}</span>
+                    </a>
+                {% endif %}
+                <p class="description">{{ section.settings.des_revently }}</p>
+            </div>
+        {% endif %}
+        <div class="widget-product">
+            <div id="recently-viewed-products-grid" class="halo-row halo-row-custom recently-viewed-carousel column-{{ column }} {%if carousel == 'carousel' %}collection-carousel {% else %} collection-no-carousel{% endif %}"
+                {%if carousel == 'carousel' %}
+                    data-slick='{
+                        "dots": {{ dots }},
+                        "arrows": {{ arrows }},
+                        "infinite": false,
+                        "mobileFirst": true,
+                        "adaptiveHeight": true,
+                        "slidesToShow": {{ column }},
+                        "slidesToScroll": 1,
+                        "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                        "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>",
+                        "responsive": [
+                            {
+                                "breakpoint": 1100,
+                                "settings": {
+                                    "slidesToShow": {{ column }},
+                                    "slidesToScroll": 1,
+                                    "arrows": {{ arrows }},
+                                    "dots": {{ dots }}
+                                }
+                            },
+                            {
+                                "breakpoint": 992,
+                                "settings": {
+                                    "slidesToScroll": 4,
+                                    "slidesToShow": 4
+                                }
+                            },
+                            {
+                                "breakpoint": 551,
+                                "settings": {
+                                    "slidesToScroll": 3,
+                                    "slidesToShow": 3
+                                }
+                            }
+                        ]
+                    }'
+                {% endif %}>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% raw %}
+<script id="recently-viewed-product-grid-template" type="text/x-jquery-tmpl">
+    <div class="halo-item">
+        <div class="product-card" data-product-card data-product-id="product-${id}">
+            <div class="product-image">
+                <div class="product_badges">
+                    
+                    ${( tagLabelNew = false ),''}
+                    ${( tagLabelCustom = false ),''}
+                    {{if tags}}
+                        {{each tags}} 
+                            {{if $value =="new" || $value =="New"}}
+                                ${( tagLabelNew = true ),''}
+                            {{/if}} 
+                            {{if $value =="custom badge" || $value =="Custom Badge"}}
+                                ${( tagLabelCustom = true ),''}
+                            {{/if}}
+                        {{/each}}
+                    {{/if}}
+                    {{if tagLabelNew}}
+                        <div class="badge new-badge">{% endraw %}{{ 'products.product.new' | t }}{% raw %}</div>
+                    {{/if}}
+
+                    {{if compare_at_price_min > price_min}}
+                        {% endraw %}
+                        {% if settings.type_label_sale == 'text' %}
+                        {% raw %}
+                            <div class="badge sale-badge">{% endraw %}{{ 'products.product.on_sale' | t }}{% raw %}</div>
+                        {% endraw %}
+                        {% else %}
+                        {% raw %}
+                            <div class="badge sale-badge">-${Math.floor((compare_at_price_min - price_min)*100/compare_at_price_min)}%</div>
+                        {% endraw %}
+                        {% endif %}
+                        {% raw %}
+                    {{/if}}
+
+                    {{if !available}}
+                        <div class="badge soldOut-badge" {% endraw %}>{{ 'products.product.sold_out' | t }}{% raw %}</div>
+                    {{/if}}
+                </div>
+
+                <a class="product-link product-card__link {% endraw %}{% if settings.image_swap %}{% raw %}image-swap{% endraw %}{% endif %}{% raw %}" href="${url}" data-collections-related="/collections/${collection}?view=related">
+                    <img class="product-card__img" src="${featured_image}" alt="${featured_image.alt}"/>
+                </a>
+                {% endraw %}
+                {% if settings.show_product_quickview %}
+                {% raw %}
+                    <a class="product-quickview" href="javascript:void(0)" id="${handle}" data-quickview {% endraw %}>
+                        {{ 'products.product.quick_view' | t }}
+                        {% raw %}
+                    </a>
+                {% endraw %}
+                {% endif %}
+                {% raw %}
+                <div class="group_button">
+                   {% endraw %}
+                    {% if settings.show_product_button %}
+                    {% raw %}
+                        <div class="product-action">
+                            <form action="/cart/add" method="post" class="variants" id="recently-${id}" data-id="product-actions-${id}" enctype="multipart/form-data">
+                                {{if !available}}
+                                    <button class="btn product-btn product-btn-soldOut" type="submit" disabled="disabled" {% endraw %}>
+                                        {{ 'products.product.unavailable' | t }}
+                                        {% raw %}
+                                    </button>
+                                {{else variants.length > 1 }}
+                                    <a class="btn product-btn" href="${url}" title="${title}" {% endraw %}>
+                                        
+                                        {{ 'products.product.select_options' | t }}
+                                        {% raw %}
+                                    </a>
+                                {{else}}
+                                    <input type="hidden" name="id" value="${variants[0].id}" />
+                                    <input type="hidden" name="quantity" value="1" />
+                                    <button data-btn-addToCart class="btn product-btn" type="submit" data-form-id="#recently-${id}" {% endraw %}>
+                                        {{ 'products.product.add_to_cart' | t }} 
+                                        {% raw %}
+                                    </button>
+                                {{/if}}
+                            </form>
+                        </div>
+                    {% endraw %}
+                    {% endif %}
+                    {% raw %}
+                </div>
+  
+            </div>
+            <div class="product-content">
+              <div class="product-detail">
+                 <div class="group_vdwl">
+                    {% endraw %}
+                    {% if settings.show_wishlist %}
+                    {% raw %}
+                        <a class="product_wishlist wishlist {% endraw %}{% if settings.show_wishlist_mb %}{% raw %}wishlist_mb{% endraw %}{% endif %}{% raw %}" data-icon-wishlist href="#" data-product-handle="${handle}" data-id="${id}" aria-label="wishlist">
+                            <svg class="icon"><use xlink:href="#icon-heart" /></svg>
+                        </a>
+                    {% endraw %}
+                    {% endif %}
+                    {% raw %}
+
+                    {% endraw %}
+                    {% if settings.show_product_vendor %}
+                    {% raw %}
+                        <div class="product-vendor">
+                            <a href="/collections/vendors?q=${vendor}">${vendor}</a>
+                        </div>
+                    {% endraw %}
+                    {% endif %}
+                    {% raw %}
+
+                    {% endraw %}
+                    {% if settings.show_product_title %}
+                    {% raw %}
+                        <h4 class="product-title">
+                            <a href="${url}">${title}</a>
+                        </h4>
+                    {% endraw %}
+                    {% endif %}
+                    {% raw %}
+
+                    {% endraw %}
+                    {% if settings.show_product_price %}
+                    {% raw %}
+                        <div class="product-price {{if compare_at_price_min > price_min}}price--on-sale{{/if}}" data-price>
+                            {{if compare_at_price_min > price_min}}
+                                <span class="price-item price-item--regular" data-regular-price>
+                                    {{html Shopify.formatMoney(compare_at_price_min, window.money_format)}}
+                                </span>
+                                <span class="price-item price-item--sale">
+                                    {{html Shopify.formatMoney(price_min, window.money_format)}}
+                                </span>
+                            {{else}}
+                                <span class="price-item price-item--regular" data-regular-price>
+                                    {{html Shopify.formatMoney(price_min, window.money_format)}}
+                                </span>
+                            {{/if}}
+                        </div>
+                    {% endraw %}
+                    {% endif %}
+                    {% raw %}
+ 
+                    {% endraw %}
+                        {% if settings.show_product_reviews %}
+                      {% raw %}
+                    <div class="product-reviews">
+                            <span class="shopify-product-reviews-badge" data-id="${id}"></span>
+                    </div>
+                    {% endraw %}
+                        {% endif %}
+                    {% raw %}
+
+                    {% endraw %}
+                    {% if settings.show_product_variant  %}
+                    {% raw %}
+                        <div class="product-card__variant item-swatch">
+                            {{each options}}
+                                ${( downcased_option = name.toLowerCase() ),''}
+                                ${( option_color_swatch = window.swatch_recently), ''}
+                                {{if option_color_swatch.indexOf(downcased_option) > -1}}
+                                    ${( colorlist = '' ),''}
+                                    ${( optionCount = 0 ),''}
+                                    ${( count = 0 ),''}
+                                    {{each values}} 
+                                        ${( color = 0 ),''}
+                                        {{each variants}}
+                                            {{if position == 1}}
+                                                ${( color = variants[($index)].option1 ),''}
+                                            {{/if}}
+                                            {{if position == 2}}
+                                                ${( color = variants[($index)].option2 ),''}
+                                            {{/if}}
+                                            {{if position == 3}}
+                                                ${( color = variants[($index)].option3 ),''}
+                                            {{/if}}
+
+                                            {{if colorlist.indexOf(color) < 0}}
+                                                {{if count < 5}}
+                                                <div class="product-card__variant--item color ${color}">
+                                                  <div class="tooltip">${color}</div>
+                                                    <label data-toggle="tooltip" data-placement="top" title="${color}" data-name="${color}" {{if variants[($index)].featured_image != null}} data-image="${variants[($index)].featured_image.src}"{{/if}} style="background-color: ${color}"></label>
+                                                </div>
+                                                {{/if}}
+                                                ${( optionCount ++ ),''}
+                                                ${( count = optionCount / 4 ),''}
+                                            {{/if}}
+
+                                            ${( colorlist = colorlist.concat(" ",color) ),''}
+                                        {{/each}}
+                                    {{/each}}
+                                    {{if count > 5}}
+                                        <div class="product-card__variant--item product-card__variant--item--last">
+                                            <a href="${url}" aria-label="color">
+                                                + ${count - 5}
+                                            </a>
+                                        </div>
+                                    {{/if}}
+                                {{/if}}
+                            {{/each}}
+                        </div>
+                    {% endraw %}
+                    {% endif %}
+                    {% raw %}
+                 </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</script>
+{% endraw %}
+
+<script src="{{ 'jquery.min.js' | asset_url }}"></script>
+<script src="{{ 'jquery-cookie.min.js' | asset_url }}"></script>
+<script src="{{ 'jquery.tmpl.min.js' | asset_url }}"></script>
+<script src="{{ 'jquery.products.min.js' | asset_url }}"></script>
+
+<script>
+    function checkNeedToConvertCurrency() {
+        return (window.show_multiple_currencies && Currency.currentCurrency != shopCurrency) || window.show_auto_currency;
+    }
+
+    $('.recently-viewed-products').hide();
+
+    Shopify.Products.showRecentlyViewed({ 
+        howManyToShow: {{ section.settings.limit }},
+        wrapperId: 'recently-viewed-products-grid', 
+        templateId: 'recently-viewed-product-grid-template',
+        onComplete: function() {
+            var recentlyViewBlock = $('.recently-viewed-products');
+            var recentlyGrid = recentlyViewBlock.find('#recently-viewed-products-grid');
+            var productGrid = recentlyGrid.children();
+            if(productGrid.length) {
+                recentlyViewBlock.show();
+                theme.wishlist.init();
+                if (checkNeedToConvertCurrency()) {
+                    Currency.convertAll(window.shop_currency, $('#currencies .active').attr('data-currency'), 'span.money', 'money_format');
+                };
+                $(document).on('click', '#recently-viewed-products-grid .product-card__variant .product-card__variant--item label', function() {
+                    var self = $(this),
+                        $product = self.parents('.product-card'),
+                        $variantName = self.data('name'),
+                        $variantImage = self.data('image');
+
+                        $('.product-card__variant .product-card__variant--item label').removeClass('active');
+                        self.addClass('active');     
+                     
+                    if ($variantImage != '') {
+                        
+                        $product.find('.product-card__img').attr('src', $variantImage );
+
+                    }
+                });
+                if ($(window).width() < 1025) {
+                    if ($('#recently-viewed-products-grid[data-slick]').length) {
+                        if (recentlyGrid.hasClass('slick-slider')) {
+                            recentlyGrid.slick('unslick');
+                        }
+                    }
+                } else {
+                    if ($('#recently-viewed-products-grid[data-slick]').length) {
+                        if (!recentlyGrid.hasClass('slick-slider')) {
+                            recentlyGrid.slick();
+                        }
+                    }
+                };
+                if($('.spr-badge').length > 0) {
+                    return window.SPR.registerCallbacks(), window.SPR.initRatingHandler(), window.SPR.initDomEls(), window.SPR.loadProducts(), window.SPR.loadBadges();
+                }
+                // delete cookie
+                var btnRemoveCookie = (".recently-viewed-products .section-header .view-all span");
+                var delete_cookie = function(name) {
+                    document.cookie = name + '=;expires=1;';
+                };
+                $(btnRemoveCookie).off('click').on('click',function(){
+                    $( ".recently-viewed-products" ).remove();
+                    delete_cookie('shopify_recently_viewed');
+                });
+            }
+            else {
+                recentlyViewBlock.hide();
+            };
+        }
+    });
+
+    Shopify.Products.recordRecentlyViewed();
+    
+</script>
+
+{% endif %}
+
+{% if section.settings.custom_collor %}
+   <style>
+     .recently-viewed-products{
+       border-color: {{section.settings.colo_border_top}};
+     }
+     .recently-viewed-products .section-header h2{
+       color: {{section.settings.colo_title}};
+     }
+
+     .recently-viewed-products .section-header .description{
+       color: {{section.settings.colo_des}};
+     }
+     .recently-viewed-products .section-header .view-all{
+       color: {{section.settings.colo_clear_all}};
+     }
+     .recently-viewed-products .section-header .view-all span{
+       border-color: {{section.settings.colo_clear_all}};
+     }
+
+   </style>
+{% endif %}
+
+{% schema %}
+    {
+        "name": "Recently Viewed Products",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Section Layout"
+            },
+            {
+                "type": "checkbox",
+                "id": "show",
+                "label": "Display Recently Viewed Products",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "border_top",
+                "label": "show border top",
+                "default": false
+            },
+            {
+                "type": "checkbox",
+                "id": "custom_collor",
+                "label": "Custom Color",
+                "default": false
+            },
+            {
+              "type":"color",
+              "id":"colo_border_top",
+              "label":"Color Borrder Top"
+            },
+            {
+              "type":"color",
+              "id":"colo_title",
+              "label":"Color Title"
+            },
+            {
+              "type":"color",
+              "id":"colo_des",
+              "label":"Color Descriptions"
+            },
+            {
+              "type":"color",
+              "id":"colo_clear_all",
+              "label":"Color Clear All"
+            },
+            {
+                "type": "range",
+                "id": "padding-top",
+                "label": "Spacing Top",
+                "default": 0,
+                "min": 0,
+                "max": 10,
+                "step": 1
+            },
+            {
+                "type": "range",
+                "id": "padding-bottom",
+                "label": "Spacing bottom",
+                "default": 0,
+                "min": 0,
+                "max": 10,
+                "step": 1
+            },
+            {
+                "type": "header",
+                "content": "Heading Section"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "default": "Recently Viewed Products"
+            },
+             {
+                "type": "text",
+                "id": "des_revently",
+                "label": "Description",
+                "default": "Phasellus malesuada ligula pulvinar commodo maecenas"
+            },
+            {
+                "type": "text",
+                "id": "clear_all",
+                "label": "Clear All Cookie",
+                "default": "Clear all"
+            },
+            {
+                "type": "header",
+                "content": "Products Layout"
+            },
+            {
+                "type": "select",
+                "id": "products_layout",
+                "label": "Layout",
+                "default": "carousel",
+                "options": [
+                    {
+                        "value": "grid",
+                        "label": "Grid"
+                    },
+                    {
+                        "value": "carousel",
+                        "label": "Carousel"
+                    }
+                ]
+            },
+            {
+                "type": "range",
+                "id": "column",
+                "label": "Column",
+                "min": 1,
+                "max": 5,
+                "step": 1,
+                "default": 4
+            },
+            {
+                "type": "range",
+                "id": "limit",
+                "label": "Limit Product",
+                "min": 1,
+                "max": 16,
+                "step": 1,
+                "default": 6
+            },
+            {
+                "type": "checkbox",
+                "id": "carousel-arrows",
+                "label": "show arrows (Layout carousel)",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "carousel-dots",
+                "label": "show dots (Layout carousel)",
+                "default": false
+            }
+        ]
+    }
+{% endschema %}

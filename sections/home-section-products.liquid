@@ -1,0 +1,315 @@
+{% case section.settings.column %}
+    {% when 2 %}
+        {%- assign column = '2' -%}
+    {% when 3 %}
+        {%- assign column = '3' -%}
+    {% when 4 %}
+        {%- assign column = '4' -%}
+    {% when 5 %}
+        {%- assign column = '5' -%}
+    {% when 6 %}
+        {%- assign column = '6' -%}
+{% endcase %}
+
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign product_limit = product_limit | default: section.settings.rows -%}
+{%- assign carousel = carousel | default: section.settings.collection_layout -%}
+{%- assign arrows = arrows | default: section.settings.carousel-arrows -%}
+{%- assign dots = dots | default: section.settings.carousel-dots -%}
+
+{% if section.settings.custom-color %}
+<style>
+
+    [data-section-id='{{ section.id }}']  {
+        background: {{ section.settings.background_section }};
+        padding-top: {{section.settings.padding-top}}px;
+        padding-bottom: {{section.settings.padding-bottom}}px;
+
+    }
+    [data-section-id='{{ section.id }}'] .section-header h2 {
+        color: {{ section.settings.color_heading_custom }}
+    }
+
+    [data-section-id='{{ section.id }}'].layout_style2 .layout_style2_content {
+        background: {{ section.settings.background_section }};
+        border-color: {{ section.settings.border_layout }};
+    }
+    [data-section-id='{{ section.id }}'].layout_style2 .section-header-layout2 .view-all {
+        background: {{ section.settings.back_view_all }};
+        border-color: {{ section.settings.back_view_all }};
+        color: {{ section.settings.color_view_all }};
+    }
+    [data-section-id='{{ section.id }}'].layout_style2 .section-header-layout2 .view-all:hover{
+        background: {{ section.settings.color_view_all }};
+        border-color: {{ section.settings.back_view_all }};
+        color: {{ section.settings.back_view_all }};
+    }
+
+</style>
+{% endif %}
+
+<div class="halo-section section-product {% if section.settings.collection_layout_style == 'style_2' %} layout_style2 {% endif %} " id="home_product_{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="collection" >
+    <div class="container" data-carousel>
+        {% if section.settings.collection_layout_style == "style_2" %}
+            <div class="layout_style2_content">
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+            {% if section.settings.collection_layout_style == "style_2" %}
+                  <div class="section-header section-header-layout2 section-header-product">
+                    <h2>{{section.settings.title }}</h2>
+                    {% if section.settings.title_view_all != blank %}
+                        <a class="view-all" href="{{section.settings.link_view_all}}">
+                            <span>{{ section.settings.title_view_all }}</span>
+                        </a>
+                    {% endif %}
+
+                  </div>
+            {% else %}
+                <div class="section-header section-header-product">
+                    <h2>{{section.settings.title }}</h2>
+                  </div>
+            {% endif %}
+        {% endif %}
+        <div class="halo-row halo-row-custom column-{{ column }} {%if carousel == 'carousel' %}collection-carousel {% else %}collection-no-carousel{% endif %}"
+            {%if carousel == 'carousel' %}
+                data-slick='{
+                    "dots": {{ dots }},
+                    "arrows": {{ arrows }},
+                    "infinite": false,
+                    "adaptiveHeight": true,
+                    "slidesToShow": {{ column }},
+                    "slidesToScroll": {{ column }},
+                    "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                    "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>",
+                    "responsive": [
+                           {
+                               "breakpoint": 1199,
+                               "settings": {
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             },
+                            {
+                               "breakpoint": 992,
+                               "settings": {
+                                 "slidesToShow": 3,
+                                 "slidesToScroll": 1,
+                                 "arrows": false,
+                                 "dots": true
+                               }
+                             },
+                             {
+                               "breakpoint": 768,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             },
+                             {
+                               "breakpoint": 480,
+                               "settings": {
+                                 "slidesToShow": 2,
+                                 "slidesToScroll": 1,
+                                 "dots": true,
+                                 "arrows": false
+                               }
+                             }
+                        ]
+                }'
+            {% endif %}>
+            {% for product in collection.products limit: product_limit %}
+                <div class="halo-item">
+                    {% render 'product-card-grid-home' with product as product, serial: forloop.index %}
+                </div>
+            {% else %}
+                {% for i in (1..product_limit) %}
+                    <div class="halo-item">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <a class="product-link" href="#">
+                                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">{{ 'homepage.onboarding.product_title' | t }}</h4>
+                                <div class="product-reviews">{% render 'product-price', variant: nil %}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% if section.settings.collection_layout_style == "style_2" %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Section Products",
+    "class": "home-sections-product",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Heading Section"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Collection Title",
+            "info":"================="
+        },
+        {
+            "type": "text",
+            "id": "title_view_all",
+            "label": "Title Shop More",
+            "default": "Shop More"
+        },
+        {
+            "type":"url",
+            "id":"link_view_all",
+            "label":"Link Shop More"
+        },
+        {
+            "type": "header",
+            "content": "Collection layout"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+        },
+        {
+            "type": "select",
+            "id": "collection_layout_style",
+            "label": "Layout Style",
+            "default": "style_1",
+            "options": [
+                {
+                    "value": "style_1",
+                    "label": "Style 1"
+                },
+                {
+                    "value": "style_2",
+                    "label": "Style 2"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "collection_layout",
+            "label": "Layout",
+            "default": "carousel",
+            "options": [
+                {
+                    "value": "grid",
+                    "label": "Grid"
+                },
+                {
+                    "value": "carousel",
+                    "label": "Carousel"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Column show",
+            "min": 2,
+            "max": 6,
+            "step": 1,
+            "default": 5
+        },
+        {
+            "type": "range",
+            "id": "rows",
+            "label": "Limit product",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "default": 6
+        },
+        {
+            "type": "checkbox",
+            "id": "carousel-arrows",
+            "label": "show arrows (Layout carousel)",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "carousel-dots",
+            "label": "show dots (Layout carousel)",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+
+        {
+            "type": "checkbox",
+            "id": "custom-color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "background_section",
+            "label": "Background"
+        },
+        {
+            "type": "color",
+            "id": "color_heading_custom",
+            "label": "Heading Section Color"
+        },
+        {
+            "type": "color",
+            "id": "border_layout",
+            "label": "Border Color",
+            "info":"Used for layout style 2"
+        },
+        {
+            "type": "color",
+            "id": "back_view_all",
+            "label": "View All Color",
+            "info":"Used for layout style 2"
+        },
+        {
+            "type": "color",
+            "id": "color_view_all",
+            "label": "View All Color",
+            "info":"Used for layout style 2"
+        },
+        {
+            "type": "range",
+            "id": "padding-top",
+            "label": "Spacing Top",
+            "default": 30,
+            "min": 0,
+            "max": 100,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "padding-bottom",
+            "label": "Spacing bottom",
+            "default": 52,
+            "min": 0,
+            "max": 100,
+            "step": 1
+        }
+    ],
+    "presets": [
+        {
+            "name": "Home Section Products ",
+            "category": "Products"
+        }
+    ]
+}
+{% endschema %}

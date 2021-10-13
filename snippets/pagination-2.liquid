@@ -1,0 +1,72 @@
+<div class="pagination-wrapper">
+    {% assign current = paginate.current_offset | plus: 1 %}
+    {% if paginate.next %}
+        {% assign pageSize = paginate.current_offset | plus: paginate.page_size %}
+    {% else %}
+        {% assign pageSize = paginate.items %}
+    {% endif %}
+    
+    <div class="page-total">
+        <span >{{ 'general.pagination.item' | t }}</span>
+        <span>{{ current }}</span>
+        <span >{{ 'general.pagination.to' | t }}</span>
+        <span>{{ pageSize }}</span>
+        <span >{{ 'general.pagination.of' | t }}</span>
+        <span>{{ paginate.items }}</span>
+        <span >{{ 'general.pagination.total' | t }}</span>
+    </div>
+    <ul class="list--inline pagination">
+        {% unless paginate.previous.is_link %}
+            <li aria-hidden="true">
+                <button class="btn btn--narrow btn--prev" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 476.213 476.213" style="enable-background:new 0 0 476.213 476.213;" xml:space="preserve">
+                    <polygon points="476.213,223.107 57.427,223.107 151.82,128.713 130.607,107.5 0,238.106 130.607,368.714 151.82,347.5   57.427,253.107 476.213,253.107 "/>
+                    </svg>
+                    <span class="icon_text">{{ 'general.pagination.previous' | t }}</span>
+                </button>
+            </li>
+            {% else %}
+            <li>
+                <a href="{{ paginate.previous.url }}" class="btn btn--narrow btn--prev" aria-label="link">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 476.213 476.213" style="enable-background:new 0 0 476.213 476.213;" xml:space="preserve">
+                    <polygon points="476.213,223.107 57.427,223.107 151.82,128.713 130.607,107.5 0,238.106 130.607,368.714 151.82,347.5   57.427,253.107 476.213,253.107 "/>
+                    </svg>
+                    <span class="icon_text" >{{ 'general.pagination.previous' | t }}</span>
+                </a>
+            </li>
+        {% endunless %}
+        {% for part in paginate.parts %}
+            {% if part.is_link %}
+                <li>
+                    <a href="{{ part.url }}" class="pagination-link" aria-label="link">{{ part.title }}</a>
+                </li>
+            {% else %}
+                {% if part.title == paginate.current_page %}
+                    <li><span class="pagination-link pagination--current">{{ part.title }}</span></li>
+                {% else %}
+                    <li><span class="pagination-link">{{ part.title }}</span></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% unless paginate.next.is_link %}
+            <li aria-hidden="true">
+                <button class="btn btn--narrow btn--next" disabled>
+                    <span class="icon_text">{{ 'general.pagination.next' | t }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 476.213 476.213" style="enable-background:new 0 0 476.213 476.213;" xml:space="preserve">
+                    <polygon points="345.606,107.5 324.394,128.713 418.787,223.107 0,223.107 0,253.107 418.787,253.107 324.394,347.5   345.606,368.713 476.213,238.106 "/>
+                    </svg>
+                </button>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ paginate.next.url }}" class="btn btn--narrow btn--next" aria-label="link">
+                    <span class="icon_text">{{ 'general.pagination.next' | t }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 476.213 476.213" style="enable-background:new 0 0 476.213 476.213;" xml:space="preserve">
+                    <polygon points="345.606,107.5 324.394,128.713 418.787,223.107 0,223.107 0,253.107 418.787,253.107 324.394,347.5   345.606,368.713 476.213,238.106 "/>
+                    </svg>
+                </a>
+            </li>
+        {% endunless %}
+    </ul>
+</div>

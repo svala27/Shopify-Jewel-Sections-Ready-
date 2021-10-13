@@ -1,0 +1,248 @@
+/*=============================
+=            Mixin            =
+=============================*/
+  /* transform */
+    @mixin transform($transforms) {
+      -moz-transform: $transforms;
+      -o-transform: $transforms;
+      -ms-transform: $transforms;
+      -webkit-transform: $transforms;
+      transform: $transforms;
+    }
+    /* box-shadow */
+    @mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+      @if $inset {
+        -webkit-box-shadow:inset $top $left $blur $color;
+        -moz-box-shadow:inset $top $left $blur $color;
+        box-shadow:inset $top $left $blur $color;
+      } @else {
+        -webkit-box-shadow: $top $left $blur $color;
+        -moz-box-shadow: $top $left $blur $color;
+        box-shadow: $top $left $blur $color;
+      }
+    }
+    /* border-radius */
+    @mixin border-radius($radius) {
+      -moz-border-radius: $radius;
+      -webkit-border-radius: $radius;
+      -ms-border-radius: $radius;
+      -o-border-radius: $radius;
+      border-radius: $radius;
+    }
+    /* opacity */
+    @mixin opacity($value){
+      $IEValue: $value*100;
+      opacity: $value;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity="+$IEValue+")";
+      filter: alpha(opacity=$IEValue);
+    }
+    @mixin translate($x, $y) {
+      @include transform(translate($x, $y));
+    }
+
+    @mixin translateX($x) {
+      @include transform(translateX($x));
+    }
+
+    @mixin translateY($y) {
+      @include transform(translateY($y));
+    }
+    /* transition */
+    @mixin transition($transition) {
+      -webkit-transition: $transition;
+      -moz-transition: $transition;
+      -ms-transition: $transition;
+      -o-transition: $transition;
+      transition: $transition;
+    }
+
+    @mixin transition-delay($time) {
+      transition-delay: $time;
+      -moz-transition-delay: $time;
+      -webkit-transition-delay: $time;
+      -o-transition-delay: $time;
+      -ms-transition-delay: $time;
+    }
+    @mixin rotate($deg) {
+      @include transform(rotate(#{$deg}deg));
+    }
+
+    @mixin scale($scale) {
+      @include transform(scale($scale));
+    }
+
+    @mixin scaleX($scale) {
+      @include transform(scaleX($scale));
+    }
+    /* Flex */
+    @mixin flexbox() {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    @mixin inline-flex {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -moz-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+    }
+    @mixin justify-content($justify) {
+      -webkit-box-pack: $justify;
+      -moz-box-pack: $justify;
+      -ms-flex-pack: $justify;
+      -webkit-justify-content: $justify;
+      justify-content: $justify;
+    }
+
+    @mixin align-items($align) {
+      -webkit-align-items: $align;
+      -moz-align-items: $align;
+      -ms-align-items: $align;
+      align-items: $align;
+    }
+    @mixin flex-direction($direction) {
+      -webkit-flex-direction: $direction;
+      -moz-flex-direction: $direction;
+      -ms-flex-direction: $direction;
+      flex-direction: $direction;
+    }
+
+    @mixin flex-wrap($wrap) {
+      -webkit-flex-wrap: $wrap;
+      -moz-flex-wrap: $wrap;
+      -ms-flex-wrap: $wrap;
+      flex-wrap: $wrap;
+    }
+    /* calc */
+    @mixin calc($property, $expression) {
+      #{$property}: -moz-calc(#{$expression});
+    #{$property}: -webkit-calc(#{$expression});
+    #{$property}: -ms-calc(#{$expression});
+    #{$property}: calc(#{$expression});
+    }
+    @keyframes box-shadow{
+        0%, 100%{
+            @include box-shadow(0, 0, 0, 0);
+        }
+
+        50%{
+            @include box-shadow(0, 0, 0, 4px);
+        }
+    }
+    @keyframes loading {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    @mixin display-flexbox() {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%; // necessary for ie10
+    }
+
+    @mixin flex-wrap($value: nowrap) {
+        @include prefix(flex-wrap, $value, webkit moz ms spec);
+    }
+
+    @mixin flex-direction($value) {
+        @include prefix(flex-direction, $value, webkit moz ms spec);
+    }
+
+    @mixin align-items($value: stretch) {
+        $alt-value: $value;
+
+        @if $value == 'flex-start' {
+            $alt-value: start;
+        } @else if $value == 'flex-end' {
+            $alt-value: end;
+        }
+
+        // sass-lint:disable no-misspelled-properties
+        -ms-flex-align: $alt-value;
+        @include prefix(align-items, $value, webkit moz ms o spec);
+    }
+
+    @mixin flex($value: 0 1 auto) {
+        @include prefix(flex, $value, webkit moz ms spec);
+    }
+
+    @mixin flex-basis($width: auto) {
+        // sass-lint:disable no-misspelled-properties
+        -ms-flex-preferred-size: $width;
+        @include prefix(flex-basis, $width, webkit moz spec);
+    }
+
+    @mixin align-self($align: auto) {
+        // sass-lint:disable no-misspelled-properties
+        -ms-flex-item-align: $align;
+        @include prefix(align-self, $align, webkit spec);
+    }
+
+    @mixin align-content($align: center) {
+        @include prefix(align-content, $align, webkit ms spec);
+    }
+
+    @mixin justify-content($justify: flex-start) {
+        @include prefix(justify-content, $justify, webkit ms spec);
+    }
+    $font_size: {{ settings.type_base_size }};
+    /* Button 1 */
+    $background_1: {{ settings.btn_1_bg_color }};
+    $color_1 : {{ settings.btn_1_text_color }};
+    $border_1 : {{ settings.btn_1_border_color }};
+
+    /* Button 2 */
+    $background_2: {{ settings.btn_2_bg_color }};
+    $color_2 : {{ settings.btn_2_text_color }};
+    $border_2 : {{ settings.btn_2_border_color }};
+
+    /* Button disabled */
+    $sold_out_text : {{ settings.sold_out_text }};
+    $bg_sold_out : {{ settings.bg_sold_out }};
+
+    @mixin button_1 {
+      background: $background_1;
+      color: $color_1;
+      border-color: $border_1;
+    }
+
+    @mixin button_2 {
+      background: $background_2;
+      color: $color_2;
+      border-color: $border_2;
+    }
+/*=====  End of mixin  ======*/
+
+
+/*============================================
+=            login and create acc            =
+============================================*/
+  .login-register-page{
+    .medium-up--push-one-quarter{
+      left: 0px!important;
+    }
+  }
+   
+
+/*=====  End of login and create acc  ======*/
+
+/*=================================
+=            Reponsive            =
+=================================*/
+@media (min-width: 1200px)
+{
+  .container {
+      max-width: 1200px;
+      padding-left: 15px;
+      padding-right: 15px;
+  }
+}
+
+/*=====  End of Reponsive  ======*/

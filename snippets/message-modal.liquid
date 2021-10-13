@@ -1,0 +1,45 @@
+<div id="loading-modal" class="loading-modal modal"><div></div><div></div><div></div><div></div></div>
+{% render 'cart-popup-pr-grid' %}
+{% render 'customer_login' %}
+{% render 'popup_modal_quickview' %}
+<div class="popup-sidebar sidebar-right">
+  <div class="wrapper-content">
+     {% render 'sidebar-cart' %}
+  </div>
+</div>
+<div class="modal" id="cart-edit-modal" >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        {% render 'popup-edit-cart' %}
+    </div>
+</div>
+<div class="newsletter-success-modal">
+    <div class="modal-overlay"></div>
+    <div class="halo-modal-content">
+        <a class="close close-modal" title="{{ 'cart.ajax_cart.close' | t }}">
+            <svg class="icon icon-close"><use xlink:href="#icon-close" />
+        </a>
+        
+        <div class="halo-modal-body success">
+        	 <p class="form-message form-message--success" tabindex="-1" data-form-status>
+	            <i class="fa fa-check" aria-hidden="true"></i>
+	            <span>{{settings.newssletter_success_text}}</span>
+            </p>
+        </div>
+        <div class="halo-modal-body error">
+           <p class="form-message form-message--success" tabindex="-1" data-form-status>
+             <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+             <span>{{settings.newssletter_error_text}}</span>
+            </p>
+        </div>
+
+    </div>  
+</div>
+{% if settings.display_size_chart %}
+    {% render 'popup_modal_size_chart', product: product  %}
+{% endif %}
+{% render 'modal-quickview-video' %}
+{% render 'popup_modal_newsletter' %}
+
+{% if settings.enable_ask_an_expert %}
+  {% render 'popup_modal_ask_an_expert' %}
+{% endif %}

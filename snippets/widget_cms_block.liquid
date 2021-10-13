@@ -1,0 +1,13 @@
+<div class="sidebarBlock cms_block">
+    <h5 class="sidebarBlock-heading"><span>{{block.settings.title }}</span></h5>
+    <div class="sidebarBlock-content">
+        {{block.settings.text }}
+    </div>
+    {% if block.settings.button_title != blank %}
+	    <div class="button">
+	    	<a class="btn btn-three" href="{{block.settings.button_link}}">
+	    		<span>{{block.settings.button_title}}</span>
+	    	</a>
+	    </div>
+    {% endif %}
+</div>

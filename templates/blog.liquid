@@ -1,0 +1,18 @@
+{% comment %}
+  The contents of the blog.liquid template can be found in /sections/blog-template.liquid
+{% endcomment %}
+<div class="wrapper-header-cs">
+    {% render 'breadcrumb' %}
+    <div class="container">
+      <h2 class="title">
+          {{blog.title }}
+      </h2>  
+    </div>
+  </div>
+<div class="container">
+    <div class="page page-blog">
+    	{% section 'des-blog'%}
+        {% section 'sidebar-blog' %}
+        {% section 'blog-template' %}
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="policy-shipping">
+  <div class="policy-items row" data-policy-slides>
+    {% for block in section.blocks%}
+    {% if block.settings.icon_policy != blank and block.settings.des_policy != blank  %}
+    <a class="item" href= " {{block.settings.link_policy}} " >
+      <p class="policy-icon">
+      	{{block.settings.icon_policy}}
+      </p>
+      <p class="policy-des" >
+          <span class="border_hover">
+            {{ block.settings.des_policy}}
+          </span>
+      </p>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>

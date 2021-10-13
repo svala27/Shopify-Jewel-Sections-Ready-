@@ -1,0 +1,32 @@
+<div class="page page-collections page-collection-list-items">
+  {% if settings.list_collections_layout == 'collections_default_grid' %}
+  	<div class="collections_default_grid">
+  		<div class="wrapper-header-cs">
+		    {% render 'breadcrumb' %}
+		    <h2 class="title">
+		        {{ page_title }}
+		     </h2>  
+		  </div>
+  		{% section 'list-collections-template' %}
+  		{% section 'section-product-list-collection' %}
+  	</div>
+	{% else %}
+       <div class="collections_custom_grid">
+       	<div class="wrapper-header-cs">
+		    {% render 'breadcrumb' %}
+		    <div class="container">
+		    	<h2 class="title">
+		          {{ page_title }}
+		        </h2> 
+		    </div> 
+		  </div>
+  		{% section 'list-collections-template-custom' %}
+  		{% section 'section-product-list-collection' %}
+	  </div>
+	{% endif %}
+</div>
+
+
+
+
+

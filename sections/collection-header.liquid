@@ -1,0 +1,79 @@
+{% if section.settings.collection_header_enable %}  
+    <header class="collection-header-default">
+      {% if section.settings.display_collection_image %}
+      <div class="top-header">
+          <div class="collection-image">
+            {% if section.settings.collection_image != blank or collection.image %}
+                {% if section.settings.collection_image != blank %}
+                    {%- assign img_url = section.settings.collection_image | img_url: 'master' -%}
+                     <img class="lazyload" src="{{ img_url }}" data-src="{{ img_url }}" alt="" data-image>
+                {% elsif collection.image %}
+                    {%- assign img_url = collection.image | img_url: 'master' -%}
+                     <img class="lazyload" src="{{ 'loading.svg' | asset_url }}" data-src="{{ img_url }}" alt="" data-image>
+                {% endif %}
+            {% else %}
+             {%- assign img_url = collection.image | img_url: 'master' -%}
+            <div class="no-image" style="padding-top: 12.5%">
+              <span>1900 x 240px</span>
+            </div>
+            {% endif %}
+          </div>
+          
+          <div class="wrapper-header-cs">
+                {% render 'breadcrumb' %}
+                <h2 class="title">
+                    {{ page_title }}
+                </h2>  
+          </div>
+      </div>
+      {% endif %}
+      <div class="collection-wrapper page-header">
+        <div class="container">
+        {% if collection.description != '' and section.settings.display_collection_des %}
+        <div class="collection-des">
+          <div class="rte">
+            {{ collection.description}}
+          </div>
+        </div>      
+        {% endif %}
+        </div>
+      </div>
+    </header>
+{% endif %}
+{% schema %}
+   {
+    "name": "Collection Header",
+    "class": "page-header",
+    "settings": [
+         {
+            "type": "checkbox",
+            "id": "collection_header_enable",
+            "label": "Enable Collections Header",
+            "default": true,
+            "info":"=========="
+         },
+      {
+        "type": "header",
+        "content": "Header content"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_collection_image",
+        "label": "Show collection image?",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "collection_image",
+        "label": "Image Category",
+        "info": "This image will show up when you don't add image in Collections image"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_collection_des",
+        "label": "Display Collections Description?",
+        "default": true
+      }
+    ]
+}
+{% endschema %}

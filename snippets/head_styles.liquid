@@ -1,0 +1,23 @@
+{{ 'vendor.min.css' | asset_url | stylesheet_tag }}
+{{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+{% if template contains 'index' %}
+{{ 'section-index.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{% if template contains 'customers/login' or template contains 'customers/register' or template contains 'customers/account' or template contains 'customers/addresses' %}
+{{ 'customer-account.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{% if template contains 'page' %}
+ {{ 'page-style.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{% if template contains 'blog' or template contains 'article' %}
+ {{ 'blog-style.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{% if template contains 'cart' %}
+ {{ 'template-cart-style.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{% if template contains 'product' %}
+ {{ 'template-product-style.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+
+

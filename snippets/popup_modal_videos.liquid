@@ -1,0 +1,17 @@
+{% if section.settings.video_product and product.metafields.c_f['Product Video'] %}
+    <div class="modal fade halo_modal" id="video_product" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-video">
+            <div class="modal-content">
+                <a data-dismiss="modal" class="close close-modal" href="javascript:void(0)">
+                  <svg class="icon icon-close"><use xlink:href="#icon-close" /></svg>
+                </a>
+                <div class="popup-video" data-video-gallery>
+                   {% if product.metafields.c_f['Product Video'] %}
+                    {% capture video_id %}{{ product.metafields.c_f['Product Video'] }}{% endcapture %}
+                    <iframe width="100%" data-video-id="{{video_id }}"  class="lazyload" height="100%" id="video_pr" src="//www.youtube.com/embed/{{video_id}}?enablejsapi=1&html5=1?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

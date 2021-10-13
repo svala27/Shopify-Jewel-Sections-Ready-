@@ -1,0 +1,25 @@
+<div class="sidebarBlock">
+  <div class="sidebarBlock-content br-bt">
+    <div class="advertisement-image">
+      <div class="img image-top">
+        {% if block.settings.image != blank %}
+        <a class="img image-top " href="{{ block.settings.link }}" aria-label="link"> {{ block.settings.image | img_url: '300x' | img_tag: block.settings.image.alt, 'image-text-overlay' }}</a>
+        {% else %}
+        <div class="no-image" style="padding-top: 53%">
+          <span>image</span>
+        </div>
+        {% endif %}
+      </div>
+      <div class="img image-bottom">
+        {% if block.settings.image_2 != blank %}
+        <a class="img image-bottom" href="{{ block.settings.link_2 }}" aria-label="link">
+          {{ block.settings.image_2 | img_url: '300x' | img_tag: block.settings.image_2.alt, 'image-text-overlay' }}</a>
+        {% else %}
+        <div class="no-image" style="padding-top: 53%">
+          <span>image</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<ul class="collection-list level-2">
+    {% for link_child_item in linklists[link].links %}
+        <li class="collection-list__item">
+            {% if linklists[link_child_item.handle] == empty %}
+                <a class="collection-list__action collection-list__action--end" href="{{ link_child_item.url }}" aria-label="link">{{ link_child_item.title }}</a>
+            {% else %}
+                <p class="navPages-action-wrapper">
+                      <a class="navPages-action has-subMenu" href="{{ link_child_item.url }}" aria-label="link">{{ link_child_item.title }}</a>
+                      <span class="icon-arrow">
+                        <svg class="icon "><use xlink:href="#icon_right" /></svg>
+                      </span>
+              </p>
+                <ul class="collection-list level-3">
+                    {% for n in linklists[link_child_item.handle].links %}
+                        <li class="collection-list__item">
+                            <a class="collection-list__action collection-list__action--end" href="{{ n.url }}" aria-label="link">{{ n.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,82 @@
+{% case section.settings.footer_results_per_row_rc %}
+  {% when '1' %}
+  {%- assign column_size = 'col-12' -%}
+  {% when '2' %}
+  {%- assign column_size = 'col-12 col-md-6' -%}
+  {% when '3' %}
+  {%- assign column_size = 'col-12 col-md-4' -%}
+  {% when '4' %}
+  {%- assign column_size = 'col-12 col-md-3 col-lg-3 col-xl-3' -%}
+{% endcase %}
+           
+<div class="row">
+  {% if section.blocks.size > 0 %}
+  {% if section.settings.footer_store_location_enable %}
+  <div class="footer__location col-12 col-md-12 col-lg-3 col-xl-3">
+    <h3 class="link-title">
+     {{ section.settings.footer_store_location_title }}
+    </h3>
+    <div class="groups-block">
+      {% if section.settings.footer_order_by_number != blank %}
+      <div class="footer-location order-by-numbe">
+        {% if section.settings.order_by_number_icon != blank %}
+        <div class="icon number-icon">
+          <p>{{section.settings.order_by_number_icon}}</p>
+        </div>
+        {% endif %}
+        <div class="content_location by-number">
+          {{section.settings.footer_order_by_number}}
+        </div>
+      </div>
+      {% endif %}
+      {% if section.settings.footer_by_email != blank %}
+      <div class="footer-location order-by-email">
+        {% if section.settings.order_by_email_icon != blank %}
+        <div class="icon email-icon">
+           <p>{{section.settings.order_by_email_icon}}</p>
+        </div>
+        {% endif %}
+        <div class="content_location by-email">
+          {{section.settings.footer_by_email}}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="footer__linklist col-12 col-md-12{% if section.settings.footer_store_location_enable %} col-lg-9 col-xl-9 footer-col-left{% else %} col-lg-12 col-xl-12{% endif %}">
+        <div class="row ">
+           
+          {% for block in section.blocks %}
+            {% if block.type == 'footer_link' %}
+            <div class="col-footer {{ column_size }} {% if section.settings.footer_store_location_enable %} col-footer-left{% endif %}">
+              {% if block.settings.footer_title != blank %}
+              <h3 class="link-title dropdow-mb">
+                {{block.settings.footer_title}}
+                {% render 'icon-chevron-down' %}
+              </h3>
+              {% endif %}
+
+              {%- assign footer_linklist = block.settings.footer_linklist -%}
+
+              {% if linklists[footer_linklist].links.size > 0 %}
+              <ul>
+                {% for link in linklists[footer_linklist].links %}
+                <li>
+                  <a href="{{ link.url}}" title="{{ link.title }}" class="foot-link">
+                    <span class="border_hover">
+                      {{ link.title }}
+                    </span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+  </div>
+  {% endif %}
+</div>

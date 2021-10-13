@@ -1,0 +1,506 @@
+<div class="productView-description">
+    <ul class="nav tab-horizontal" role="tablist">
+             {% if section.settings.display_product_detail_description %}
+                <li class="nav-item tab">
+                    <a href="#collapse-tab1" class="tab-title active" role="tab" data-toggle="tab" aria-controls="tab1">
+                        {{ section.settings.product_description_title }}
+                    </a>
+                </li>
+            {% endif %}
+            {% if section.settings.display_product_review_tab %}
+               <li class="nav-item tab">
+                    <a href="#collapse-tab2" class="tab-title" role="tab" data-toggle="tab" aria-controls="tab2">
+                        {{ section.settings.product_review_title }}
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for block in section.blocks %}
+            {% if block.type == 'product_tab' %}
+                {% if block.settings.type_tab == 'custom' %}
+                    {% assign content = block.settings.product_tab_content_2 %}
+                    {% if product.metafields.c_f[content] != blank %}
+                        <li class="nav-item tab">
+                            <a href="#{{ block.id }}" class="tab-title" role="tab" data-toggle="tab" aria-controls="{{ block.id }}">
+                                {{ block.settings.product_tab_title }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item tab">
+                        <a href="#{{ block.id }}" class="tab-title" role="tab" data-toggle="tab" aria-controls="{{ block.id }}">
+                            {{block.settings.product_tab_title }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+    </ul>
+    <div class="tab-content horizontal">
+        <div class="container">
+            {% if section.settings.display_product_detail_description %}
+                <div id="collapse-tab1" class="tab-description tab-pane fade show active" role="tabpanel">
+                    <div class="toggle-title">
+                        <a class="toggleLink" data-toggle="collapse" href="#tab1_mobile">
+                            <span class="page-heading">
+                               {{section.settings.product_description_title}}
+                            </span>
+                            {% render 'icon-chevron-up' %}
+                        </a>
+                    </div>
+                    <div class="toggle-content collapse show" id="tab1_mobile">
+                        {% assign des = product.description %}
+                            <div>
+                                {{ des}}
+                            </div>
+                            {% if section.settings.enable_lookbook_gallery %}
+                                {% render 'product-detail-gallery_lookbook' %}
+                            {% endif %}
+                        
+                        <div class="description_showmore">
+                            <div class="showmore show">
+                                <span class="btn btn--secondary">{{ 'general.filters.show_more' | t }}</span>
+                            </div>
+                            <div class="showless hide">
+                                <span class="btn btn--secondary">{{ 'general.filters.show_less' | t }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if section.settings.display_product_review_tab %}
+                <div id="collapse-tab2" class="tab-review tab-pane fade " role="tabpanel">
+                    <div class="toggle-title">
+                        <a class="toggleLink collapsed" data-toggle="collapse" href="#tab2_mobile">
+                            <span class="page-heading">
+                            {{ section.settings.product_review_title }}
+                            {% render 'icon-chevron-up' %}
+                        </a>
+                    </div>
+                    <div class="toggle-content collapse" id="tab2_mobile">
+                        <div id="shopify-product-reviews" data-id="{{product.id}}">
+                            {{ product.metafields.spr.reviews }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for block in section.blocks %}
+            {% if block.type == 'product_tab' %}
+                {% if block.settings.type_tab == 'custom' %}
+                    {% assign content = block.settings.product_tab_content_2 %}
+                    
+                    {% if product.metafields.c_f[content] != blank %}
+                        <div id="{{ block.id }}" class="tab-pane fade" role="tabpanel">
+                            <div class="toggle-title">
+                                <a class="toggleLink collapsed" data-toggle="collapse" href="#{{ block.id }}_mobile">
+                                    <span class="page-heading">
+                                        {{block.settings.product_tab_title}}
+                                    </span>
+                                    {% render 'icon-chevron-up' %}
+                                </a>
+                            </div>
+                            <div class="toggle-content collapse" id="{{ block.id }}_mobile">
+                                {% assign metafieldsTabContent = product.metafields.c_f[content] %}
+                                <div>
+                                    {{ metafieldsTabContent}}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div id="{{ block.id }}" class="tab-pane fade" role="tabpanel">
+                        <div class="toggle-title">
+                            <a class="toggleLink collapsed" data-toggle="collapse" href="#{{ block.id }}_mobile">
+                                <span class="page-heading">
+                                    {{block.settings.product_tab_title}}
+                                 </span>
+                                {% render 'icon-chevron-up' %}
+                            </a>
+                        </div>
+                        <div class="toggle-content collapse" id="{{ block.id }}_mobile">
+                            {% assign customTabContent = block.settings.product_tab_content %}
+                            <div>
+                                {{ customTabContent | split: '[lang2]' | first }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+    "name": "Product Tabs",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Product Description Tab"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_product_detail_description",
+            "label": "Enable Product Description?",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "product_description_title",
+            "label": "Product Description Title",
+            "default": "Description"
+        },
+        {
+            "type": "header",
+            "content": "Product Review Tab"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_product_review_tab",
+            "label": "Enable Product Review Tab",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "product_review_title",
+            "label": "Product Review Title",
+            "default": "Customer Reviews"
+        },
+        {
+            "type":"header",
+            "content":"LOOKBOOK GALLERY IN PRODUCT DETAIL"
+        },
+        {
+            "type":"checkbox",
+            "id":"enable_lookbook_gallery",
+            "label":"Enable?",
+            "default":true
+        },
+        {
+            "type": "radio",
+            "id": "style_lookbook_gallery",
+            "label": "Style",
+            "options": [
+                {
+                    "value": "all_product",
+                    "label": "Use for all products"
+                },
+                {
+                    "value": "different_product",
+                    "label": "Use for different product"
+                }
+            ],
+            "default": "all_product",
+            "info":"If you would like to use 1 LookBook Gallery the same for all of products, you just need to setup only 1 LookBook Gallery."
+        },
+        {
+            "type":"text",
+            "id":"title_lob_glr",
+            "label":"Title",
+            "default":"Sample Image Gallery",
+            "info":"==============="
+        },
+        {
+            "type":"text",
+            "id":"title_paragraph_text",
+            "label":" Title Sample Paragraph Text",
+            "default":"Sample Paragraph Text"
+        },
+        {
+            "type":"textarea",
+            "id":"content_paragraph_text",
+            "label":" Des Sample Paragraph Text",
+            "default":"Praesent destibulum congue tellus at fringilla. Curabitur vitae semper sem, eu convallis est. Cras delis nunc commodo eu convallis vitae interdum non nisl. Maecenas ac est sit amet augue pharetra convallis nec danos dui. Cras suscipit quam an turpis eleifend ditae malesuada loremous. nteger mattis augue sit amet mi ornare gravida. Mauris dapibus lobortis sem eu tristique. Pellentesque vel ullamcorper felis nullam tempor miaculis varius."
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product_tab",
+            "name": "Another Product Tab",
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "Product Tab"
+                },
+                {
+                    "type": "select",
+                    "id": "type_tab",
+                    "label": "Type Tab",
+                    "default": "all",
+                    "options": [
+                        {
+                            "value": "all",
+                            "label": "Show For All Product"
+                        },
+                        {
+                            "value": "custom",
+                            "label": "Only Show For This Product"
+                        }
+                    ]
+                },
+                {
+                    "type": "text",
+                    "id": "product_tab_title",
+                    "label": "Product Tab Title",
+                    "default": "Product Tab"
+                },
+                {
+                    "type": "textarea",
+                    "id": "product_tab_content",
+                    "label": "Product Tab Content",
+                    "default": "Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.",
+                    "info": "Show For All Product"
+                },
+                {
+                    "type": "text",
+                    "id": "product_tab_content_2",
+                    "label": "Product Tab Content 2",
+                    "info": "Only Show For This Product - Please install app Metafields Guru and setting like Document"
+                }
+            ]
+        },
+        {
+            "type": "lookbook_galry_item",
+            "name": "Lookbook Gallery Item",
+            "settings": [
+                {
+                  "type" : "product",
+                  "id" : "main_pr_look",
+                  "label" : "Select the product needs to display Loobook",
+                  "info": "Choose if you want to show the different lookbook gallery for each of product."
+                },
+                {
+                  "type":"header",
+                  "content":"Image 1"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "lookbook_image_1",
+                    "label": "Image",
+                    "info":"=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 1",
+                    "id": "product_1"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_1",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_1",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48
+                },
+                {
+                  "type":"header",
+                  "content":"Image 2"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "lookbook_image_2",
+                    "label": "Image",
+                    "info":"=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 2",
+                    "id": "product_2"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_2",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_2",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48
+                },
+                {
+                  "type":"header",
+                  "content":"Image 3"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "lookbook_image_3",
+                    "label": "Image",
+                    "info":"=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 3",
+                    "id": "product_3"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_3",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_3",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48
+                },
+                {
+                  "type":"header",
+                  "content":"Image 4"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "lookbook_image_4",
+                    "label": "Image",
+                    "info":"=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 4",
+                    "id": "product_4"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_4",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_4",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48
+                },
+                {
+                  "type":"header",
+                  "content":"Image 5"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "lookbook_image_5",
+                    "label": "Image",
+                    "info":"=============="
+                },
+                {
+                    "type": "product",
+                    "label": "Product 1",
+                    "id": "product_5_1"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_5_1",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_5_1",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48,
+                    "info":"================"
+                },
+                {
+                    "type": "product",
+                    "label": "Product 2",
+                    "id": "product_5_2"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_5_2",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_5_2",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48,
+                    "info":"================"
+                },
+                {
+                    "type": "product",
+                    "label": "Product 3",
+                    "id": "product_5_3"
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_x_5_3",
+                    "label": "Coordinates x",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 36
+                },
+                {
+                    "type": "range",
+                    "id": "coordinates_y_5_3",
+                    "label": "Coordinates y",
+                    "max": 100,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 48
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

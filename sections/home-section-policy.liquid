@@ -1,0 +1,184 @@
+
+{% if section.settings.enable%} 
+  <section class="policy-shipping" id="section-{{section.id}}">
+    <div class="container">
+      <div class="row policy-items">
+      {% for block in section.blocks%}
+          {% if section.settings.results_per_row_rc == '1' %}
+          {%- assign column_size = 'col-12 one-blocks ' -%}
+          {% elsif section.settings.results_per_row_rc == '2' %}
+            {%- assign column_size = 'col-12 col-sm-6 two-blocks ' -%}
+            {% elsif  section.settings.results_per_row_rc == '3' %}
+               {%- assign column_size = 'col-12 col-sm-4 col-md-4 three-blocks' -%}
+            {% elsif  section.settings.results_per_row_rc == '4' %}
+               {%- assign column_size = 'col-12 col-6 col-sm-3 col-lg-3 col-md-4 four-blocks' -%}
+          {% endif %}
+        {% if block.settings.des_policy != blank  %}
+        <a class="item {{column_size}}" href= " {{block.settings.link_policy}} " >
+          <p class="policy-des" >
+            <span class="border_hover">
+                {{ block.settings.des_policy}}
+            </span>
+          </p>
+        </a>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if section.settings.custom_color %}
+    <style>
+        #section-{{section.id}}{
+            background: {{section.settings.background}};
+        }
+        #section-{{section.id}} .policy-items .item .policy-des{
+             color: {{section.settings.color_text}};
+        }
+        @media (max-width: 767px) {
+            #section-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom_mb }}px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            #section-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom_tab }}px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            #section-{{section.id}} {
+                margin-bottom: {{ section.settings.margin_bottom}}px;
+            }
+        }   
+    </style>
+{% endif %}
+
+
+{% schema %}
+  {
+  "name": "Policy Shipping",
+  "class":"home-policy-shipping",
+  "max_blocks": 4,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "Enable?",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "results_per_row_rc",
+        "label": "Number Column Show?",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+      
+        ],
+        "default": "3"
+      },
+      {
+          "type": "header",
+          "content": "Custom Color"
+      },
+      {
+          "type": "checkbox",
+          "id": "custom_color",
+          "label": "Turn on custom color",
+          "default": false
+      },
+      {
+          "type": "range",
+          "id": "margin_bottom_mb",
+          "label": "Mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+      },
+      {
+          "type": "range",
+          "id": "margin_bottom_tab",
+          "label": "Tablet",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+      },
+      {
+          "type": "range",
+          "id": "margin_bottom",
+          "label": "Margin Bottom",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+      },  
+      {
+          "type" : "color",
+          "id" : "background",
+          "label" : "Background Color"
+      },
+      {
+          "type" : "color",
+          "id" : "color_text",
+          "label" : "Text Color"
+      }
+      
+    ],
+    "blocks": [ 
+      {
+        "type":"text",
+        "name":"Policy shippings",
+          "settings":[
+            {
+              "type":"textarea",
+              "id":"des_policy",
+              "label":"Content",
+              "default":"Free and easy returns",
+              "info":"Please use the \"|\" character to translate the language following the structure of Lang1 | Lang 2"
+            },
+            {
+              "type":"url",
+              "id":"link_policy",
+              "label":"Add Link"
+            }
+          ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Policy Shippings",
+        "category": "Text",
+        "blocks": [
+            {
+                "type": "text"
+            },
+            {
+                "type": "text"
+            },
+            {
+                "type": "text"
+            }
+        ]
+      }
+    ]
+  }
+{% endschema %}

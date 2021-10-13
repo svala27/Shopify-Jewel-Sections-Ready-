@@ -1,0 +1,210 @@
+{% if section.settings.enable_col %}
+<div class="halo-section customer-banner-text-col {% if section.settings.layout == 'default' %}back_container{% endif %}">
+    <div class="{% if section.settings.layout == 'default' %}container{% else %}container-full {% endif %}">
+        <div class="halo-row-custom">
+           <div class="halo-item {% if section.settings.alignment == 'right' %}reserve{% endif %}">
+                <div class="col-content">
+                   <div class="content-wrapper">
+                       {% if section.settings.sub_heading != blank%}
+                          <div class="sub-heading icon-heading">
+                              {{ section.settings.sub_heading}}
+                          </div>
+                        {% endif %}
+                        {% if section.settings.title_col != blank %}
+                            <h3 class="title">
+                              <a href="{{ block.settings.link_col}}" aria-label="link">{{section.settings.title_col}}</a>
+                            </h3>
+                        {% endif %}
+                        {% if section.settings.descriptions_col != blank %}
+                        <div class="rte descriptions_col">
+                        {{section.settings.descriptions_col}}
+                        </div>
+                        {% endif %}
+                        {% if section.settings.title_button != blank %}
+                        <a href="{{ block.settings.link_col }}" class="btn btn-one" aria-label="link">
+                            <span class="text">{{ section.settings.title_button }}</span>
+                        </a>
+                        {% endif %}
+                   </div>
+                </div>
+                <div class="col-image">
+                    <div class="image-wrapper">
+                     {% if  section.settings.image != blank %}
+                            {%- assign img_url = section.settings.image | img_url: '950x' -%}
+                            <img
+                                class="col-image lazyload"
+                                src="{{ 'loading.svg' | asset_url }}"
+                                data-src="{{ img_url }}"
+                                data-aspectratio="{{ article.image.aspect_ratio }}"
+                                data-sizes="auto"
+                                alt="" data-image>
+                        {% else %}
+                            <div class="no-image" style="padding-top: 88%">
+                              <span> 950 x 840px</span>
+                            </div>   
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if section.settings.custom_color %}
+    <style>
+    {% if section.settings.layout == 'default' %}
+       .customer-banner-text-col .container .halo-row-custom{
+        background:{{section.settings.back_section}};
+     }
+    {% else %}
+     .customer-banner-text-col{
+        background:{{section.settings.back_section}};
+     }
+     {% endif %}
+     .customer-banner-text-col .halo-item .col-content .content-wrapper .icon-heading svg{
+        fill:{{section.settings.color_icon}};
+     }
+     .customer-banner-text-col .halo-item .col-content .content-wrapper .title{
+        color: {{section.settings.color_title}};
+     }
+     .customer-banner-text-col .halo-item .col-content .content-wrapper .descriptions_col{
+        color: {{section.settings.color_des}};
+     }
+     .customer-banner-text-col .halo-item .col-content .content-wrapper .btn{
+        color: {{section.settings.color_btn}};
+        background: {{section.settings.back_button}};
+        border-color: {{section.settings.color_btn}};
+     }
+     .customer-banner-text-col .halo-item .col-content .content-wrapper .btn:hover{
+        color: {{section.settings.back_button}};
+        background: {{section.settings.color_btn}};
+        border-color: {{section.settings.color_btn}};
+     }
+     
+    </style>
+{% endif %}
+{% schema %}
+{
+    "name": "Custom banner",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "enable_col",
+            "label": "Enable",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Slideshow Layout:",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "full",
+                    "label": "Full Width"
+                }
+            ],
+            "default": "full"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info" : "Recommended Image: Width x Height (225 x 100)px"
+        },
+        {
+          "type":"select",
+          "id":"alignment",
+          "label":"Content Alignment",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        },
+        {
+            "type" : "textarea",
+            "id" : "sub_heading",
+            "label" : "Icon Heading",
+            "info":"Use svg image"
+        },
+        {
+            "type":"text",
+            "id":"title_col",
+            "label":"Title",
+            "default":"We're Passionate <br> About Quality Craftsmanship"
+        },
+        {
+            "type":"textarea",
+            "id":"descriptions_col",
+            "label":"Description",
+            "default":"Nam tempus turpis at metus scelerisque placerat nulla deumantos sollicitudin felis. Pellentesque diam dolor, elementum et lobortis at, mollis duto an risus. Sedcuman des faucibus sullamcorper mattis fusce molestie elit a lorem tempus scelerisque blandit est cursus..."
+        },
+        {
+            "type":"header",
+            "content":"Button"
+        },
+        {
+            "type": "text",
+            "id": "title_button",
+            "label": "Title Button",
+            "default": "Read Full Story"
+        },
+        {
+            "type":"url",
+            "id":"link_col",
+            "label":"Add Link"
+        },
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "back_section",
+            "label": "Background Color"
+        },
+        {
+            "type": "color",
+            "id": "color_icon",
+            "label": "Icon Color"
+        },
+        {
+            "type": "color",
+            "id": "color_title",
+            "label": "Title Color"
+        },
+        {
+            "type": "color",
+            "id": "color_des",
+            "label": "Descript Color",
+            "info":"=========="
+        },
+        {
+            "type": "color",
+            "id": "color_btn",
+            "label": "Button Color"
+        },
+        {
+            "type": "color",
+            "id": "back_button",
+            "label": "Background Button Color"
+        }
+    ]
+}
+{% endschema %}

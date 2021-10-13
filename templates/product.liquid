@@ -1,0 +1,6 @@
+{% if settings.product_layout == 'pr_layout_default' %}
+  {% render 'product-layout-default' %}
+{% else %}
+  {% render 'product-layout-01' %}
+{% endif %}
+{% render 'product-script' %}
